@@ -363,7 +363,7 @@ namespace FeatureManagement.AspNetCore.Tests
         }
 
         [TestMethod]
-        public async Task ApplyAsyncInternal_EndpointHasAdditionalMetadata_DoesNotProcessAdditionalMetadataIfMetadataFeaturesAreDisabled()
+        public async Task ApplyAsyncInternal_EndpointHasAdditionalMetadata_DoesNotProcessAnyMoreMetadataIfAlreadyDeterminedEndpointIsNotEnabled()
         {
             // Arrange
             var features = new List<Feature>
