@@ -90,10 +90,18 @@ namespace FeatureManagement.AspNetCore.Mvc.Routing
                         {
                             enabled = enabled && isEnabledTasks.Select(t => t.Result).Any(isEnabled => isEnabled);
                         }
+
+                        if (!enabled)
+                        {
+                            // If the endpoint has multiple feature action constraints we don't want to evaluate any
+                            // more constraints if we have already determined that the endpoint is not enabled.
+                            break;
+                        }
                     }
 
                     if (!enabled)
                     {
+                        // The endpoint is not be enabled so set the endpoint validity to false.
                         candidates.SetValidity(i, false);
                     }
                 }
