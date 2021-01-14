@@ -1,0 +1,13 @@
+﻿@using FeatureManagement.AspNetCore.Example.Models
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+<feature features="new[] { Feature.Example1,Feature.Example2 }" requirement="Any">
+    <p>Inside feature</p>
+</feature>
+<test>test</test>
+<p>Under feature</p>

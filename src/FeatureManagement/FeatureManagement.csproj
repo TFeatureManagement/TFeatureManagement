@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>FeatureManagement</RootNamespace>
+	<LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.FeatureManagement" Version="2.2.0" />
+  </ItemGroup>
+	
+  <ItemGroup>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>FeatureManagement.Tests</_Parameter1>
+	</AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

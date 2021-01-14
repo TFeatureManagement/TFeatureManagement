@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <RootNamespace>FeatureManagement.AspNetCore</RootNamespace>
+  </PropertyGroup>
+	
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+  </ItemGroup>
+	
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.16" />
+  </ItemGroup>
+	
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.2.0" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\FeatureManagement\FeatureManagement.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>FeatureManagement.AspNetCore.Tests</_Parameter1>
+	</AssemblyAttribute>
+  </ItemGroup>
+
+</Project>
