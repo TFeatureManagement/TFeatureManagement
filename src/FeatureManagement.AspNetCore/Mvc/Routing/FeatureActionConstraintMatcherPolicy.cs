@@ -1,6 +1,5 @@
 ﻿using FeatureManagement.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 
 #if !NETCOREAPP2_1
@@ -63,46 +62,39 @@ namespace FeatureManagement.AspNetCore.Mvc.Routing
         {
             var featureManager = httpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
-            // Perf: Avoid allocations
             for (var i = 0; i < candidates.Count; i++)
             {
                 if (candidates.IsValidCandidate(i))
                 {
                     var candidate = candidates[i];
 
-                    //foreach (var metadata in candidate.Endpoint.Metadata.GetOrdered7Metadata<IFeatureActionConstraintMetadata<TFeature>>())
-                    var actionDescriptor = candidate.Endpoint.Metadata.GetMetadata<ActionDescriptor>();
-                    if (actionDescriptor != null)
+                    var enabled = true;
+
+                    foreach (var metadata in candidate.Endpoint.Metadata
+                        .GetOrderedMetadata<IFeatureActionConstraintMetadata<TFeature>>()
+                        .Where(m => m.Features?.Any() == true))
                     {
-                        var enabled = true;
-
-                        foreach (var constraintMetadata in actionDescriptor?.ActionConstraints?
-                            .Where(c => c is IFeatureActionConstraintMetadata<TFeature>)
-                            .Select(c => c as IFeatureActionConstraintMetadata<TFeature>)
-                            .ToList())
+                        var isEnabledTasks = new List<Task<bool>>();
+                        foreach (var feature in metadata.Features)
                         {
-                            var isEnabledTasks = new List<Task<bool>>();
-                            foreach (var feature in constraintMetadata.Features)
-                            {
-                                isEnabledTasks.Add(featureManager.IsEnabledAsync(feature));
-                            }
-
-                            await Task.WhenAll(isEnabledTasks).ConfigureAwait(false);
-
-                            if (constraintMetadata.RequirementType == RequirementType.All)
-                            {
-                                enabled = enabled && isEnabledTasks.Select(t => t.Result).All(isEnabled => isEnabled);
-                            }
-                            else
-                            {
-                                enabled = enabled && isEnabledTasks.Select(t => t.Result).Any(isEnabled => isEnabled);
-                            }
+                            isEnabledTasks.Add(featureManager.IsEnabledAsync(feature));
                         }
 
-                        if (!enabled)
+                        await Task.WhenAll(isEnabledTasks).ConfigureAwait(false);
+
+                        if (metadata.RequirementType == RequirementType.All)
                         {
-                            candidates.SetValidity(i, false);
+                            enabled = enabled && isEnabledTasks.Select(t => t.Result).All(isEnabled => isEnabled);
                         }
+                        else
+                        {
+                            enabled = enabled && isEnabledTasks.Select(t => t.Result).Any(isEnabled => isEnabled);
+                        }
+                    }
+
+                    if (!enabled)
+                    {
+                        candidates.SetValidity(i, false);
                     }
                 }
             }
