@@ -110,7 +110,7 @@ namespace FeatureManagement.AspNetCore.Tests
         }
 
         [TestMethod]
-        public async Task ApplyAsyncInternal_EndpointIsNotValid_DoesNotCallFeatureManagerIsEnabledAsync()
+        public async Task ApplyAsyncInternal_EndpointIsNotValid_DoesNotCallFeatureManagerIsEnabled()
         {
             // Arrange
             var endpoints = new[]
@@ -146,7 +146,7 @@ namespace FeatureManagement.AspNetCore.Tests
         }
 
         [TestMethod]
-        public async Task ApplyAsyncInternal_EndpointMetadataFeaturesIsNull_DoesNotCallFeatureManagerIsEnabledAsync()
+        public async Task ApplyAsyncInternal_EndpointMetadataFeaturesIsNull_DoesNotCallFeatureManagerIsEnabled()
         {
             // Arrange
             var features = default(List<Feature>);
@@ -186,7 +186,7 @@ namespace FeatureManagement.AspNetCore.Tests
         }
 
         [TestMethod]
-        public async Task ApplyAsyncInternal_EndpointMetadataFeaturesIsEmpty_DoesNotCallFeatureManagerIsEnabledAsync()
+        public async Task ApplyAsyncInternal_EndpointMetadataFeaturesIsEmpty_DoesNotCallFeatureManagerIsEnabled()
         {
             // Arrange
             var features = new List<Feature>();
@@ -226,7 +226,7 @@ namespace FeatureManagement.AspNetCore.Tests
         }
 
         [TestMethod]
-        public async Task ApplyAsyncInternal_EndpointMetadataFeaturesIsNotEmpty_CallsFeatureManagerIsEnabledAsyncForEachFeature()
+        public async Task ApplyAsyncInternal_EndpointMetadataFeaturesIsNotEmpty_CallsFeatureManagerIsEnabledForEachFeature()
         {
             // Arrange
             var features = new List<Feature>
@@ -360,6 +360,44 @@ namespace FeatureManagement.AspNetCore.Tests
 
             // Assert
             candidates.IsValidCandidate(0).Should().BeFalse();
+        }
+
+        [TestMethod]
+        public async Task ApplyAsyncInternal_EndpointHasAdditionalMetadata_DoesNotProcessAnyMoreMetadataIfAlreadyDeterminedEndpointIsNotEnabled()
+        {
+            // Arrange
+            var features = new List<Feature>
+            {
+                Feature.Test1
+            };
+            var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
+            endpointMetadata.Setup(x => x.Features).Returns(features);
+            var additionalFeatures = new List<Feature>
+            {
+                Feature.Test2
+            };
+            var additionalMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
+            additionalMetadata.Setup(x => x.Features).Returns(additionalFeatures);
+            var endpoints = new[]
+            {
+                CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object, additionalMetadata.Object })
+            };
+            var candidates = CreateCandidateSet(endpoints);
+
+            _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>())).ReturnsAsync(false);
+
+            // Act
+            await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+
+            // Assert
+            foreach (var feature in features)
+            {
+                _featureManager.Verify(x => x.IsEnabledAsync(feature), Times.Once);
+            }
+            foreach (var feature in additionalFeatures)
+            {
+                _featureManager.Verify(x => x.IsEnabledAsync(feature), Times.Never);
+            }
         }
 
         internal static readonly RequestDelegate _emptyRequestDelegate = (_) => Task.CompletedTask;
