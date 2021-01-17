@@ -1,21 +1,15 @@
-﻿using FeatureManagement.AspNetCore.Mvc.ActionConstraints;
+﻿#if !NETCOREAPP2_1
+
+using FeatureManagement.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-
-#if !NETCOREAPP2_1
-
 using Microsoft.AspNetCore.Routing.Matching;
-
-#endif
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-#if !NETCOREAPP2_1
 
 namespace FeatureManagement.AspNetCore.Mvc.Routing
 {
@@ -40,9 +34,9 @@ namespace FeatureManagement.AspNetCore.Mvc.Routing
             return appliesToEndpoints;
         }
 
-#if NETCOREAPP3_1
+#if NETSTANDARD2_0
 
-        public async Task ApplyAsync(HttpContext httpContext, CandidateSet candidates)
+        public async Task ApplyAsync(HttpContext httpContext, EndpointSelectorContext context, CandidateSet candidates)
         {
             await ApplyAsyncInternal(httpContext, candidates).ConfigureAwait(false);
             return;
@@ -50,7 +44,7 @@ namespace FeatureManagement.AspNetCore.Mvc.Routing
 
 #else
 
-        public async Task ApplyAsync(HttpContext httpContext, EndpointSelectorContext context, CandidateSet candidates)
+        public async Task ApplyAsync(HttpContext httpContext, CandidateSet candidates)
         {
             await ApplyAsyncInternal(httpContext, candidates).ConfigureAwait(false);
             return;
