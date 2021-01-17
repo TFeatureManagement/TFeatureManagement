@@ -1,23 +1,19 @@
+#if !NETCOREAPP2_1
+
 using FeatureManagement.AspNetCore.Mvc.ActionConstraints;
 using FeatureManagement.AspNetCore.Mvc.Routing;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
-
-#if !NETCOREAPP2_1
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.FeatureManagement;
-#endif
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-#if !NETCOREAPP2_1
 
 namespace FeatureManagement.AspNetCore.Tests
 {
