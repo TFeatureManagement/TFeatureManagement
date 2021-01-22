@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F6B7612F-CE7E-4270-8CD3-213B174E20DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.Tests", "test\TFeatureManagement.Tests\TFeatureManagement.Tests.csproj", "{56F899DC-329C-445F-BD7E-567FD36D77B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.Cleanup", "src\TFeatureManagement.Cleanup\TFeatureManagement.Cleanup.csproj", "{01FCC1F2-5156-4ACF-A049-B024619E3544}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{3C5DE1C9-2542-49D4-9BF4-60173D3220B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement", "src\TFeatureManagement\TFeatureManagement.csproj", "{74DF4C48-7BB1-4052-AD9F-E588378CA064}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore", "src\TFeatureManagement.AspNetCore\TFeatureManagement.AspNetCore.csproj", "{713B589C-6DA6-4749-99F3-A01063696529}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.3_1.LegacyRouting", "examples\TFeatureManagement.AspNetCore.Example.3_1.LegacyRouting\TFeatureManagement.AspNetCore.Example.3_1.LegacyRouting.csproj", "{44828470-6A16-48C6-8954-527920CCB4F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.2_1", "examples\TFeatureManagement.AspNetCore.Example.2_1\TFeatureManagement.AspNetCore.Example.2_1.csproj", "{40DEA830-B0B2-48D5-BDE1-4CA930025F70}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.3_1", "examples\TFeatureManagement.AspNetCore.Example.3_1\TFeatureManagement.AspNetCore.Example.3_1.csproj", "{639D8A81-FF4E-4772-B3E1-252C63363EA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Tests", "test\TFeatureManagement.AspNetCore.Tests\TFeatureManagement.AspNetCore.Tests.csproj", "{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{9B54B8F3-384A-43F6-9DAF-6967BB33B41D}"
+	ProjectSection(SolutionItems) = preProject
+		build\TFeatureManagement.snk = build\TFeatureManagement.snk
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56F899DC-329C-445F-BD7E-567FD36D77B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F899DC-329C-445F-BD7E-567FD36D77B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F899DC-329C-445F-BD7E-567FD36D77B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F899DC-329C-445F-BD7E-567FD36D77B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DF4C48-7BB1-4052-AD9F-E588378CA064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DF4C48-7BB1-4052-AD9F-E588378CA064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DF4C48-7BB1-4052-AD9F-E588378CA064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DF4C48-7BB1-4052-AD9F-E588378CA064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{713B589C-6DA6-4749-99F3-A01063696529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{713B589C-6DA6-4749-99F3-A01063696529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{713B589C-6DA6-4749-99F3-A01063696529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{713B589C-6DA6-4749-99F3-A01063696529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44828470-6A16-48C6-8954-527920CCB4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44828470-6A16-48C6-8954-527920CCB4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44828470-6A16-48C6-8954-527920CCB4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44828470-6A16-48C6-8954-527920CCB4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{56F899DC-329C-445F-BD7E-567FD36D77B8} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
+		{44828470-6A16-48C6-8954-527920CCB4F0} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
+		{40DEA830-B0B2-48D5-BDE1-4CA930025F70} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
+		{639D8A81-FF4E-4772-B3E1-252C63363EA1} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
+		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30D672E2-9D09-4FAB-B35D-E3B579BCA232}
+	EndGlobalSection
+EndGlobal
