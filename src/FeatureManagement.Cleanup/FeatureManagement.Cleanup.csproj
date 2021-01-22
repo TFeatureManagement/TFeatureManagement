@@ -11,12 +11,11 @@
 
 	<PropertyGroup>
 		<PackageId>FeatureManagement.Cleanup</PackageId>
-		<PackageVersion>***</PackageVersion>
+		<PackageVersion>0.1.0</PackageVersion>
 		<Title>FeatureManagement</Title>
 		<Description>FeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
 		<Authors>Brent Hogan</Authors>
 		<PackageTags>FeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
-		<PackageIcon>***</PackageIcon>
 		<PackageProjectUrl>https://github.com/brental/FeatureManagement</PackageProjectUrl>
 		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
 		<Copyright>© Brent Hogan. All rights reserved.</Copyright>

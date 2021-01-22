@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.1;netcoreapp3.1;net5.0</TargetFrameworks>
     <RootNamespace>FeatureManagement.AspNetCore</RootNamespace>
+		<LangVersion>8.0</LangVersion>
 	  <SignAssembly>true</SignAssembly>
 	  <DelaySign>false</DelaySign>
 	  <AssemblyOriginatorKeyFile>..\..\build\FeatureManagement.snk</AssemblyOriginatorKeyFile>
@@ -10,12 +11,11 @@
 
 	<PropertyGroup>
 		<PackageId>FeatureManagement.AspNetCore</PackageId>
-		<PackageVersion>***</PackageVersion>
+		<PackageVersion>0.1.0</PackageVersion>
 		<Title>FeatureManagement</Title>
 		<Description>FeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
 		<Authors>Brent Hogan</Authors>
 		<PackageTags>FeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
-		<PackageIcon>***</PackageIcon>
 		<PackageProjectUrl>https://github.com/brental/FeatureManagement</PackageProjectUrl>
 		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
 		<Copyright>© Brent Hogan. All rights reserved.</Copyright>
