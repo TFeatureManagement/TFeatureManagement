@@ -4,7 +4,23 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>FeatureManagement</RootNamespace>
     <LangVersion>8.0</LangVersion>
+	  <SignAssembly>true</SignAssembly>
+	  <DelaySign>false</DelaySign>
+	  <AssemblyOriginatorKeyFile>..\..\build\FeatureManagement.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>FeatureManagement.Cleanup</PackageId>
+		<PackageVersion>***</PackageVersion>
+		<Title>FeatureManagement</Title>
+		<Description>FeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
+		<Authors>Brent Hogan</Authors>
+		<PackageTags>FeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
+		<PackageIcon>***</PackageIcon>
+		<PackageProjectUrl>https://github.com/brental/FeatureManagement</PackageProjectUrl>
+		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+		<Copyright>© Brent Hogan. All rights reserved.</Copyright>
+	</PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FeatureManagement\FeatureManagement.csproj" />

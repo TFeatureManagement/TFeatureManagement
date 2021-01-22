@@ -23,6 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureManagement.AspNetCor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureManagement.AspNetCore.Tests", "test\FeatureManagement.AspNetCore.Tests\FeatureManagement.AspNetCore.Tests.csproj", "{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{9B54B8F3-384A-43F6-9DAF-6967BB33B41D}"
+	ProjectSection(SolutionItems) = preProject
+		build\FeatureManagement.snk = build\FeatureManagement.snk
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
