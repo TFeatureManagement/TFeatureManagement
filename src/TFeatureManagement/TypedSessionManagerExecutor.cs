@@ -11,7 +11,7 @@ namespace TFeatureManagement
         private readonly TSessionManager _sessionManager;
         private readonly IEnumParser<TFeature> _enumParser;
 
-        internal TypedSessionManagerExecutor(TSessionManager sessionManager, IEnumParser<TFeature> enumParser)
+        public TypedSessionManagerExecutor(TSessionManager sessionManager, IEnumParser<TFeature> enumParser)
         {
             _sessionManager = sessionManager;
             _enumParser = enumParser;

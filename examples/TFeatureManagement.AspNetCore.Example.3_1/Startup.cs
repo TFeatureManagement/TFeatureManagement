@@ -22,7 +22,8 @@ namespace TFeatureManagement.AspNetCore.Example
         {
             services.AddControllersWithViews();
 
-            services.AddFeatureManagement<Feature>();
+            var featureManagementBuilder = services.AddFeatureManagement<Feature>();
+            featureManagementBuilder.AddSessionManager<SessionManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

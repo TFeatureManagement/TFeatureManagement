@@ -26,6 +26,7 @@ namespace TFeatureManagement.DependencyInjection
         public IFeatureManagementBuilder<TFeature> AddSessionManager<T>()
             where T : ISessionManager<TFeature>
         {
+            _baseFeatureManagementBuilder.Services.AddSingleton(typeof(T));
             _baseFeatureManagementBuilder.AddSessionManager<TypedSessionManagerExecutor<TFeature, T>>();
             return this;
         }
