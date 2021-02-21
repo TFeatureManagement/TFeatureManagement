@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
 using System;
 
@@ -19,8 +20,7 @@ namespace TFeatureManagement.DependencyInjection
             where TFeature : Enum
         {
             var featureManagementBuilder = new FeatureManagementBuilder<TFeature>(services.AddFeatureManagement());
-            featureManagementBuilder.Services.AddSingleton<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
-            featureManagementBuilder.Services.AddScoped<IFeatureManagerSnapshot<TFeature>, FeatureManagerSnapshot<TFeature>>();
+            featureManagementBuilder.AddCoreServices();
 
             return featureManagementBuilder;
         }
@@ -40,8 +40,18 @@ namespace TFeatureManagement.DependencyInjection
             where TFeature : Enum
         {
             var featureManagementBuilder = new FeatureManagementBuilder<TFeature>(services.AddFeatureManagement(configuration));
+            featureManagementBuilder.AddCoreServices();
+
+            return featureManagementBuilder;
+        }
+
+        private static IFeatureManagementBuilder<TFeature> AddCoreServices<TFeature>(this IFeatureManagementBuilder<TFeature> featureManagementBuilder)
+            where TFeature : Enum
+        {
             featureManagementBuilder.Services.AddSingleton<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
             featureManagementBuilder.Services.AddScoped<IFeatureManagerSnapshot<TFeature>, FeatureManagerSnapshot<TFeature>>();
+
+            featureManagementBuilder.Services.TryAddSingleton<IEnumParser<TFeature>, DefaultEnumParser<TFeature>>();
 
             return featureManagementBuilder;
         }

@@ -16,16 +16,18 @@ namespace TFeatureManagement.DependencyInjection
 
         public IServiceCollection Services => _baseFeatureManagementBuilder.Services;
 
-        public IFeatureManagementBuilder AddFeatureFilter<T>()
+        public IFeatureManagementBuilder<TFeature> AddFeatureFilter<T>()
             where T : IFeatureFilterMetadata
         {
-            return _baseFeatureManagementBuilder.AddFeatureFilter<T>();
+            _baseFeatureManagementBuilder.AddFeatureFilter<T>();
+            return this;
         }
 
-        public IFeatureManagementBuilder AddSessionManager<T>()
-            where T : ISessionManager
+        public IFeatureManagementBuilder<TFeature> AddSessionManager<T>()
+            where T : ISessionManager<TFeature>
         {
-            return _baseFeatureManagementBuilder.AddSessionManager<T>();
+            _baseFeatureManagementBuilder.AddSessionManager<TypedSessionManagerExecutor<TFeature, T>>();
+            return this;
         }
     }
 }
