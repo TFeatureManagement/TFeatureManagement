@@ -16,7 +16,7 @@
 		<Description>TFeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
 		<Authors>Brent Hogan</Authors>
 		<Company>TFeatureManagement</Company>
-		<PackageTags>TFeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
+		<PackageTags>TFeatureManagement FeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
 		<PackageProjectUrl>https://github.com/TFeatureManagement/TFeatureManagement</PackageProjectUrl>
 		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
 		<Copyright>© Brent Hogan. All rights reserved.</Copyright>
