@@ -1,0 +1,11 @@
+<Project>
+
+	<PropertyGroup>
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+		<GenerateAssemblyInfo Condition="'$(GenerateAssemblyInfo)' == ''">true</GenerateAssemblyInfo>
+		<AssemblyTitle Condition="'$(AssemblyTitle)' == ''">$(MSBuildProjectName)</AssemblyTitle>
+		<Product Condition="'$(Product)' == ''">TFeatureManagement</Product>
+		<Company Condition="'$(Company)' == ''">TFeatureManagement</Company>
+	</PropertyGroup>
+
+</Project>

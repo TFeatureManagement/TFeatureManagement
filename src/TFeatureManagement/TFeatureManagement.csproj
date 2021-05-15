@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="$(BuildDirectory)AssemblyInfo.props" />
+  <Import Project="$(BuildDirectory)SignAssembly.props" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>TFeatureManagement</RootNamespace>
 		<LangVersion>8.0</LangVersion>
-		<SignAssembly>true</SignAssembly>
-		<DelaySign>false</DelaySign>
-		<AssemblyOriginatorKeyFile>..\..\build\TFeatureManagement.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
 	<PropertyGroup>
@@ -15,10 +15,12 @@
 		<Title>TFeatureManagement</Title>
 		<Description>TFeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
 		<Authors>Brent Hogan</Authors>
+		<Company>TFeatureManagement</Company>
 		<PackageTags>TFeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
-		<PackageProjectUrl>https://github.com/brental/TFeatureManagement</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/TFeatureManagement/TFeatureManagement</PackageProjectUrl>
 		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
 		<Copyright>© Brent Hogan. All rights reserved.</Copyright>
+		<Version>0.1.0</Version>
 	</PropertyGroup>
 
   <ItemGroup>

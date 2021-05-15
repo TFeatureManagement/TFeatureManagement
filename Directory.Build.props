@@ -1,0 +1,9 @@
+<Project>
+
+	<PropertyGroup>
+		<RootDirectory>$(MSBuildThisFileDirectory)</RootDirectory>
+		<BuildDirectory>$(RootDirectory)build\</BuildDirectory>
+		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+	</PropertyGroup>
+	
+</Project>

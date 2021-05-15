@@ -25,7 +25,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{9B54B8F3-384A-43F6-9DAF-6967BB33B41D}"
 	ProjectSection(SolutionItems) = preProject
+		build\AssemblyInfo.props = build\AssemblyInfo.props
+		build\SignAssembly.props = build\SignAssembly.props
 		build\TFeatureManagement.snk = build\TFeatureManagement.snk
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{64E958C1-3BA9-4A3A-A7A6-E532B27B89A1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Global
