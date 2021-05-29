@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(BuildDirectory)AssemblyInfo.props" />
+  <Import Project="$(BuildDirectory)PackageInfo.props" />
+  <Import Project="$(BuildDirectory)SignAssembly.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>TFeatureManagement</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>TFeatureManagement.Cleanup</PackageId>
+		<Description>TFeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
+    <Product>TFeatureManagement.Cleanup</Product>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TFeatureManagement\TFeatureManagement.csproj" />
+  </ItemGroup>
+
+</Project>

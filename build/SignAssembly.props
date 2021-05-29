@@ -1,0 +1,11 @@
+<Project>
+
+	<PropertyGroup>
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+		<SignAssembly>true</SignAssembly>
+		<DelaySign>false</DelaySign>
+		<PublicSign>false</PublicSign>
+		<AssemblyOriginatorKeyFile>$(BuildDirectory)\TFeatureManagement.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+</Project>

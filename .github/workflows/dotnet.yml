@@ -1,0 +1,56 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET 2.1.x
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.1.x
+
+    - name: Setup .NET 3.1.x
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Setup .NET 5.0.x
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Publish TFeatureManagement
+      if: ${{ github.event_name == 'push' }}
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+        PROJECT_FILE_PATH: src/TFeatureManagement/TFeatureManagement.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+
+    - name: Publish TFeatureManagement.AspNetCore
+      if: ${{ github.event_name == 'push' }}
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+        PROJECT_FILE_PATH: src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+        # The commit will be tagged when publishing the TFeatureManagement
+        # package above so there is no need to tag it again here.
+        TAG_COMMIT: false
