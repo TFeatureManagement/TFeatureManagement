@@ -9,7 +9,7 @@
     <RootNamespace>TFeatureManagement</RootNamespace>
 		<LangVersion>8.0</LangVersion>
   </PropertyGroup>
-  
+   
 	<PropertyGroup>
     <PackageId>TFeatureManagement</PackageId>
 		<Description>TFeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
