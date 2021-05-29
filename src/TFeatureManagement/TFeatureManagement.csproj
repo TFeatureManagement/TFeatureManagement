@@ -9,18 +9,11 @@
 		<LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
+  <Import Project="$(BuildDirectory)PackageInfo.props" />
 	<PropertyGroup>
-		<PackageId>TFeatureManagement</PackageId>
-		<PackageVersion>0.1.0</PackageVersion>
-		<Title>TFeatureManagement</Title>
+    <PackageId>TFeatureManagement</PackageId>
 		<Description>TFeatureManagement provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
-		<Authors>Brent Hogan</Authors>
-		<Company>TFeatureManagement</Company>
-		<PackageTags>TFeatureManagement FeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
-		<PackageProjectUrl>https://github.com/TFeatureManagement/TFeatureManagement</PackageProjectUrl>
-		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
-		<Copyright>© Brent Hogan. All rights reserved.</Copyright>
-		<Version>0.1.0</Version>
+		<Product>TFeatureManagement</Product>
 	</PropertyGroup>
 
   <ItemGroup>
