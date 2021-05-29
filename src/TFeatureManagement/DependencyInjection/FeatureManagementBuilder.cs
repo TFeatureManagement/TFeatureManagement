@@ -30,5 +30,11 @@ namespace TFeatureManagement.DependencyInjection
             _baseFeatureManagementBuilder.AddSessionManager<TypedSessionManagerExecutor<TFeature, T>>();
             return this;
         }
+
+        public IFeatureManagementBuilder<TFeature> AddFeatureCleanup()
+        {
+            _baseFeatureManagementBuilder.Services.AddSingleton<IFeatureCleanupManager<TFeature>, FeatureCleanupManager<TFeature>>();
+            return this;
+        }
     }
 }
