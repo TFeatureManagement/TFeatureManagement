@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="$(BuildDirectory)AssemblyInfo.props" />
+  <Import Project="$(BuildDirectory)PackageInfo.props" />
   <Import Project="$(BuildDirectory)SignAssembly.props" />
 
   <PropertyGroup>
@@ -9,7 +10,6 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
-  <Import Project="$(BuildDirectory)PackageInfo.props" />
 	<PropertyGroup>
     <PackageId>TFeatureManagement.AspNetCore</PackageId>
 		<Description>TFeatureManagement.AspNetCore provides extensions to Microsoft.FeatureManagement.AspNetCore, mainly to better support the use of an enum to specify features.</Description>
