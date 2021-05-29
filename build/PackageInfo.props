@@ -2,7 +2,6 @@
 <Project>
 
   <PropertyGroup>
-    <PackageVersion>0.1.0</PackageVersion>
     <Authors>Brent Hogan</Authors>
     <Company>TFeatureManagement</Company>
     <PackageTags>TFeatureManagement FeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
@@ -10,7 +9,6 @@
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Copyright>© Brent Hogan. All rights reserved.</Copyright>
-    <Version>0.1.0</Version>
   </PropertyGroup>
 
 </Project>

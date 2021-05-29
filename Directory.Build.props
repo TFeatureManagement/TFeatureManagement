@@ -4,6 +4,8 @@
     <RootDirectory>$(MSBuildThisFileDirectory)</RootDirectory>
     <BuildDirectory>$(RootDirectory)build\</BuildDirectory>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
 </Project>
