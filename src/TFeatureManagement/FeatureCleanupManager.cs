@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TFeatureManagement.DataAnnotations;
 
 namespace TFeatureManagement
 {
     public class FeatureCleanupManager<TFeature> : IFeatureCleanupManager<TFeature>
-        where TFeature : struct, Enum
+        where TFeature : Enum
     {
         private readonly IFeatureManager<TFeature> _featureManager;
 
@@ -24,7 +23,7 @@ namespace TFeatureManagement
                 var featureMemberInfo = typeof(TFeature).GetMember(feature.ToString()).FirstOrDefault();
                 if (featureMemberInfo != null)
                 {
-                    var featureCleanupDateAttribute = featureMemberInfo.GetCustomAttributes(typeof(FeatureCleanupDateAttribute), false).Cast<FeatureCleanupDateAttribute>().FirstOrDefault();
+                    var featureCleanupDateAttribute = featureMemberInfo.GetCustomAttributes(typeof(IFeatureCleanupDate), false).Cast<IFeatureCleanupDate>().FirstOrDefault();
                     featureCleanupDates.Add(feature, featureCleanupDateAttribute);
                 }
             }

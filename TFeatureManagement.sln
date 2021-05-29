@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F6B7612F-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.Tests", "test\TFeatureManagement.Tests\TFeatureManagement.Tests.csproj", "{56F899DC-329C-445F-BD7E-567FD36D77B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.Cleanup", "src\TFeatureManagement.Cleanup\TFeatureManagement.Cleanup.csproj", "{01FCC1F2-5156-4ACF-A049-B024619E3544}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{3C5DE1C9-2542-49D4-9BF4-60173D3220B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement", "src\TFeatureManagement\TFeatureManagement.csproj", "{74DF4C48-7BB1-4052-AD9F-E588378CA064}"
@@ -47,10 +45,6 @@ Global
 		{56F899DC-329C-445F-BD7E-567FD36D77B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56F899DC-329C-445F-BD7E-567FD36D77B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56F899DC-329C-445F-BD7E-567FD36D77B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01FCC1F2-5156-4ACF-A049-B024619E3544}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74DF4C48-7BB1-4052-AD9F-E588378CA064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74DF4C48-7BB1-4052-AD9F-E588378CA064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74DF4C48-7BB1-4052-AD9F-E588378CA064}.Release|Any CPU.ActiveCfg = Release|Any CPU
