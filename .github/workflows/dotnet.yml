@@ -40,16 +40,18 @@ jobs:
 
     - name: Publish TFeatureManagement
       if: ${{ github.event_name == 'push' }}
-      uses: brandedoutcast/publish-nuget@v2.5.2
+      uses: rohith/publish-nuget@v2
       with:
         PROJECT_FILE_PATH: src/TFeatureManagement/TFeatureManagement.csproj
+        VERSION_FILE_PATH: Directory.Build.props
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
     - name: Publish TFeatureManagement.AspNetCore
       if: ${{ github.event_name == 'push' }}
-      uses: brandedoutcast/publish-nuget@v2.5.2
+      uses: rohith/publish-nuget@v2
       with:
         PROJECT_FILE_PATH: src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj
+        VERSION_FILE_PATH: Directory.Build.props
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
         # The commit will be tagged when publishing the TFeatureManagement
         # package above so there is no need to tag it again here.
