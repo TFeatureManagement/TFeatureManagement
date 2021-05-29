@@ -5,7 +5,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TFeatureManagement.Enums.Tests
+namespace TFeatureManagement.Tests
 {
     [TestClass]
     public class FeatureManagerTests

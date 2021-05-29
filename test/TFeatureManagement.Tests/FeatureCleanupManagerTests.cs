@@ -1,15 +1,13 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TFeatureManagement.Enums.Tests;
 
 namespace TFeatureManagement.Tests
 {
     [TestClass]
-    public class FeatureManagerTests
+    public class FeatureCleanupManagerTests
     {
         private FeatureCleanupManager<Feature> _underTest;
 
@@ -24,18 +22,18 @@ namespace TFeatureManagement.Tests
         }
 
         [TestMethod]
-        public void GetFeatureCleanupDates_EnumHasValuesWithFeatureCleanupAttribute_ReturnsCleanupDateForValues()
+        public void GetFeatureCleanupDates_EnumHasValuesWithFeatureCleanupDate_ReturnsNonNullCleanupDateForValues()
         {
             // Arrange and Act
             var featureCleanupDates = _underTest.GetFeatureCleanupDates();
 
             // Assert
             featureCleanupDates.Should().ContainKey(Feature.Test1)
-                .WhichValue.CleanupDate.Should().BeSameDateAs(new DateTime(2000, 1, 1));
+                .WhichValue.CleanupDate.Should().NotBeNull();
         }
 
         [TestMethod]
-        public void GetFeatureCleanupDates_EnumHasValuesWithoutFeatureCleanupAttribute_ReturnsNullCleanupDateForValues()
+        public void GetFeatureCleanupDates_EnumHasValuesWithoutFeatureCleanupDate_ReturnsNullCleanupDateForValues()
         {
             // Arrange and Act
             var featureCleanupDates = _underTest.GetFeatureCleanupDates();

@@ -1,6 +1,6 @@
-﻿using TFeatureManagement.DataAnnotations;
+﻿using TFeatureManagement.Tests.DataAnnotations;
 
-namespace TFeatureManagement.Enums.Tests
+namespace TFeatureManagement.Tests
 {
     public enum Feature
     {
