@@ -60,7 +60,7 @@ public class Startup
 }
 ```
 
-**Note:** TFeatureManagement supports all built-in Microsoft.FeatureManagement filters.
+**Note:** TFeatureManagement supports all built-in Microsoft.FeatureManagement feature filters.
 
 ## Consumption
 
