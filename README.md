@@ -1,6 +1,8 @@
 # TFeatureManagement
 
-TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore libraries to add better support for using enums to define and reference feature flags, which is Microsoft's recommended approach for defining and referencing feature flags. As TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore libraries, it is recommended that you familiarise yourself with those libraries in addition to reading this readme. The project site for those libraries can be found at https://github.com/microsoft/FeatureManagement-Dotnet.
+TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore libraries to add better support for using enums to define and reference feature flags, which is Microsoft's recommended approach for defining and referencing feature flags. It does so by implementing generic classes, methods and interfaces (hence the name TFeatureManagement) that wrap the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore classes, methods and interfaces. These generic classes, methods and interfaces ensure the use of an enum to define and consume feature flags.
+
+As TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore libraries, it is recommended that you familiarise yourself with those libraries in addition to reading this readme as a lot of the functionality in those libraries applies to TFeatureManagement as well. The project site for those libraries can be found at https://github.com/microsoft/FeatureManagement-Dotnet.
 
 ## Registration
 
@@ -57,6 +59,8 @@ public class Startup
   }
 }
 ```
+
+**Note:** TFeatureManagement supports all built-in Microsoft.FeatureManagement filters.
 
 ## Consumption
 
