@@ -29,9 +29,19 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
         [FeatureActionConstraint(RequirementType.Any, Feature.Example1, Feature.Example2)]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example3, Feature.Example4)]
-        public IActionResult Privacy()
+        public IActionResult FeatureConstrained()
+        {
+            return View();
+        }
+
+        public IActionResult FeatureConstrainedFallback()
         {
             return View();
         }

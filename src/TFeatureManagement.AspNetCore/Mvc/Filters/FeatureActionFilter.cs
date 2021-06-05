@@ -39,7 +39,9 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
         public FeatureActionFilter(IEnumerable<TFeature> features, RequirementType requirementType)
         {
             if (features?.Any() != true)
+            {
                 throw new ArgumentNullException(nameof(features));
+            }
 
             Features = features;
             RequirementType = requirementType;
