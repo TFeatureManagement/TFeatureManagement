@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
 
 namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
 {
@@ -39,19 +38,30 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
 
             var factory = context.HttpContext.RequestServices.GetRequiredService<IFeatureActionConstraintFactory<TFeature>>();
 
-            foreach (var item in context.Results.Where(i => i.Constraint == null))
+            foreach (var item in context.Results)
             {
-                if (item.Metadata is IFeatureActionConstraintMetadata<TFeature> constraintMetadata)
-                {
-                    item.Constraint = factory.CreateInstance(constraintMetadata);
-                    item.IsReusable = true;
-                }
+                ProvideConstraint(item, factory);
             }
         }
 
         /// <inheritdoc />
         public void OnProvidersExecuted(ActionConstraintProviderContext context)
         {
+        }
+
+        private void ProvideConstraint(ActionConstraintItem item, IFeatureActionConstraintFactory<TFeature> factory)
+        {
+            // Don't overwrite anything that was done by a previous provider.
+            if (item.Constraint != null)
+            {
+                return;
+            }
+
+            if (item.Metadata is IFeatureActionConstraintMetadata<TFeature> constraintMetadata)
+            {
+                item.Constraint = factory.CreateInstance(constraintMetadata);
+                item.IsReusable = true;
+            }
         }
     }
 }

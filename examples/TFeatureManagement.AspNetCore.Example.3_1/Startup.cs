@@ -50,6 +50,16 @@ namespace TFeatureManagement.AspNetCore.Example
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "featureconstraint",
+                    pattern: "Home/FeatureConstrained/{id?}",
+                    defaults: new { controller = "Home", action = "FeatureConstrained" });
+
+                endpoints.MapControllerRoute(
+                    name: "featureconstraintfallback",
+                    pattern: "Home/FeatureConstrained/{id?}",
+                    defaults: new { controller = "Home", action = "FeatureConstrainedFallback" });
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
