@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace TFeatureManagement.AspNetCore.Mvc.Filters
 {
     /// <summary>
-    /// An action filter that can be used to require all or any of a set of features to be enabled for an MVC action to
-    /// be enabled. If the required features are not enabled the registered <see
+    /// An action filter that can be used to require all or any of a set of features to be enabled for an action to be
+    /// enabled. If the required features are not enabled the registered <see
     /// cref="T:Microsoft.FeatureManagement.Mvc.IDisabledFeaturesHandler" /> will be invoked.
     /// </summary>
     public class FeatureActionFilter<TFeature> : IAsyncActionFilter, IOrderedFilter
@@ -19,7 +19,8 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
         private readonly FeatureGateAttribute _featureGateAttribute;
 
         /// <summary>
-        /// Creates an action filter that will disable actions unless all the provided feature(s) are enabled.
+        /// Creates an action filter that requires all the provided feature(s) to be enabled for the actions to be
+        /// enabled.
         /// </summary>
         /// <param name="features">The features that should be enabled.</param>
         public FeatureActionFilter(IEnumerable<TFeature> features)
@@ -28,8 +29,8 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
         }
 
         /// <summary>
-        /// Creates an action filter that will disable actions unless the provided feature(s) are enabled. The filter
-        /// can be configured to require all or any of the provided feature(s) to be enabled.
+        /// Creates an action filter that requires the provided feature(s) to be enabled for the actions to be enabled.
+        /// The filter can be configured to require all or any of the provided feature(s) to be enabled.
         /// </summary>
         /// <param name="features">The features that should be enabled.</param>
         /// <param name="requirementType">
