@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.ActionConstraints;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 
-namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
+namespace TFeatureManagement.AspNetCore.Mvc.Filters
 {
     /// <summary>
-    /// An interface that identifies a type as metadata for a <see cref="FeatureActionConstraint{TFeature}" />.
+    /// An interface that identifies a type as metadata for a <see cref="FeatureActionFilter{TFeature}" />.
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
-    public interface IFeatureActionConstraintMetadata<TFeature> : IActionConstraintMetadata
+    public interface IFeatureActionFilterMetadata<TFeature> : IFilterMetadata
         where TFeature : Enum
     {
         /// <summary>
@@ -21,8 +21,5 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
         /// Gets whether any or all features in <see cref="Features" /> should be enabled.
         /// </summary>
         RequirementType RequirementType { get; }
-
-        /// <inheritdoc cref="IActionConstraint.Order" />
-        int Order { get; }
     }
 }

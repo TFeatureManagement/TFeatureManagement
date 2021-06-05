@@ -4,6 +4,7 @@ using Microsoft.FeatureManagement;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using TFeatureManagement.AspNetCore.Example.ActionConstraints;
+using TFeatureManagement.AspNetCore.Example.Filters;
 using TFeatureManagement.AspNetCore.Example.Models;
 
 namespace TFeatureManagement.AspNetCore.Example.Controllers
@@ -31,6 +32,13 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
         [FeatureActionConstraint(RequirementType.Any, Feature.Example1, Feature.Example2)]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example3, Feature.Example4)]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [FeatureActionFilter(RequirementType.Any, Feature.Example1, Feature.Example2)]
+        [FeatureActionFilter(RequirementType.Any, Feature.Example3, Feature.Example4)]
+        public IActionResult FeatureFiltered()
         {
             return View();
         }
