@@ -106,6 +106,30 @@ In MVC views `<feature>` tags can be used to conditionally render content based 
 </feature>
 ```
 
+The `<feature>` tag requires you to create a `FeatureTagHelper` that inherits from `FeatureTagHelper<TFeature>` to work (as ASP.NET Core does not support using a generic tag helper directly - see https://github.com/aspnet/Mvc/issues/6513).
+
+``` C#
+using TFeatureManagement;
+using TFeatureManagement.AspNetCore.TagHelpers;
+
+namespace TFeatureManagement.AspNetCore.Example.TagHelpers
+{
+    public class FeatureTagHelper : FeatureTagHelper<MyFeatureFlags>
+    {
+        public FeatureTagHelper(IFeatureManagerSnapshot<MyFeatureFlags> featureManager)
+            : base(featureManager)
+        {
+        }
+    }
+}
+```
+
+The tag helper should then be added to the ViewImports.cshtml file.
+
+``` HTML+Razor
+@addTagHelper *, TFeatureManagement.AspNetCore.Example
+```
+
 The `<feature>` tag can also be used to render content based on whether a set of features are enabled or not.
 
 ``` HTML+Razor
@@ -133,30 +157,6 @@ The `<feature>` tag can also be configured to negate the evaluation of the featu
 <feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement="Any" negate="true">
   <p>This can only be seen if neither 'FeatureX' or 'FeatureY' are enabled.</p>
 </feature>
-```
-
-The `<feature>` tag requires you to create a `FeatureTagHelper` that inherits from `FeatureTagHelper<TFeature>` to work (as ASP.NET Core does not support using a generic tag helper directly - see https://github.com/aspnet/Mvc/issues/6513).
-
-``` C#
-using TFeatureManagement;
-using TFeatureManagement.AspNetCore.TagHelpers;
-
-namespace TFeatureManagement.AspNetCore.Example.TagHelpers
-{
-    public class FeatureTagHelper : FeatureTagHelper<MyFeatureFlags>
-    {
-        public FeatureTagHelper(IFeatureManagerSnapshot<MyFeatureFlags> featureManager)
-            : base(featureManager)
-        {
-        }
-    }
-}
-```
-
-The tag helper should then be added to the ViewImports.cshtml file.
-
-``` HTML+Razor
-@addTagHelper *, TFeatureManagement.AspNetCore.Example
 ```
 
 ### MVC Filters
