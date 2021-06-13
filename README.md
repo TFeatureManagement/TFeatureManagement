@@ -106,9 +106,57 @@ In MVC views `<feature>` tags can be used to conditionally render content based 
 </feature>
 ```
 
-The `<feature>` tag requires a tag helper to work. This can be done by adding the feature management tag helper to the _ViewImports.cshtml_ file.
+The `<feature>` tag requires you to create a `FeatureTagHelper` that inherits from `FeatureTagHelper<TFeature>` to work (as ASP.NET Core does not support using a generic tag helper directly - see https://github.com/aspnet/Mvc/issues/6513).
+
+``` C#
+using TFeatureManagement;
+using TFeatureManagement.AspNetCore.TagHelpers;
+
+namespace TFeatureManagement.AspNetCore.Example.TagHelpers
+{
+    public class FeatureTagHelper : FeatureTagHelper<MyFeatureFlags>
+    {
+        public FeatureTagHelper(IFeatureManagerSnapshot<MyFeatureFlags> featureManager)
+            : base(featureManager)
+        {
+        }
+    }
+}
+```
+
+The tag helper should then be added to the ViewImports.cshtml file.
+
 ``` HTML+Razor
-@addTagHelper *, TFeatureManagement.AspNetCore
+@addTagHelper *, TFeatureManagement.AspNetCore.Example
+```
+
+The `<feature>` tag can also be used to render content based on whether a set of features are enabled or not.
+
+``` HTML+Razor
+<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }">
+  <p>This can only be seen if 'FeatureX' and 'FeatureY' are enabled.</p>
+</feature>
+```
+
+The above example requires all the features to be enabled to render the content but the `<feature>` tag can also be configured to only require any of the features to be enabled.
+
+``` HTML+Razor
+<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement="Any">
+  <p>This can be seen if either 'FeatureX' or 'FeatureY' are enabled.</p>
+</feature>
+```
+
+The `<feature>` tag can also be configured to negate the evaluation of the features. If configured to require all of the features to be enabled then the content will be rendered if not all of the features are enabled. If configured to require any of the features to be enabled then the content will be rendered if none of the features are enabled.
+
+``` HTML+Razor
+<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement="All" negate="true">
+  <p>This can be seen if not both 'FeatureX' and 'FeatureY' are enabled.</p>
+</feature>
+```
+``` HTML+Razor
+<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement="Any" negate="true">
+  <p>This can only be seen if neither 'FeatureX' or 'FeatureY' are enabled.</p>
+</feature>
 ```
 
 ### MVC Filters
