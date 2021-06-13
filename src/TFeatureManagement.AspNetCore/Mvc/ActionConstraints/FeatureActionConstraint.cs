@@ -12,6 +12,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
     /// An action constraint that can be used to require all or any of a set of features to be enabled for an action to
     /// be valid to be selected for the given request.
     /// </summary>
+    /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public class FeatureActionConstraint<TFeature> : IActionConstraint
         where TFeature : Enum
     {
