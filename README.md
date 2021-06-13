@@ -135,7 +135,7 @@ The `<feature>` tag can also be configured to negate the evaluation of the featu
 </feature>
 ```
 
-The `<feature>` tag requires you to create a `FeatureTagHelper` that inherits from `FeatureTagHelper<TFeature>` to work.
+The `<feature>` tag requires you to create a `FeatureTagHelper` that inherits from `FeatureTagHelper<TFeature>` to work (as ASP.NET Core does not support using a generic tag helper directly - see https://github.com/aspnet/Mvc/issues/6513).
 
 ``` C#
 using TFeatureManagement;
@@ -143,9 +143,9 @@ using TFeatureManagement.AspNetCore.TagHelpers;
 
 namespace TFeatureManagement.AspNetCore.Example.TagHelpers
 {
-    public class FeatureTagHelper : FeatureTagHelper<Feature>
+    public class FeatureTagHelper : FeatureTagHelper<MyFeatureFlags>
     {
-        public FeatureTagHelper(IFeatureManagerSnapshot<Feature> featureManager)
+        public FeatureTagHelper(IFeatureManagerSnapshot<MyFeatureFlags> featureManager)
             : base(featureManager)
         {
         }
@@ -153,7 +153,7 @@ namespace TFeatureManagement.AspNetCore.Example.TagHelpers
 }
 ```
 
-The tag helper should be added to the ViewImports.cshtml file.
+The tag helper should then be added to the ViewImports.cshtml file.
 
 ``` HTML+Razor
 @addTagHelper *, TFeatureManagement.AspNetCore.Example
