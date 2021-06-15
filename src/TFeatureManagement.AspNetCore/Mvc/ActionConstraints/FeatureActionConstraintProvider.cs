@@ -26,7 +26,10 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
             if (_mvcOptions.EnableEndpointRouting)
             {
                 // If using endpoint routing then an endpoint selector policy is used to check feature action
-                // constraints and this provider does not need to execute.
+                // constraints and this provider does not need to execute. Using the constraint provided by this
+                // provider would work with endpoint routing but the endpoint selector policy allows us to make proper
+                // asynchronous calls to the IFeatureManager.IsEnabledAsync rather than having to make synchronous calls
+                // to it as in the FeatureActionConstraint (because the IActionConstraint.Accept method is synchronous).
                 return;
             }
 #endif
