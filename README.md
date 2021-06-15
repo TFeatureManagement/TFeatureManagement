@@ -96,6 +96,82 @@ public class HomeController : Controller
 }
 ```
 
+### Enabling / Disabling Controllers and Actions
+
+MVC controllers and actions can require all or any of a set of features to be enabled for the controller or action to be enabled.
+
+``` C#
+[FeatureActionConstraint(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+public class HomeController : Controller
+{
+    …
+}
+```
+
+This requires you to create a `FeatureActionConstraintAttribute` that implements `IFeatureActionFilterMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
+
+``` C#
+using Microsoft.FeatureManagement;
+using System;
+using System.Collections.Generic;
+using TFeatureManagement.AspNetCore.Example.Models;
+using TFeatureManagement.AspNetCore.Mvc.Filters;
+
+namespace namespace TFeatureManagement.AspNetCore.Example.Mvc.Filters
+{
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    public class FeatureActionFilterAttribute : Attribute, IFeatureActionFilterMetadata<MyFeatureFlags>
+    {
+        public FeatureActionFilterAttribute(params MyFeatureFlags[] features)
+            : this(RequirementType.All, features)
+        {
+        }
+
+        public FeatureActionFilterAttribute(RequirementType requirementType, params MyFeatureFlags[] features)
+        {
+            Features = features;
+            RequirementType = requirementType;
+        }
+
+        public IEnumerable<MyFeatureFlags> Features { get; }
+
+        public RequirementType RequirementType { get; }
+
+        public int Order { get; set; }
+    }
+}
+```
+
+MVC controllers and actions can also require a set of features to be enabled for the controller or action to be enabled.
+
+``` C#
+[FeatureActionConstraint(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+public class HomeController : Controller
+{
+    …
+}
+```
+
+The above example requires all the features to be enabled for the controller or action to be enabled but the controller or action can also only require any of the features to be enabled.
+
+``` C#
+[FeatureActionConstraint(RequirementType.Any, MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+public class HomeController : Controller
+{
+    …
+}
+```
+
+When a controller or action is disabled because the required feature(s) are not enabled, a registered `IDisabledActionHandler<TFeature>` will be invoked. By default, a minimalistic handler is used which returns HTTP 404. This can be overridden using the `UseDisabledActionHandler<TFeature>` extensions for `IFeatureManagementBuilder<TFeature>` when adding feature management.
+
+``` C#
+public interface IDisabledActionHandler<TFeature>
+    where TFeature : Enum
+{
+    Task HandleDisabledAction(IEnumerable<TFeature> features, ActionExecutingContext context);
+}
+```
+
 ### View
 
 In MVC views `<feature>` tags can be used to conditionally render content based on whether a feature is enabled or not.

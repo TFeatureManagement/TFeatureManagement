@@ -13,6 +13,7 @@ namespace TFeatureManagement.AspNetCore.Mvc
     public class NotFoundDisabledActionHandler<TFeature> : IDisabledActionHandler<TFeature>
         where TFeature : Enum
     {
+        /// <inheritdoc />
         public Task HandleDisabledAction(IEnumerable<TFeature> features, ActionExecutingContext context)
         {
             context.Result = new StatusCodeResult(StatusCodes.Status404NotFound);
