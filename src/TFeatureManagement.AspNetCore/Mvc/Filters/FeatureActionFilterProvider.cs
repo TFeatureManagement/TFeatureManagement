@@ -16,10 +16,10 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var factory = context.ActionContext.HttpContext.RequestServices.GetRequiredService<IFeatureActionFilterFactory<TFeature>>();
-
             if (context.ActionContext.ActionDescriptor.FilterDescriptors != null)
             {
+                var factory = context.ActionContext.HttpContext.RequestServices.GetRequiredService<IFeatureActionFilterFactory<TFeature>>();
+
                 var results = context.Results;
                 // Perf: Avoid allocating enumerator and read interface .Count once rather than per iteration
                 var resultsCount = results.Count;
