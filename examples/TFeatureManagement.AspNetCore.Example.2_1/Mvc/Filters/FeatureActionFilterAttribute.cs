@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
 using TFeatureManagement.AspNetCore.Mvc.Filters;
 
-namespace TFeatureManagement.AspNetCore.Example.Filters
+namespace TFeatureManagement.AspNetCore.Example.Mvc.Filters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class FeatureActionFilterAttribute : Attribute, IFeatureActionFilterMetadata<Feature>
@@ -23,7 +23,5 @@ namespace TFeatureManagement.AspNetCore.Example.Filters
         public IEnumerable<Feature> Features { get; }
 
         public RequirementType RequirementType { get; }
-
-        public int Order { get; set; }
     }
 }

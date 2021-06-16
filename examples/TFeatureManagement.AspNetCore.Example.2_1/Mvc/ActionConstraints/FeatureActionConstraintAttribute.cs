@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
 using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
 
-namespace TFeatureManagement.AspNetCore.Example.ActionConstraints
+namespace TFeatureManagement.AspNetCore.Example.Mvc.ActionConstraints
 {
     public class FeatureActionConstraintAttribute : FeatureActionConstraintAttributeBase, IFeatureActionConstraintMetadata<Feature>
     {

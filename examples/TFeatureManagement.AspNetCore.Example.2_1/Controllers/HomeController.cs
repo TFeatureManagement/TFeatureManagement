@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
 using System.Diagnostics;
-using TFeatureManagement.AspNetCore.Example.ActionConstraints;
 using TFeatureManagement.AspNetCore.Example.Models;
+using TFeatureManagement.AspNetCore.Example.Mvc.ActionConstraints;
+using TFeatureManagement.AspNetCore.Example.Mvc.Filters;
 
 namespace TFeatureManagement.AspNetCore.Example.Controllers
 {
@@ -27,9 +28,28 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [HttpGet]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example1, Feature.Example2)]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example3, Feature.Example4)]
-        public IActionResult Privacy()
+        public IActionResult FeatureConstrained()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult FeatureConstrainedFallback()
+        {
+            return View();
+        }
+
+        [FeatureActionFilter(RequirementType.Any, Feature.Example1, Feature.Example2)]
+        [FeatureActionFilter(RequirementType.Any, Feature.Example3, Feature.Example4)]
+        public IActionResult FeatureFiltered()
         {
             return View();
         }
