@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Example.ActionConstraints;
-using TFeatureManagement.AspNetCore.Example.Filters;
 using TFeatureManagement.AspNetCore.Example.Models;
+using TFeatureManagement.AspNetCore.Example.Mvc.ActionConstraints;
+using TFeatureManagement.AspNetCore.Example.Mvc.Filters;
 
 namespace TFeatureManagement.AspNetCore.Example.Controllers
 {
@@ -34,6 +34,7 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
             return View();
         }
 
+        [HttpGet]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example1, Feature.Example2)]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example3, Feature.Example4)]
         public IActionResult FeatureConstrained()
@@ -41,6 +42,7 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult FeatureConstrainedFallback()
         {
             return View();

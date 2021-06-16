@@ -52,6 +52,16 @@ namespace TFeatureManagement.AspNetCore.Example
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "featureconstraint",
+                    template: "Home/FeatureConstrained/{id?}",
+                    defaults: new { controller = "Home", action = "FeatureConstrained" });
+
+                routes.MapRoute(
+                    name: "featureconstraintfallback",
+                    template: "Home/FeatureConstrained/{id?}",
+                    defaults: new { controller = "Home", action = "FeatureConstrainedFallback" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });

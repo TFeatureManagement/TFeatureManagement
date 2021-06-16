@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TFeatureManagement.AspNetCore.Extensions;
 using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
 
 namespace TFeatureManagement.AspNetCore.Mvc.Routing
@@ -68,22 +69,9 @@ namespace TFeatureManagement.AspNetCore.Mvc.Routing
                         .GetOrderedMetadata<IFeatureActionConstraintMetadata<TFeature>>()
                         .Where(m => m.Features?.Any() == true))
                     {
-                        var isEnabledTasks = new List<Task<bool>>();
-                        foreach (var feature in metadata.Features)
-                        {
-                            isEnabledTasks.Add(featureManager.IsEnabledAsync(feature));
-                        }
-
-                        await Task.WhenAll(isEnabledTasks).ConfigureAwait(false);
-
-                        if (metadata.RequirementType == RequirementType.All)
-                        {
-                            enabled = enabled && isEnabledTasks.Select(t => t.Result).All(isEnabled => isEnabled);
-                        }
-                        else
-                        {
-                            enabled = enabled && isEnabledTasks.Select(t => t.Result).Any(isEnabled => isEnabled);
-                        }
+                        enabled = enabled && (metadata.RequirementType == RequirementType.All ?
+                            await metadata.Features.All(async feature => await featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false) :
+                            await metadata.Features.Any(async feature => await featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false));
 
                         if (!enabled)
                         {

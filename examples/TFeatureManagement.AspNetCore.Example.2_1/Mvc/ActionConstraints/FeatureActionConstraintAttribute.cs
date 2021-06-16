@@ -1,11 +1,13 @@
 ﻿using Microsoft.FeatureManagement;
+using System;
 using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
 using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
 
-namespace TFeatureManagement.AspNetCore.Example.ActionConstraints
+namespace TFeatureManagement.AspNetCore.Example.Mvc.ActionConstraints
 {
-    public class FeatureActionConstraintAttribute : FeatureActionConstraintAttributeBase, IFeatureActionConstraintMetadata<Feature>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    public class FeatureActionConstraintAttribute : Attribute, IFeatureActionConstraintMetadata<Feature>
     {
         public FeatureActionConstraintAttribute(params Feature[] features)
             : this(RequirementType.All, features)
