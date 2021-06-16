@@ -98,10 +98,10 @@ public class HomeController : Controller
 
 ### Enabling / Disabling Controllers and Actions
 
-MVC controllers and actions can require all or any of a set of features to be enabled for the controller or action to be enabled.
+MVC controllers and actions can require all a feature to be enabled for the controller or action to be enabled.
 
 ``` C#
-[FeatureActionFilter(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+[FeatureActionFilter(MyFeatureFlags.FeatureX)]
 public class HomeController : Controller
 {
     …
@@ -117,28 +117,25 @@ using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
 using TFeatureManagement.AspNetCore.Mvc.Filters;
 
-namespace namespace TFeatureManagement.AspNetCore.Example.Mvc.Filters
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+public class FeatureActionFilterAttribute : Attribute, IFeatureActionFilterMetadata<MyFeatureFlags>
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class FeatureActionFilterAttribute : Attribute, IFeatureActionFilterMetadata<MyFeatureFlags>
+    public FeatureActionFilterAttribute(params MyFeatureFlags[] features)
+        : this(RequirementType.All, features)
     {
-        public FeatureActionFilterAttribute(params MyFeatureFlags[] features)
-            : this(RequirementType.All, features)
-        {
-        }
-
-        public FeatureActionFilterAttribute(RequirementType requirementType, params MyFeatureFlags[] features)
-        {
-            Features = features;
-            RequirementType = requirementType;
-        }
-
-        public IEnumerable<MyFeatureFlags> Features { get; }
-
-        public RequirementType RequirementType { get; }
-
-        public int Order { get; set; }
     }
+
+    public FeatureActionFilterAttribute(RequirementType requirementType, params MyFeatureFlags[] features)
+    {
+        Features = features;
+        RequirementType = requirementType;
+    }
+
+    public IEnumerable<MyFeatureFlags> Features { get; }
+
+    public RequirementType RequirementType { get; }
+
+    public int Order { get; set; }
 }
 ```
 
@@ -169,6 +166,90 @@ public interface IDisabledActionHandler<TFeature>
     where TFeature : Enum
 {
     Task HandleDisabledAction(IEnumerable<TFeature> features, ActionExecutingContext context);
+}
+```
+
+### Enabling / Disabling Controller and Action route matching
+
+MVC controllers and actions can require a feature to be enabled for the controller or action to be matched during routing. This allows for multiple actions to have the same route but only have one of them matching during routing.
+
+``` C#
+[HttpGet("featureconstrained", Order = -1)]
+[FeatureActionConstraint(MyFeatureFlags.FeatureX)]
+public IActionResult FeatureConstrained()
+{
+    return new OkObjectResult($"Visible if the feature is enabled.");
+}
+
+[HttpGet("featureconstrained")]
+public IActionResult FeatureConstrainedFallback()
+{
+    return new OkObjectResult($"Visible if the feature for the {nameof(FeatureConstrained)} action is not enabled.");
+}
+```
+
+This requires you to create a `FeatureActionConstraintAttribute` that implements `IFeatureActionConstraintMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
+
+``` C#
+using Microsoft.FeatureManagement;
+using System;
+using System.Collections.Generic;
+using TFeatureManagement.AspNetCore.Example.Models;
+using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+public class FeatureActionConstraintAttribute : Attribute, IFeatureActionConstraintMetadata<Feature>
+{
+    public FeatureActionConstraintAttribute(params Feature[] features)
+        : this(RequirementType.All, features)
+    {
+    }
+
+    public FeatureActionConstraintAttribute(RequirementType requirementType, params Feature[] features)
+    {
+        Features = features;
+        RequirementType = requirementType;
+    }
+
+    public IEnumerable<Feature> Features { get; }
+
+    public RequirementType RequirementType { get; }
+
+    public int Order { get; set; }
+}
+```
+
+MVC controllers and actions can also require a set of features to be enabled for the controller or action to be matched during routing.
+
+``` C#
+[HttpGet("featureconstrained", Order = -1)]
+[FeatureActionConstraint(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+public IActionResult FeatureConstrained()
+{
+    return new OkObjectResult($"Visible if all the features are enabled.");
+}
+
+[HttpGet("featureconstrained")]
+public IActionResult FeatureConstrainedFallback()
+{
+    return new OkObjectResult($"Visible if any of the features for the {nameof(FeatureConstrained)} action are not enabled.");
+}
+```
+
+The above example requires all the features to be enabled for the controller or action to be matched during routing but the controller or action can also only require any of the features to be enabled.
+
+``` C#
+[HttpGet("featureconstrained", Order = -1)]
+[FeatureActionConstraint(RequirementType.Any, MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+public IActionResult FeatureConstrained()
+{
+    return new OkObjectResult($"Visible if any of the features are enabled.");
+}
+
+[HttpGet("featureconstrained")]
+public IActionResult FeatureConstrainedFallback()
+{
+    return new OkObjectResult($"Visible if all of the features for the {nameof(FeatureConstrained)} action are not enabled.");
 }
 ```
 
