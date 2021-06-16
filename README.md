@@ -188,6 +188,8 @@ public IActionResult FeatureConstrainedFallback()
 }
 ```
 
+**Note:** It is important that the routes have an order defined otherwise multiple routes will be returned from matching if they are all enabled. In conventional routing (including legacy routing) the routes will have an order based on the order they are defined in, but for attribute routing it is important to define an order for the routes. Generally, the order value for the route with the `FeatureActionConstraintAttribute` on it should be lower than the order value for the other route(s).
+
 This requires you to create a `FeatureActionConstraintAttribute` that implements `IFeatureActionConstraintMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
 
 ``` C#
