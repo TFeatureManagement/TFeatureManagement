@@ -1,3 +1,6 @@
+[![Status](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml/badge.svg?branch=master)](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml?query=branch%3Amaster)
+[![Nuget](https://img.shields.io/nuget/v/TFeatureManagement.svg)](https://www.nuget.org/packages/TFeatureManagement)
+
 # TFeatureManagement
 
 TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore libraries to add better support for using enums to define and reference feature flags, which is Microsoft's recommended approach for defining and referencing feature flags. It does so by implementing generic classes, methods and interfaces (hence the name TFeatureManagement) that wrap the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore classes, methods and interfaces. These generic classes, methods and interfaces ensure the use of an enum to define and consume feature flags.
