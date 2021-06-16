@@ -101,14 +101,14 @@ public class HomeController : Controller
 MVC controllers and actions can require all or any of a set of features to be enabled for the controller or action to be enabled.
 
 ``` C#
-[FeatureActionConstraint(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+[FeatureActionFilter(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
 public class HomeController : Controller
 {
     …
 }
 ```
 
-This requires you to create a `FeatureActionConstraintAttribute` that implements `IFeatureActionFilterMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
+This requires you to create a `FeatureActionFilterAttribute` that implements `IFeatureActionFilterMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
 
 ``` C#
 using Microsoft.FeatureManagement;
@@ -145,7 +145,7 @@ namespace namespace TFeatureManagement.AspNetCore.Example.Mvc.Filters
 MVC controllers and actions can also require a set of features to be enabled for the controller or action to be enabled.
 
 ``` C#
-[FeatureActionConstraint(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+[FeatureActionFilter(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
 public class HomeController : Controller
 {
     …
@@ -155,7 +155,7 @@ public class HomeController : Controller
 The above example requires all the features to be enabled for the controller or action to be enabled but the controller or action can also only require any of the features to be enabled.
 
 ``` C#
-[FeatureActionConstraint(RequirementType.Any, MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
+[FeatureActionFilter(RequirementType.Any, MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY)]
 public class HomeController : Controller
 {
     …
