@@ -101,7 +101,7 @@ public class HomeController : Controller
 
 ### Enabling / Disabling Controllers and Actions
 
-MVC controllers and actions a feature to be enabled for the controller or action to be enabled.
+MVC controllers and actions can require a feature to be enabled for the controller or action to be enabled.
 
 ``` C#
 [FeatureActionFilter(MyFeatureFlags.FeatureX)]
