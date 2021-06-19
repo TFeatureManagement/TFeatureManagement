@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 
 namespace TFeatureManagement
 {
-    /// <summary>
     /// <inheritdoc cref="IFeatureFilter" />
-    /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
-    public interface IFeatureFilter<TFeature> : IFeatureFilter
+    public interface IFeatureFilter<TFeature> : IFeatureFilter, IFeatureFilterMetadata<TFeature>
         where TFeature : Enum
     {
         /// <summary>

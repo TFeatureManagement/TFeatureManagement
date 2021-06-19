@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TFeatureManagement.AspNetCore.DependencyInjection;
+using TFeatureManagement.AspNetCore.Example.FeatureFilters;
 using TFeatureManagement.AspNetCore.Example.Models;
 
 namespace TFeatureManagement.AspNetCore.Example
@@ -22,8 +23,10 @@ namespace TFeatureManagement.AspNetCore.Example
         {
             services.AddControllersWithViews();
 
-            var featureManagementBuilder = services.AddFeatureManagement<Feature>();
-            featureManagementBuilder.AddSessionManager<SessionManager>();
+            services.AddFeatureManagement<Feature>()
+                .AddSessionManager<SessionManager>()
+                .AddFeatureFilter<FeatureFilter>()
+                .AddFeatureFilter<ContextualFeatureFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

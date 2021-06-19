@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using System;
+using System.Linq;
 
 namespace TFeatureManagement.DependencyInjection
 {
@@ -19,6 +20,15 @@ namespace TFeatureManagement.DependencyInjection
         public IFeatureManagementBuilder<TFeature> AddFeatureFilter<T>()
             where T : IFeatureFilterMetadata
         {
+            var implementationType = typeof(T);
+            if (implementationType.GetInterfaces()
+                .Any(i => i.IsGenericType
+                          && i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IFeatureFilterMetadata<>))
+                          && i.GetGenericArguments()[0] != typeof(TFeature)))
+            {
+                throw new ArgumentException($"The feature enum type specified by '{typeof(T)}' must match the feature enum type of the feature management builder.", nameof(T));
+            }
+
             _baseFeatureManagementBuilder.AddFeatureFilter<T>();
             return this;
         }

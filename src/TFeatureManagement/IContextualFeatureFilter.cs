@@ -4,12 +4,10 @@ using System.Threading.Tasks;
 
 namespace TFeatureManagement
 {
-    /// <summary>
     /// <inheritdoc cref="IContextualFeatureFilter{TContext}" />
-    /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     /// <typeparam name="TContext">The context type.</typeparam>
-    public interface IContextualFeatureFilter<TFeature, TContext> : IContextualFeatureFilter<TContext>
+    public interface IContextualFeatureFilter<TFeature, TContext> : IContextualFeatureFilter<TContext>, IFeatureFilterMetadata<TFeature>
         where TFeature : Enum
     {
         /// <summary>
