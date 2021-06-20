@@ -2,7 +2,7 @@
 
 namespace TFeatureManagement.Tests
 {
-    public class FeatureFilterWithoutFeatureEnumType : IFeatureFilterMetadata
+    public class TestFeatureFilterMetadata : IFeatureFilterMetadata
     {
     }
 }
