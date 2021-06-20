@@ -7,7 +7,7 @@ namespace TFeatureManagement
     {
         public T Parse(string value)
         {
-            return (T)Enum.Parse(typeof(T), value);
+            return (T)Enum.Parse(typeof(T), value, true);
         }
     }
 }
