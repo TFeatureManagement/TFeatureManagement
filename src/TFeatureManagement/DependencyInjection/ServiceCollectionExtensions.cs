@@ -17,7 +17,7 @@ namespace TFeatureManagement.DependencyInjection
         /// functionality.
         /// </returns>
         public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             var featureManagementBuilder = new FeatureManagementBuilder<TFeature>(services.AddFeatureManagement());
             featureManagementBuilder.AddCoreServices();
@@ -37,7 +37,7 @@ namespace TFeatureManagement.DependencyInjection
         /// functionality.
         /// </returns>
         public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             var featureManagementBuilder = new FeatureManagementBuilder<TFeature>(services.AddFeatureManagement(configuration));
             featureManagementBuilder.AddCoreServices();
@@ -46,12 +46,12 @@ namespace TFeatureManagement.DependencyInjection
         }
 
         private static IFeatureManagementBuilder<TFeature> AddCoreServices<TFeature>(this IFeatureManagementBuilder<TFeature> featureManagementBuilder)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             featureManagementBuilder.Services.AddSingleton<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
             featureManagementBuilder.Services.AddScoped<IFeatureManagerSnapshot<TFeature>, FeatureManagerSnapshot<TFeature>>();
 
-            featureManagementBuilder.Services.TryAddSingleton<IEnumParser<TFeature>, DefaultEnumParser<TFeature>>();
+            featureManagementBuilder.Services.TryAddSingleton<IFeatureEnumParser<TFeature>, FeatureEnumParser<TFeature>>();
 
             return featureManagementBuilder;
         }

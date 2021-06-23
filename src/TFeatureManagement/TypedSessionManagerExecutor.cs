@@ -5,30 +5,34 @@ using System.Threading.Tasks;
 namespace TFeatureManagement
 {
     internal class TypedSessionManagerExecutor<TFeature, TSessionManager> : ISessionManager
-        where TFeature : Enum
+        where TFeature : struct, Enum
         where TSessionManager : ISessionManager<TFeature>
     {
         private readonly TSessionManager _sessionManager;
-        private readonly IEnumParser<TFeature> _enumParser;
+        private readonly IFeatureEnumParser<TFeature> _featureEnumParser;
 
-        public TypedSessionManagerExecutor(TSessionManager sessionManager, IEnumParser<TFeature> enumParser)
+        public TypedSessionManagerExecutor(TSessionManager sessionManager, IFeatureEnumParser<TFeature> featureEnumParser)
         {
             _sessionManager = sessionManager;
-            _enumParser = enumParser;
+            _featureEnumParser = featureEnumParser;
         }
 
-        public Task<bool?> GetAsync(string featureName)
+        public async Task<bool?> GetAsync(string featureName)
         {
-            var feature = _enumParser.Parse(featureName);
+            if (_featureEnumParser.TryParse(featureName, true, out TFeature feature))
+            {
+                return await _sessionManager.GetAsync(feature).ConfigureAwait(false);
+            }
 
-            return _sessionManager.GetAsync(feature);
+            return null;
         }
 
-        public Task SetAsync(string featureName, bool enabled)
+        public async Task SetAsync(string featureName, bool enabled)
         {
-            var feature = _enumParser.Parse(featureName);
-
-            return _sessionManager.SetAsync(feature, enabled);
+            if (_featureEnumParser.TryParse(featureName, true, out TFeature feature))
+            {
+                await _sessionManager.SetAsync(feature, enabled).ConfigureAwait(false);
+            }
         }
     }
 }

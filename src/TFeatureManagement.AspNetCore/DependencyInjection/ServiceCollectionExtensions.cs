@@ -14,7 +14,7 @@ namespace TFeatureManagement.AspNetCore.DependencyInjection
     public static class ServiceCollectionExtensions
     {
         public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             var builder = TFeatureManagement.DependencyInjection.ServiceCollectionExtensions.AddFeatureManagement<TFeature>(services);
             builder.Services.AddSingleton<IFeatureActionFilterFactory<TFeature>, FeatureActionFilterFactory<TFeature>>();
