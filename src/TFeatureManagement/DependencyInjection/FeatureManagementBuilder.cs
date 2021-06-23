@@ -6,7 +6,7 @@ namespace TFeatureManagement.DependencyInjection
 {
     /// <inheritdoc cref="IFeatureManagementBuilder{TFeature}" />
     internal class FeatureManagementBuilder<TFeature> : IFeatureManagementBuilder<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         private readonly IFeatureManagementBuilder _baseFeatureManagementBuilder;
 

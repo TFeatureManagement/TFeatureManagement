@@ -5,7 +5,7 @@ namespace TFeatureManagement.AspNetCore.Example.FeatureFilters
 {
     public class FeatureFilter : FeatureFilterBase<Feature>
     {
-        public FeatureFilter(IEnumParser<Feature> enumParser)
+        public FeatureFilter(IFeatureEnumParser<Feature> enumParser)
             : base(enumParser)
         {
         }

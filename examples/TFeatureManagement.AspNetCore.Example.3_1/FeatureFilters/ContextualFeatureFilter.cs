@@ -5,7 +5,7 @@ namespace TFeatureManagement.AspNetCore.Example.FeatureFilters
 {
     public class ContextualFeatureFilter : ContextualFeatureFilterBase<Feature, ContextualFeatureFilterContext>
     {
-        public ContextualFeatureFilter(IEnumParser<Feature> enumParser)
+        public ContextualFeatureFilter(IFeatureEnumParser<Feature> enumParser)
             : base(enumParser)
         {
         }
