@@ -24,6 +24,6 @@ namespace TFeatureManagement.DependencyInjection
         /// <typeparam name="T">An implementation of <see cref="ISessionManager{TFeature}" />.</typeparam>
         /// <returns>The feature management builder.</returns>
         IFeatureManagementBuilder<TFeature> AddSessionManager<T>()
-            where T : ISessionManager<TFeature>;
+            where T : class, ISessionManager<TFeature>;
     }
 }
