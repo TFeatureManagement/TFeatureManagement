@@ -340,15 +340,15 @@ The code above adds an MVC filter named `SomeMvcFilter`. This filter is only tri
 The feature management library can be used to add application branches and middleware that execute conditionally based on feature state.
 
 ``` C#
-app.UseMiddlewareForFeature<ThirdPartyMiddleware>(MyFeatureFlags.FeatureU);
+app.UseMiddlewareWhenFeatureEnabled<ThirdPartyMiddleware>(MyFeatureFlags.FeatureU);
 ```
 
 With the above call, the application adds a middleware component that only appears in the request pipeline if the feature "FeatureU" is enabled. If the feature is enabled/disabled during runtime, the middleware pipeline can be changed dynamically.
 
-This builds off the more generic capability to branch the entire application based on a feature.
+This builds off the more generic capability to branch the entire application based on feature state.
 
 ``` C#
-app.UseForFeature(MyFeatureFlags.FeatureU, appBuilder => 
+app.UseWhenFeatureEnabled(MyFeatureFlags.FeatureU, appBuilder => 
 {
     appBuilder.UseMiddleware<T>();
 });
