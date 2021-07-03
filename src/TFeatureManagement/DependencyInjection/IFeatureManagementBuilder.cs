@@ -25,5 +25,11 @@ namespace TFeatureManagement.DependencyInjection
         /// <returns>The feature management builder.</returns>
         IFeatureManagementBuilder<TFeature> AddSessionManager<T>()
             where T : class, ISessionManager<TFeature>;
+
+        /// <summary>
+        /// Adds required feature cleanup management services.
+        /// </summary>
+        /// <returns>The feature management builder.</returns>
+        IFeatureManagementBuilder<TFeature> AddFeatureCleanupManagement();
     }
 }
