@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using System;
+using TFeatureManagement.Metadata;
 
 namespace TFeatureManagement.DependencyInjection
 {
@@ -32,6 +33,13 @@ namespace TFeatureManagement.DependencyInjection
         {
             _baseFeatureManagementBuilder.Services.AddSingleton(typeof(T));
             _baseFeatureManagementBuilder.AddSessionManager<SessionManagerExecutor<TFeature, T>>();
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement()
+        {
+            _baseFeatureManagementBuilder.Services.AddSingleton<IFeatureMetadataManager<TFeature>, FeatureMetadataManager<TFeature>>();
             return this;
         }
 
