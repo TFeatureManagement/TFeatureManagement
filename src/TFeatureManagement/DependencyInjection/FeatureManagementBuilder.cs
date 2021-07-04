@@ -36,7 +36,7 @@ namespace TFeatureManagement.DependencyInjection
         }
 
         /// <inheritdoc />
-        public IFeatureManagementBuilder<TFeature> AddFeatureCleanup()
+        public IFeatureManagementBuilder<TFeature> AddFeatureCleanupManagement()
         {
             _baseFeatureManagementBuilder.Services.AddSingleton<IFeatureCleanupManager<TFeature>, FeatureCleanupManager<TFeature>>();
             return this;

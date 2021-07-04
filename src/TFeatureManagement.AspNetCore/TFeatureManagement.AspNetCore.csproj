@@ -26,12 +26,12 @@
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.16" />
   </ItemGroup>
 	
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0' And '$(TargetFramework)' != 'netcoreapp2.1'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 	
   <ItemGroup>
-    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.3.0" />
   </ItemGroup>
 	
   <ItemGroup>
