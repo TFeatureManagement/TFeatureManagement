@@ -7,7 +7,7 @@ namespace TFeatureManagement
 {
     /// <inheritdoc cref="IFeatureCleanupManager{TFeature}" />
     public class FeatureCleanupManager<TFeature> : IFeatureCleanupManager<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         private readonly IFeatureManager<TFeature> _featureManager;
 
@@ -26,12 +26,18 @@ namespace TFeatureManagement
         {
             var featureCleanupDates = new Dictionary<TFeature, TFeatureCleanupDate>();
 
-            foreach (var feature in Enum.GetValues(typeof(TFeature)).Cast<TFeature>().ToList())
+#if NET5_0
+            var features = Enum.GetValues<TFeature>();
+#else
+            var features = Enum.GetValues(typeof(TFeature)).Cast<TFeature>();
+#endif
+
+            foreach (var feature in features)
             {
-                var featureMemberInfo = typeof(TFeature).GetMember(feature.ToString()).FirstOrDefault();
-                if (featureMemberInfo != null)
+                var featureFieldInfo = typeof(TFeature).GetField(feature.ToString());
+                if (featureFieldInfo != null)
                 {
-                    var featureCleanupDateAttribute = featureMemberInfo.GetCustomAttribute<TFeatureCleanupDate>(false);
+                    var featureCleanupDateAttribute = featureFieldInfo.GetCustomAttribute<TFeatureCleanupDate>(false);
                     featureCleanupDates.Add(feature, featureCleanupDateAttribute);
                 }
             }
