@@ -7,7 +7,7 @@ using System;
 namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
 {
     public class FeatureActionConstraintProvider<TFeature> : IActionConstraintProvider
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         private readonly MvcOptions _mvcOptions;
 

@@ -13,7 +13,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
     /// feature(s).
     /// </summary>
     public class FeatureTagHelper<TFeature> : TagHelper
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         private readonly IFeatureManager<TFeature> _featureManager;
 
@@ -46,8 +46,8 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
         /// This is used to display alternate content when the provided feature(s) are not enabled. If <see
         /// cref="RequirementType" /> is set to <see cref="RequirementType.All" /> then the content will display if not
         /// all of the features in <see cref="Features" /> are enabled. If <see cref="RequirementType" /> is set to <see
-        /// cref="RequirementType.Any" /> then the content will display if none of the features in <see
-        /// cref="Features" /> are enabled.
+        /// cref="RequirementType.Any" /> then the content will display if none of the features in <see cref="Features"
+        /// /> are enabled.
         /// </remarks>
         public bool Negate { get; set; }
 

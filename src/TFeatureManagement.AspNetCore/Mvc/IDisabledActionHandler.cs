@@ -10,7 +10,7 @@ namespace TFeatureManagement.AspNetCore.Mvc
     /// be enabled but the features are not enabled.
     /// </summary>
     public interface IDisabledActionHandler<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Handle requests to an MVC action that is disabled because it requires all or any of a set of features to be

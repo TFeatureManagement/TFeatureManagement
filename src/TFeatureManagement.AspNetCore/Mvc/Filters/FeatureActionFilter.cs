@@ -16,7 +16,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public class FeatureActionFilter<TFeature> : IAsyncActionFilter, IOrderedFilter
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Creates an action filter that requires all the provided feature(s) to be enabled for the actions to be

@@ -8,7 +8,7 @@ namespace TFeatureManagement
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public interface ISessionManager<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Queries the session manager for the session's feature state, if any, for the given feature.

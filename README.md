@@ -166,7 +166,7 @@ When a controller or action is disabled because the required feature(s) are not 
 
 ``` C#
 public interface IDisabledActionHandler<TFeature>
-    where TFeature : Enum
+    where TFeature : struct, Enum
 {
     Task HandleDisabledAction(IEnumerable<TFeature> features, ActionExecutingContext context);
 }

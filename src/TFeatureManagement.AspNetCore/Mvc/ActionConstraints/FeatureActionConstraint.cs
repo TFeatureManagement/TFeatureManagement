@@ -14,7 +14,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public class FeatureActionConstraint<TFeature> : IActionConstraint
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Creates an action constraint that requires all the provided feature(s) to be enabled for the action to be

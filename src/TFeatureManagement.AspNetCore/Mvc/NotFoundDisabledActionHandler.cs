@@ -11,7 +11,7 @@ namespace TFeatureManagement.AspNetCore.Mvc
     /// A disabled action handler that returns a not found status code result for disabled actions.
     /// </summary>
     public class NotFoundDisabledActionHandler<TFeature> : IDisabledActionHandler<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <inheritdoc />
         public Task HandleDisabledAction(IEnumerable<TFeature> features, ActionExecutingContext context)

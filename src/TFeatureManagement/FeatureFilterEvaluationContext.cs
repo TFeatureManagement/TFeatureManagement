@@ -8,7 +8,7 @@ namespace TFeatureManagement
     /// and the parameters needed to check whether the feature should be enabled.
     /// </summary>
     public class FeatureFilterEvaluationContext<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// The feature being evaluated.

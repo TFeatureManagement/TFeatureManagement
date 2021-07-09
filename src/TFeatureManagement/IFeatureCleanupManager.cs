@@ -8,7 +8,7 @@ namespace TFeatureManagement
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public interface IFeatureCleanupManager<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Gets feature cleanup dates.

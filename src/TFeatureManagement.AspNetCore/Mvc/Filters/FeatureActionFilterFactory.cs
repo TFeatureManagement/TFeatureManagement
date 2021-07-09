@@ -4,7 +4,7 @@ using System;
 namespace TFeatureManagement.AspNetCore.Mvc.Filters
 {
     public class FeatureActionFilterFactory<TFeature> : IFeatureActionFilterFactory<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         public IFilterMetadata CreateInstance(IFeatureActionFilterMetadata<TFeature> filterMetadata)
         {

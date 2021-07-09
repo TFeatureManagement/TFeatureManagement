@@ -10,7 +10,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public interface IFeatureActionConstraintMetadata<TFeature> : IActionConstraintMetadata
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Gets the features that should be enabled.
