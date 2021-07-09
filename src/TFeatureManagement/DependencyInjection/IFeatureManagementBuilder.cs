@@ -9,7 +9,7 @@ namespace TFeatureManagement.DependencyInjection
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public interface IFeatureManagementBuilder<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <inheritdoc cref="IFeatureManagementBuilder.Services" />
         IServiceCollection Services { get; }

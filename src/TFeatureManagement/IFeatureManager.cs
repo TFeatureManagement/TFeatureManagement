@@ -9,7 +9,7 @@ namespace TFeatureManagement
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public interface IFeatureManager<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Retrieves a list of feature names registered in the feature manager.

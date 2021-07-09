@@ -7,7 +7,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
 {
     public class FeatureGatedAsyncActionFilter<TFilter, TFeature> : IAsyncActionFilter
         where TFilter : IAsyncActionFilter
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         public FeatureGatedAsyncActionFilter(TFeature feature)
         {

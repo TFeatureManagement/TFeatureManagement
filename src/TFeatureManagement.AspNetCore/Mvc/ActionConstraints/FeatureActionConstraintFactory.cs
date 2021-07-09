@@ -4,7 +4,7 @@ using System;
 namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
 {
     public class FeatureActionConstraintFactory<TFeature> : IFeatureActionConstraintFactory<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         public IActionConstraint CreateInstance(IFeatureActionConstraintMetadata<TFeature> metadata)
         {

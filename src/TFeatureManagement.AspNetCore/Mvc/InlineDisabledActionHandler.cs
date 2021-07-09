@@ -9,7 +9,7 @@ namespace TFeatureManagement.AspNetCore.Mvc
     /// A disabled action handler that executes an inline handler.
     /// </summary>
     internal class InlineDisabledActionHandler<TFeature> : IDisabledActionHandler<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         private readonly Action<IEnumerable<TFeature>, ActionExecutingContext> _handler;
 

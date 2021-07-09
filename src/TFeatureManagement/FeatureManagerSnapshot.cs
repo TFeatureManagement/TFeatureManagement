@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace TFeatureManagement
 {
     public class FeatureManagerSnapshot<TFeature> : IFeatureManagerSnapshot<TFeature>
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         private readonly IFeatureManagerSnapshot _baseFeatureManagerSnapshot;
 

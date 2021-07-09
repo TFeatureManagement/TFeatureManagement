@@ -1,7 +1,5 @@
 #if !NETCOREAPP2_1
 
-using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
-using TFeatureManagement.AspNetCore.Mvc.Routing;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -14,6 +12,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
+using TFeatureManagement.AspNetCore.Mvc.Routing;
 
 namespace TFeatureManagement.AspNetCore.Tests
 {
@@ -399,7 +399,7 @@ namespace TFeatureManagement.AspNetCore.Tests
         internal static readonly RequestDelegate _emptyRequestDelegate = (_) => Task.CompletedTask;
 
         private static RouteEndpoint CreateEndpoint<TFeature>(string template, IList<IFeatureActionConstraintMetadata<Feature>> metadataItems)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             return new RouteEndpoint(
                 _emptyRequestDelegate,

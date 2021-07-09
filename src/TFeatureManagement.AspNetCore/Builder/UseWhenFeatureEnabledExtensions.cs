@@ -19,7 +19,7 @@ namespace TFeatureManagement.AspNetCore.Builder
         /// <param name="configuration">The configuration for the branch.</param>
         /// <returns>The <see cref="IApplicationBuilder" /> instance.</returns>
         public static IApplicationBuilder UseWhenFeatureEnabled<TFeature>(this IApplicationBuilder app, TFeature feature, Action<IApplicationBuilder> configuration)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             return app.UseForFeature(feature.ToString(), configuration);
         }

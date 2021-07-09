@@ -10,7 +10,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
     /// </summary>
     /// <typeparam name="TFeature">The feature enum type.</typeparam>
     public interface IFeatureActionFilterMetadata<TFeature> : IFilterMetadata
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         /// <summary>
         /// Gets the features that should be enabled.

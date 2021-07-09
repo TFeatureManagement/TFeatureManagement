@@ -19,7 +19,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
         /// <returns>A <see cref="IFilterMetadata" /> representing the added type.</returns>
         public static IFilterMetadata AddForFeature<TFilter, TFeature>(this FilterCollection filters, TFeature feature)
             where TFilter : IAsyncActionFilter
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             var filter = new FeatureGatedAsyncActionFilter<TFilter, TFeature>(feature);
             filters.Add(filter);

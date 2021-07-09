@@ -16,7 +16,7 @@ namespace TFeatureManagement.AspNetCore.Builder
         /// <typeparam name="TFeature">The feature enum type.</typeparam>
         /// <param name="feature">The feature that is required to be enabled for the middleware to execute.</param>
         public static IApplicationBuilder UseMiddlewareWhenFeatureEnabled<TMiddleware, TFeature>(this IApplicationBuilder app, TFeature feature, params object[] args)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             return app.UseMiddlewareWhenFeatureEnabled(feature, typeof(TMiddleware), args);
         }
@@ -28,7 +28,7 @@ namespace TFeatureManagement.AspNetCore.Builder
         /// <typeparam name="TFeature">The feature enum type.</typeparam>
         /// <param name="feature">The feature that is required to be enabled for the middleware to execute.</param>
         public static IApplicationBuilder UseMiddlewareWhenFeatureEnabled<TFeature>(this IApplicationBuilder app, TFeature feature, Type middleware, params object[] args)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             return app.UseWhenFeatureEnabled(feature, builder =>
             {

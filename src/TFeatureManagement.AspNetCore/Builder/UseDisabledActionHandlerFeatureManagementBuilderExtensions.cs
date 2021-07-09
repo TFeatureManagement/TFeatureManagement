@@ -20,7 +20,7 @@ namespace TFeatureManagement.AspNetCore.Builder
         /// <param name="disabledActionHandler">The disabled action handler.</param>
         /// <returns>The feature management builder.</returns>
         public static IFeatureManagementBuilder<TFeature> UseDisabledActionHandler<TFeature>(this IFeatureManagementBuilder<TFeature> builder, IDisabledActionHandler<TFeature> disabledActionHandler)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             builder.Services.AddSingleton(disabledActionHandler ?? throw new ArgumentNullException(nameof(disabledActionHandler)));
 
@@ -35,7 +35,7 @@ namespace TFeatureManagement.AspNetCore.Builder
         /// <param name="handler">The inline handler for disabled actions.</param>
         /// <returns>The feature management builder.</returns>
         public static IFeatureManagementBuilder<TFeature> UseDisabledActionHandler<TFeature>(this IFeatureManagementBuilder<TFeature> builder, Action<IEnumerable<TFeature>, ActionExecutingContext> handler)
-            where TFeature : Enum
+            where TFeature : struct, Enum
         {
             if (handler == null)
             {

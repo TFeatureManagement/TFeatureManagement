@@ -5,7 +5,7 @@ using System;
 namespace TFeatureManagement.AspNetCore.Mvc.Filters
 {
     public class FeatureActionFilterProvider<TFeature> : IFilterProvider
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         public int Order => -1000;
 

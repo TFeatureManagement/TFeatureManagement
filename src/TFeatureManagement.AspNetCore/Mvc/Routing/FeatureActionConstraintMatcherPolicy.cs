@@ -15,7 +15,7 @@ using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
 namespace TFeatureManagement.AspNetCore.Mvc.Routing
 {
     public class FeatureActionConstraintMatcherPolicy<TFeature> : MatcherPolicy, IEndpointSelectorPolicy
-        where TFeature : Enum
+        where TFeature : struct, Enum
     {
         public override int Order => 0;
 
