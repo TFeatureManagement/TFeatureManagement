@@ -32,7 +32,7 @@ namespace TFeatureManagement.DependencyInjection
         /// </summary>
         /// <returns>The feature management builder.</returns>
         IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement<TFeatureMetadata>()
-            where TFeatureMetadata : FeatureMetadataBase<TFeature>, new();
+            where TFeatureMetadata : IFeatureMetadata<TFeature>, new();
 
         /// <summary>
         /// Adds required feature metadata management services.
@@ -43,7 +43,7 @@ namespace TFeatureManagement.DependencyInjection
         /// </param>
         /// <returns>The feature management builder.</returns>
         IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement<TFeatureMetadata>(Action<IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata>> configure)
-            where TFeatureMetadata : FeatureMetadataBase<TFeature>, new();
+            where TFeatureMetadata : IFeatureMetadata<TFeature>, new();
 
         /// <summary>
         /// Adds required feature cleanup management services.

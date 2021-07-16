@@ -5,7 +5,7 @@ namespace TFeatureManagement.Metadata
 {
     public class FeatureCategoryProvider<TFeature, TFeatureMetadata, TFeatureCategory> : IFeatureMetadataProvider<TFeature, TFeatureMetadata>
         where TFeature : struct, Enum
-        where TFeatureMetadata : FeatureMetadataBase<TFeature>, new()
+        where TFeatureMetadata : IFeatureMetadata<TFeature>, new()
         where TFeatureCategory : struct, Enum
     {
         public void CreateFeatureMetadata(FeatureMetadataProviderContext<TFeature, TFeatureMetadata> context)

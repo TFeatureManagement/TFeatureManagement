@@ -6,33 +6,20 @@ namespace TFeatureManagement.DependencyInjection
 {
     internal class FeatureMetadataManagementBuilder<TFeature, TFeatureMetadata> : IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata>
         where TFeature : struct, Enum
-        where TFeatureMetadata : FeatureMetadataBase<TFeature>, new()
+        where TFeatureMetadata : IFeatureMetadata<TFeature>, new()
     {
+        private readonly IServiceCollection _services;
+
         public FeatureMetadataManagementBuilder(IServiceCollection services)
         {
-            Services = services;
+            _services = services;
         }
 
-        public IServiceCollection Services { get; }
-
-        public IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata> AddFeatureCategoryMetadata<TFeatureCategory>()
-            where TFeatureCategory : struct, Enum
+        /// <inheritdoc />
+        public IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata> AddFeatureMetadataProvider<TFeatureMetadataProvider>()
+            where TFeatureMetadataProvider : class, IFeatureMetadataProvider<TFeature, TFeatureMetadata>
         {
-            Services.AddSingleton<IFeatureMetadataProvider<TFeature, TFeatureMetadata>, FeatureCategoryProvider<TFeature, TFeatureMetadata, TFeatureCategory>>();
-            return this;
-        }
-
-        public IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata> AddFeatureLifetimeMetadata<TFeatureLifetime>()
-            where TFeatureLifetime : struct, Enum
-        {
-            Services.AddSingleton<IFeatureMetadataProvider<TFeature, TFeatureMetadata>, FeatureLifetimeProvider<TFeature, TFeatureMetadata, TFeatureLifetime>>();
-            return this;
-        }
-
-        public IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata> AddFeatureTeamMetadata<TFeatureTeam>()
-            where TFeatureTeam : struct, Enum
-        {
-            Services.AddSingleton<IFeatureMetadataProvider<TFeature, TFeatureMetadata>, FeatureTeamProvider<TFeature, TFeatureMetadata, TFeatureTeam>>();
+            _services.AddSingleton<IFeatureMetadataProvider<TFeature, TFeatureMetadata>, TFeatureMetadataProvider>();
             return this;
         }
     }
