@@ -6,68 +6,36 @@ using System.Reflection;
 namespace TFeatureManagement.Metadata
 {
     /// <inheritdoc cref="IFeatureCleanupManager{TFeature}" />
-    public class FeatureMetadataManager<TFeature> : IFeatureMetadataManager<TFeature>
-        where TFeature : Enum
+    public class FeatureMetadataManager<TFeature, TFeatureMetadata> : IFeatureMetadataManager<TFeature, TFeatureMetadata>
+        where TFeature : struct, Enum
+        where TFeatureMetadata : IFeatureMetadata<TFeature>, new()
     {
-        /// <inheritdoc />
-        public IDictionary<TFeature, TFeatureMetadata> GetFeaturesAndMetadata<TFeatureMetadata>()
-            where TFeatureMetadata : Attribute, IFeatureMetadata
+        private readonly IReadOnlyList<IFeatureMetadataProvider<TFeature, TFeatureMetadata>> _featureMetadataProviders;
+
+        public FeatureMetadataManager(IReadOnlyList<IFeatureMetadataProvider<TFeature, TFeatureMetadata>> featureMetadataProviders)
         {
-            var features = new Dictionary<TFeature, TFeatureMetadata>();
+            _featureMetadataProviders = featureMetadataProviders;
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<TFeatureMetadata> GetFeaturesAndMetadata()
+        {
+            var features = new List<TFeatureMetadata>();
 
             foreach (var feature in Enum.GetValues(typeof(TFeature)).Cast<TFeature>().ToList())
             {
                 var featureMemberInfo = typeof(TFeature).GetMember(feature.ToString()).FirstOrDefault();
                 if (featureMemberInfo != null)
                 {
-                    var featureMetadataAttribute = featureMemberInfo.GetCustomAttribute<TFeatureMetadata>(false);
-                    features.Add(feature, featureMetadataAttribute);
+                    var context = new FeatureMetadataProviderContext<TFeature, TFeatureMetadata>(feature, featureMemberInfo.GetCustomAttributes());
+
+                    foreach (var provider in _featureMetadataProviders)
+                    {
+                        provider.CreateFeatureMetadata(context);
+                    }
+
+                    features.Add(context.FeatureMetadata);
                 }
-            }
-
-            return features;
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IGrouping<TFeatureCategory?, TFeature>> GetFeaturesByCategory<TFeatureCategory, TFeatureCategoryAttribute>()
-            where TFeatureCategory : struct, Enum
-            where TFeatureCategoryAttribute : Attribute, IFeatureCategory<TFeatureCategory>
-        {
-            var featureCategories = GetFeatureAttributes<TFeatureCategoryAttribute>();
-
-            return featureCategories.GroupBy(x => x.Value?.Category, x => x.Key).OrderBy(x => x.Key?.ToString()).ToList();
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IGrouping<TFeatureLifetime?, TFeature>> GetFeaturesByLifetime<TFeatureLifetime, TFeatureLifetimeAttribute>()
-            where TFeatureLifetime : struct, Enum
-            where TFeatureLifetimeAttribute : Attribute, IFeatureLifetime<TFeatureLifetime>
-        {
-            var featureLifetimes = GetFeatureAttributes<TFeatureLifetimeAttribute>();
-
-            return featureLifetimes.GroupBy(x => x.Value?.Lifetime, x => x.Key).OrderBy(x => x.Key?.ToString()).ToList();
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IGrouping<TFeatureTeam?, TFeature>> GetFeaturesByTeam<TFeatureTeam, TFeatureTeamAttribute>()
-            where TFeatureTeam : struct, Enum
-            where TFeatureTeamAttribute : Attribute, IFeatureTeam<TFeatureTeam>
-        {
-            var featureTeams = GetFeatureAttributes<TFeatureTeamAttribute>();
-
-            return featureTeams.GroupBy(x => x.Value?.Team, x => x.Key).OrderBy(x => x.Key?.ToString()).ToList();
-        }
-
-        private static IDictionary<TFeature, TAttribute> GetFeatureAttributes<TAttribute>()
-            where TAttribute : Attribute
-        {
-            var features = new Dictionary<TFeature, TAttribute>();
-
-            foreach (var feature in Enum.GetValues(typeof(TFeature)).Cast<TFeature>().ToList())
-            {
-                var featureMemberInfo = typeof(TFeature).GetMember(feature.ToString()).FirstOrDefault();
-                var attribute = featureMemberInfo?.GetCustomAttribute<TAttribute>(false);
-                features.Add(feature, attribute);
             }
 
             return features;

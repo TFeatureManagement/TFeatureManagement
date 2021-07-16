@@ -37,9 +37,22 @@ namespace TFeatureManagement.DependencyInjection
         }
 
         /// <inheritdoc />
-        public IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement()
+        public IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement<TFeatureMetadata>()
+            where TFeatureMetadata : FeatureMetadataBase<TFeature>, new()
         {
-            _baseFeatureManagementBuilder.Services.AddSingleton<IFeatureMetadataManager<TFeature>, FeatureMetadataManager<TFeature>>();
+            return AddFeatureMetadataManagement<TFeatureMetadata>(builder =>
+            {
+                builder.AddFeatureCategoryMetadata<FeatureCategory>();
+                builder.AddFeatureLifetimeMetadata<FeatureLifetime>();
+            });
+        }
+
+        /// <inheritdoc />
+        public IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement<TFeatureMetadata>(Action<IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata>> configure)
+            where TFeatureMetadata : FeatureMetadataBase<TFeature>, new()
+        {
+            var featureMetadataManagementBuilder = new FeatureMetadataManagementBuilder<TFeature, TFeatureMetadata>(_baseFeatureManagementBuilder.Services);
+            configure(featureMetadataManagementBuilder);
             return this;
         }
 

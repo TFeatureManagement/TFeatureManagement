@@ -2,6 +2,6 @@
 {
     public interface IFeatureLifetime<TFeatureLifetime>
     {
-        TFeatureLifetime Lifetime { get; }
+        TFeatureLifetime Lifetime { get; set; }
     }
 }

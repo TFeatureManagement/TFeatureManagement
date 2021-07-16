@@ -2,6 +2,6 @@
 {
     public interface IFeatureCategory<TFeatureCategory>
     {
-        TFeatureCategory Category { get; }
+        TFeatureCategory Category { get; set; }
     }
 }

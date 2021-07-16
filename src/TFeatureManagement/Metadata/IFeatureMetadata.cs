@@ -1,9 +1,10 @@
-﻿namespace TFeatureManagement.Metadata
+﻿using System;
+
+namespace TFeatureManagement.Metadata
 {
-    /// <summary>
-    /// Marker interface for feature metadata.
-    /// </summary>
-    public interface IFeatureMetadata
+    public interface IFeatureMetadata<TFeature>
+        where TFeature : struct, Enum
     {
+        TFeature Feature { get; set; }
     }
 }

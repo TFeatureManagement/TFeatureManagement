@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using System;
+using TFeatureManagement.Metadata;
 
 namespace TFeatureManagement.DependencyInjection
 {
@@ -30,7 +31,19 @@ namespace TFeatureManagement.DependencyInjection
         /// Adds required feature metadata management services.
         /// </summary>
         /// <returns>The feature management builder.</returns>
-        IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement();
+        IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement<TFeatureMetadata>()
+            where TFeatureMetadata : FeatureMetadataBase<TFeature>, new();
+
+        /// <summary>
+        /// Adds required feature metadata management services.
+        /// </summary>
+        /// <param name="configure">
+        /// An <see cref="Action" /> to configure the <see cref="IFeatureMetadataManagementBuilder{TFeature,
+        /// TFeatureMetadata}" />.
+        /// </param>
+        /// <returns>The feature management builder.</returns>
+        IFeatureManagementBuilder<TFeature> AddFeatureMetadataManagement<TFeatureMetadata>(Action<IFeatureMetadataManagementBuilder<TFeature, TFeatureMetadata>> configure)
+            where TFeatureMetadata : FeatureMetadataBase<TFeature>, new();
 
         /// <summary>
         /// Adds required feature cleanup management services.
