@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.FeatureManagement;
 using TFeatureManagement.AspNetCore.Example.Models;
 using TFeatureManagement.AspNetCore.Example.Mvc.ActionConstraints;
 using TFeatureManagement.AspNetCore.Example.Mvc.Filters;
