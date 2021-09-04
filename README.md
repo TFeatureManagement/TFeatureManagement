@@ -114,7 +114,6 @@ public class HomeController : Controller
 This requires you to create a `FeatureActionFilterAttribute` that implements `IFeatureActionFilterMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
 
 ``` C#
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
@@ -196,7 +195,6 @@ public IActionResult FeatureConstrainedFallback()
 This requires you to create a `FeatureActionConstraintAttribute` that implements `IFeatureActionConstraintMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
 
 ``` C#
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
