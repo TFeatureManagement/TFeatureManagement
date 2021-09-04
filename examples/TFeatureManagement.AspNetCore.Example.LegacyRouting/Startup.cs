@@ -42,16 +42,20 @@ namespace TFeatureManagement.AspNetCore.Example
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Disable adding the endpoint routing middleware.
             //app.UseRouting();
 
             app.UseAuthorization();
 
+            // Disable adding endpoints.
             //app.UseEndpoints(endpoints =>
             //{
             //    endpoints.MapControllerRoute(
             //        name: "default",
             //        pattern: "{controller=Home}/{action=Index}/{id?}");
             //});
+
+            // Add routes using the ASP.NET Core 2.1 routing based on IRouter.
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

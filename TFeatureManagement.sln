@@ -13,11 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement", "src\T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore", "src\TFeatureManagement.AspNetCore\TFeatureManagement.AspNetCore.csproj", "{713B589C-6DA6-4749-99F3-A01063696529}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.3_1.LegacyRouting", "examples\TFeatureManagement.AspNetCore.Example.3_1.LegacyRouting\TFeatureManagement.AspNetCore.Example.3_1.LegacyRouting.csproj", "{44828470-6A16-48C6-8954-527920CCB4F0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.2_1", "examples\TFeatureManagement.AspNetCore.Example.2_1\TFeatureManagement.AspNetCore.Example.2_1.csproj", "{40DEA830-B0B2-48D5-BDE1-4CA930025F70}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.3_1", "examples\TFeatureManagement.AspNetCore.Example.3_1\TFeatureManagement.AspNetCore.Example.3_1.csproj", "{639D8A81-FF4E-4772-B3E1-252C63363EA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Tests", "test\TFeatureManagement.AspNetCore.Tests\TFeatureManagement.AspNetCore.Tests.csproj", "{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}"
 EndProject
@@ -35,6 +31,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example", "examples\TFeatureManagement.AspNetCore.Example\TFeatureManagement.AspNetCore.Example.csproj", "{9E7C2461-1707-4230-9F3A-8E654868B72C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.LegacyRouting", "examples\TFeatureManagement.AspNetCore.Example.LegacyRouting\TFeatureManagement.AspNetCore.Example.LegacyRouting.csproj", "{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,32 +54,32 @@ Global
 		{713B589C-6DA6-4749-99F3-A01063696529}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{713B589C-6DA6-4749-99F3-A01063696529}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{713B589C-6DA6-4749-99F3-A01063696529}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44828470-6A16-48C6-8954-527920CCB4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44828470-6A16-48C6-8954-527920CCB4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44828470-6A16-48C6-8954-527920CCB4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44828470-6A16-48C6-8954-527920CCB4F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40DEA830-B0B2-48D5-BDE1-4CA930025F70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{639D8A81-FF4E-4772-B3E1-252C63363EA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E7C2461-1707-4230-9F3A-8E654868B72C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E7C2461-1707-4230-9F3A-8E654868B72C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E7C2461-1707-4230-9F3A-8E654868B72C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E7C2461-1707-4230-9F3A-8E654868B72C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{56F899DC-329C-445F-BD7E-567FD36D77B8} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
-		{44828470-6A16-48C6-8954-527920CCB4F0} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
 		{40DEA830-B0B2-48D5-BDE1-4CA930025F70} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
-		{639D8A81-FF4E-4772-B3E1-252C63363EA1} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
 		{CFA370FB-EE6E-4753-AFDC-79102ECAF57B} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
+		{9E7C2461-1707-4230-9F3A-8E654868B72C} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
+		{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30D672E2-9D09-4FAB-B35D-E3B579BCA232}
