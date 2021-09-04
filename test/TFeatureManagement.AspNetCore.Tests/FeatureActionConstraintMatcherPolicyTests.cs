@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.AspNetCore.Routing.Patterns;
-using Microsoft.FeatureManagement;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
