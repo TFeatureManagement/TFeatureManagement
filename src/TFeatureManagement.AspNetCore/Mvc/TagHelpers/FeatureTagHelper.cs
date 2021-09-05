@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Extensions;
 
 namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
 {
@@ -37,7 +35,8 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
         /// <summary>
         /// Gets or sets whether all or any features in <see cref="Features" /> should be enabled.
         /// </summary>
-        public RequirementType Requirement { get; set; } = RequirementType.All;
+        [HtmlAttributeName("requirement-type")]
+        public RequirementType RequirementType { get; set; } = RequirementType.All;
 
         /// <summary>
         /// Gets or sets whether to negate the evaluation of the features.
@@ -64,9 +63,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
 
             if (Features?.Any() == true)
             {
-                enabled = Requirement == RequirementType.All ?
-                    await Features.All(async feature => await _featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false) :
-                    await Features.Any(async feature => await _featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false);
+                enabled = await _featureManager.IsEnabledAsync(RequirementType, Features).ConfigureAwait(false);
             }
 
             if (Negate)
