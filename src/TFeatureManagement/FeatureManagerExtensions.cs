@@ -11,8 +11,30 @@ namespace TFeatureManagement
         /// <summary>
         /// Checks whether a given set of features are enabled.
         /// </summary>
+        /// <param name="features">The features to check.</param>
+        /// <returns>True if the features are enabled, otherwise false.</returns>
+        public static async Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, params TFeature[] features)
+            where TFeature : struct, Enum
+        {
+            return await featureManager.IsEnabledAsync(RequirementType.All, features.AsEnumerable()).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Checks whether a given set of features are enabled.
+        /// </summary>
+        /// <param name="features">The features to check.</param>
+        /// <returns>True if the features are enabled, otherwise false.</returns>
+        public static async Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, IEnumerable<TFeature> features)
+            where TFeature : struct, Enum
+        {
+            return await featureManager.IsEnabledAsync(RequirementType.All, features).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Checks whether a given set of features are enabled.
+        /// </summary>
         /// <param name="requirementType">
-        /// Specifies whether all or any of the given set of features should be enabled.
+        /// Specifies whether to check if all or any of the given set of features are enabled.
         /// </param>
         /// <param name="features">The features to check.</param>
         /// <returns>True if the features are enabled, otherwise false.</returns>
@@ -26,7 +48,7 @@ namespace TFeatureManagement
         /// Checks whether a given set of features are enabled.
         /// </summary>
         /// <param name="requirementType">
-        /// Specifies whether all or any of the given set of features should be enabled.
+        /// Specifies whether to check if all or any of the given set of features are enabled.
         /// </param>
         /// <param name="features">The features to check.</param>
         /// <returns>True if the features are enabled, otherwise false.</returns>

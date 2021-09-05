@@ -83,6 +83,30 @@ if (await featureManager.IsEnabledAsync(MyFeatureFlags.FeatureX))
 }
 ```
 
+The `IFeatureManager<TFeature>`'s `IsEnabledAsync` method can also be used to check if a set of features are enabled.
+
+``` C#
+…
+IFeatureManager<MyFeatureFlags> featureManager;
+…
+if (await featureManager.IsEnabledAsync(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY))
+{
+    // Do something
+}
+```
+
+The above example checks whether all the features are enabled, but the method can also be used to checked whether any of features are enabled.
+
+``` C#
+…
+IFeatureManager<MyFeatureFlags> featureManager;
+…
+if (await featureManager.IsEnabledAsync(RequirementType.Any, MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY))
+{
+    // Do something
+}
+```
+
 ### Dependency Injection
 
 When using the feature management library with MVC, the `IFeatureManager<TFeature>` can be obtained through dependency injection.
