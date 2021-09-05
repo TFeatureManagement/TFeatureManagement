@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TFeatureManagement.AspNetCore.Extensions
+namespace TFeatureManagement.Extensions
 {
-    internal static class EnumerableExtensions
+    public static class EnumerableExtensions
     {
-        public static async Task<bool> Any<TSource>(this IEnumerable<TSource> source, Func<TSource, Task<bool>> predicate)
+        public static async Task<bool> AnyAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, Task<bool>> predicate)
         {
             bool enabled = false;
 
@@ -23,7 +23,7 @@ namespace TFeatureManagement.AspNetCore.Extensions
             return enabled;
         }
 
-        public static async Task<bool> All<TSource>(this IEnumerable<TSource> source, Func<TSource, Task<bool>> predicate)
+        public static async Task<bool> AllAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, Task<bool>> predicate)
         {
             bool enabled = true;
 

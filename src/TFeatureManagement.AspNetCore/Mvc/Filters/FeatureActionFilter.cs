@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Extensions;
 
 namespace TFeatureManagement.AspNetCore.Mvc.Filters
 {
@@ -65,11 +63,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
         {
             var featureManager = context.HttpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
-            bool enabled = RequirementType == RequirementType.All ?
-                await Features.All(async feature => await featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false) :
-                await Features.Any(async feature => await featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false);
-
-            if (enabled)
+            if (await featureManager.IsEnabledAsync(RequirementType, Features).ConfigureAwait(false))
             {
                 await next().ConfigureAwait(false);
             }
