@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TFeatureManagement
+namespace TFeatureManagement.Metadata
 {
     public interface IFeatureCleanupDate
     {
