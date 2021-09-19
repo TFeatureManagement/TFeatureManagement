@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace TFeatureManagement
+namespace TFeatureManagement.Metadata
 {
     /// <inheritdoc cref="IFeatureCleanupManager{TFeature}" />
     public class FeatureCleanupManager<TFeature> : IFeatureCleanupManager<TFeature>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TFeatureManagement
+namespace TFeatureManagement.Metadata
 {
     /// <summary>
     /// Used to manage feature cleanup.

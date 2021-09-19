@@ -3,9 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TFeatureManagement.Metadata;
 using TFeatureManagement.Tests.DataAnnotations;
 
-namespace TFeatureManagement.Tests
+namespace TFeatureManagement.Tests.Metadata
 {
     [TestClass]
     public class FeatureCleanupManagerTests
@@ -26,7 +27,7 @@ namespace TFeatureManagement.Tests
         public void GetFeatureCleanupDates_EnumHasValuesWithFeatureCleanupDate_ReturnsNonNullCleanupDateForValues()
         {
             // Arrange and Act
-            var featureCleanupDates = _underTest.GetFeatureCleanupDates<FeatureCleanupDateAttribute>();
+            var featureCleanupDates = _underTest.GetFeatureCleanupDates<TestFeatureCleanupDateAttribute>();
 
             // Assert
             featureCleanupDates.Should().ContainKey(Feature.Test1)
@@ -37,7 +38,7 @@ namespace TFeatureManagement.Tests
         public void GetFeatureCleanupDates_EnumHasValuesWithoutFeatureCleanupDate_ReturnsNullCleanupDateForValues()
         {
             // Arrange and Act
-            var featureCleanupDates = _underTest.GetFeatureCleanupDates<FeatureCleanupDateAttribute>();
+            var featureCleanupDates = _underTest.GetFeatureCleanupDates<TestFeatureCleanupDateAttribute>();
 
             // Assert
             featureCleanupDates.Should().ContainKey(Feature.Test2)
