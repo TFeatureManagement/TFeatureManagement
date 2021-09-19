@@ -13,10 +13,10 @@ namespace TFeatureManagement
         /// </summary>
         /// <param name="features">The features to check.</param>
         /// <returns>True if the features are enabled, otherwise false.</returns>
-        public static async Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, params TFeature[] features)
+        public static Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, params TFeature[] features)
             where TFeature : struct, Enum
         {
-            return await featureManager.IsEnabledAsync(RequirementType.All, features.AsEnumerable()).ConfigureAwait(false);
+            return featureManager.IsEnabledAsync(RequirementType.All, features.AsEnumerable());
         }
 
         /// <summary>
@@ -24,10 +24,10 @@ namespace TFeatureManagement
         /// </summary>
         /// <param name="features">The features to check.</param>
         /// <returns>True if the features are enabled, otherwise false.</returns>
-        public static async Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, IEnumerable<TFeature> features)
+        public static Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, IEnumerable<TFeature> features)
             where TFeature : struct, Enum
         {
-            return await featureManager.IsEnabledAsync(RequirementType.All, features).ConfigureAwait(false);
+            return featureManager.IsEnabledAsync(RequirementType.All, features);
         }
 
         /// <summary>
@@ -38,10 +38,10 @@ namespace TFeatureManagement
         /// </param>
         /// <param name="features">The features to check.</param>
         /// <returns>True if the features are enabled, otherwise false.</returns>
-        public static async Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, RequirementType requirementType, params TFeature[] features)
+        public static Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, RequirementType requirementType, params TFeature[] features)
             where TFeature : struct, Enum
         {
-            return await featureManager.IsEnabledAsync(requirementType, features.AsEnumerable()).ConfigureAwait(false);
+            return featureManager.IsEnabledAsync(requirementType, features.AsEnumerable());
         }
 
         /// <summary>
