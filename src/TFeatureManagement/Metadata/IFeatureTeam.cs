@@ -3,7 +3,7 @@
 namespace TFeatureManagement.Metadata
 {
     public interface IFeatureTeam<TFeatureTeam>
-        where TFeatureTeam : Enum
+        where TFeatureTeam : struct, Enum
     {
         TFeatureTeam Team { get; set; }
     }
