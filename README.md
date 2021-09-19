@@ -19,9 +19,9 @@ To make it possible to reference the configured feature flags in code, define fe
 // Define feature flags in an enum
 public enum MyFeatureFlags
 {
-    FeatureT,
-    FeatureU,
-    FeatureV
+    FeatureX,
+    FeatureY,
+    FeatureZ
 }
 ```
     
@@ -77,7 +77,31 @@ The basic form of feature management is checking if a feature is enabled and the
 …
 IFeatureManager<MyFeatureFlags> featureManager;
 …
-if (await featureManager.IsEnabledAsync(MyFeatureFlags.FeatureU))
+if (await featureManager.IsEnabledAsync(MyFeatureFlags.FeatureX))
+{
+    // Do something
+}
+```
+
+The `IFeatureManager<TFeature>`'s `IsEnabledAsync` method can also be used to check if a set of features are enabled.
+
+``` C#
+…
+IFeatureManager<MyFeatureFlags> featureManager;
+…
+if (await featureManager.IsEnabledAsync(MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY))
+{
+    // Do something
+}
+```
+
+The above example checks whether all the features are enabled, but the method can also be used to checked whether any of features are enabled.
+
+``` C#
+…
+IFeatureManager<MyFeatureFlags> featureManager;
+…
+if (await featureManager.IsEnabledAsync(RequirementType.Any, MyFeatureFlags.FeatureX, MyFeatureFlags.FeatureY))
 {
     // Do something
 }
@@ -114,7 +138,6 @@ public class HomeController : Controller
 This requires you to create a `FeatureActionFilterAttribute` that implements `IFeatureActionFilterMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
 
 ``` C#
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
@@ -196,7 +219,6 @@ public IActionResult FeatureConstrainedFallback()
 This requires you to create a `FeatureActionConstraintAttribute` that implements `IFeatureActionConstraintMetadata<TFeature>` to work (as .NET does not support generic attributes - see https://github.com/dotnet/csharplang/issues/124).
 
 ``` C#
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
@@ -303,7 +325,7 @@ The `<feature>` tag can also be used to render content based on whether a set of
 The above example requires all the features to be enabled to render the content but the `<feature>` tag can also be configured to only require any of the features to be enabled.
 
 ``` HTML+Razor
-<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement="Any">
+<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement-type="Any">
   <p>This can be seen if either 'FeatureX' or 'FeatureY' are enabled.</p>
 </feature>
 ```
@@ -311,12 +333,12 @@ The above example requires all the features to be enabled to render the content 
 The `<feature>` tag can also be configured to negate the evaluation of the features. If configured to require all of the features to be enabled then the content will be rendered if not all of the features are enabled. If configured to require any of the features to be enabled then the content will be rendered if none of the features are enabled.
 
 ``` HTML+Razor
-<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement="All" negate="true">
+<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement-type="All" negate="true">
   <p>This can be seen if not both 'FeatureX' and 'FeatureY' are enabled.</p>
 </feature>
 ```
 ``` HTML+Razor
-<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement="Any" negate="true">
+<feature features="new[] { MyFeatureFlags.FeatureX,MyFeatureFlags.FeatureY }" requirement-type="Any" negate="true">
   <p>This can only be seen if neither 'FeatureX' or 'FeatureY' are enabled.</p>
 </feature>
 ```
@@ -329,26 +351,26 @@ The feature management pipeline supports async MVC Action filters, which impleme
 ``` C#
 services.AddMvc(o => 
 {
-    o.Filters.AddForFeature<SomeMvcFilter>(MyFeatureFlags.FeatureV);
+    o.Filters.AddForFeature<SomeMvcFilter>(MyFeatureFlags.FeatureX);
 });
 ```
 
-The code above adds an MVC filter named `SomeMvcFilter`. This filter is only triggered within the MVC pipeline if the feature it specifies, "FeatureV", is enabled.
+The code above adds an MVC filter named `SomeMvcFilter`. This filter is only triggered within the MVC pipeline if the feature it specifies, "FeatureX", is enabled.
 
 ### Application building
 
 The feature management library can be used to add application branches and middleware that execute conditionally based on feature state.
 
 ``` C#
-app.UseMiddlewareWhenFeatureEnabled<ThirdPartyMiddleware>(MyFeatureFlags.FeatureU);
+app.UseMiddlewareWhenFeatureEnabled<ThirdPartyMiddleware>(MyFeatureFlags.FeatureX);
 ```
 
-With the above call, the application adds a middleware component that only appears in the request pipeline if the feature "FeatureU" is enabled. If the feature is enabled/disabled during runtime, the middleware pipeline can be changed dynamically.
+With the above call, the application adds a middleware component that only appears in the request pipeline if the feature "FeatureX" is enabled. If the feature is enabled/disabled during runtime, the middleware pipeline can be changed dynamically.
 
 This builds off the more generic capability to branch the entire application based on feature state.
 
 ``` C#
-app.UseWhenFeatureEnabled(MyFeatureFlags.FeatureU, appBuilder => 
+app.UseWhenFeatureEnabled(MyFeatureFlags.FeatureX, appBuilder => 
 {
     appBuilder.UseMiddleware<T>();
 });

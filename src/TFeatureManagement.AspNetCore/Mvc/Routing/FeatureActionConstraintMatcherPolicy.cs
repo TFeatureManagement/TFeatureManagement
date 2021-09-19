@@ -4,12 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Extensions;
 using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
 
 namespace TFeatureManagement.AspNetCore.Mvc.Routing
@@ -69,9 +67,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.Routing
                         .GetOrderedMetadata<IFeatureActionConstraintMetadata<TFeature>>()
                         .Where(m => m.Features?.Any() == true))
                     {
-                        enabled = enabled && (metadata.RequirementType == RequirementType.All ?
-                            await metadata.Features.All(async feature => await featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false) :
-                            await metadata.Features.Any(async feature => await featureManager.IsEnabledAsync(feature).ConfigureAwait(false)).ConfigureAwait(false));
+                        enabled = enabled && await featureManager.IsEnabledAsync(metadata.RequirementType, metadata.Features).ConfigureAwait(false);
 
                         if (!enabled)
                         {

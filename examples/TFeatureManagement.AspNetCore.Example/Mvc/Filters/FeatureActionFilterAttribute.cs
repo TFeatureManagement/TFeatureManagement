@@ -1,5 +1,4 @@
-﻿using Microsoft.FeatureManagement;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Example.Models;
 using TFeatureManagement.AspNetCore.Mvc.Filters;

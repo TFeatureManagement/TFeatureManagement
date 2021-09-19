@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,9 +63,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
         {
             var featureManager = context.RouteContext.HttpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
-            return RequirementType == RequirementType.All ?
-                Features.All(feature => Task.Run(() => featureManager.IsEnabledAsync(feature)).GetAwaiter().GetResult()) :
-                Features.Any(feature => Task.Run(() => featureManager.IsEnabledAsync(feature)).GetAwaiter().GetResult());
+            return Task.Run(() => featureManager.IsEnabledAsync(RequirementType, Features)).GetAwaiter().GetResult();
         }
     }
 }

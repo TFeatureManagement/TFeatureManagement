@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.FeatureManagement;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using TFeatureManagement.AspNetCore.Example.Models;
