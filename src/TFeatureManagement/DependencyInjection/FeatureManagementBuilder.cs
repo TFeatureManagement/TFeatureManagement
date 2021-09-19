@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 using System;
+using TFeatureManagement.Metadata;
 
 namespace TFeatureManagement.DependencyInjection
 {

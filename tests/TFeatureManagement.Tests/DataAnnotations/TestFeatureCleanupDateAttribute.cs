@@ -1,11 +1,12 @@
 ﻿using System;
+using TFeatureManagement.Metadata;
 
 namespace TFeatureManagement.Tests.DataAnnotations
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class FeatureCleanupDateAttribute : Attribute, IFeatureCleanupDate
+    public class TestFeatureCleanupDateAttribute : Attribute, IFeatureCleanupDate
     {
-        public FeatureCleanupDateAttribute(int year, int month, int day)
+        public TestFeatureCleanupDateAttribute(int year, int month, int day)
         {
             CleanupYear = year;
             CleanupMonth = month;
