@@ -69,7 +69,7 @@ public class Startup
 
 ## Consumption
 
-The simplest use case for feature flags is to do a conditional check for whether a feature is enabled to take different paths in code. The uses cases grow from there as the feature flag API begins to offer extensions into ASP.NET Core.
+The simplest use case for feature flags is to do a conditional check for whether a feature is enabled to take different paths in code. The use cases grow from there as the feature flag API begins to offer extensions into ASP.NET Core.
 
 ### Feature Check
 
