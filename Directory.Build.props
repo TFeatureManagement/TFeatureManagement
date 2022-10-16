@@ -4,7 +4,7 @@
     <RootDirectory>$(MSBuildThisFileDirectory)</RootDirectory>
     <BuildDirectory>$(RootDirectory)build\</BuildDirectory>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-    <Version>1.2.0-preview</Version>
+    <Version>1.2.0-preview.1</Version>
   </PropertyGroup>
 
 </Project>
