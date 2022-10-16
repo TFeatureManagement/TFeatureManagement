@@ -10,6 +10,7 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
     public class AttributeRoutingController : ControllerBase
     {
         [HttpGet("featureconstrained", Order = -1)]
+        [TFeatureManagement.AspNetCore.Mvc.ActionConstraints.FeatureActionConstraint<Feature>(RequirementType.Any, Feature.Example1, Feature.Example2)]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example1, Feature.Example2)]
         [FeatureActionConstraint(RequirementType.Any, Feature.Example3, Feature.Example4)]
         public IActionResult FeatureConstrained()

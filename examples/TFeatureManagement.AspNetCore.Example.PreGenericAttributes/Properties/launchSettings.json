@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "TFeatureManagement.AspNetCore.Example._6_0": {
+    "TFeatureManagement.AspNetCore.Example.PreGenericAttributes": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
