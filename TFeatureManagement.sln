@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30611.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33006.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F6B7612F-CE7E-4270-8CD3-213B174E20DB}"
 EndProject
@@ -35,6 +35,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Tests", "tests\TFeatureManagement.AspNetCore.Tests\TFeatureManagement.AspNetCore.Tests.csproj", "{F39DC121-CCDB-46C9-8940-C0FFF4CB8D2D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.Tests", "tests\TFeatureManagement.Tests\TFeatureManagement.Tests.csproj", "{CC01C509-584C-4ED1-A9E3-61321C443C43}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.PreGenericAttributes", "examples\TFeatureManagement.AspNetCore.Example.PreGenericAttributes\TFeatureManagement.AspNetCore.Example.PreGenericAttributes.csproj", "{F428A892-544D-43AA-B371-8510A096AE39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{CC01C509-584C-4ED1-A9E3-61321C443C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC01C509-584C-4ED1-A9E3-61321C443C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC01C509-584C-4ED1-A9E3-61321C443C43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F428A892-544D-43AA-B371-8510A096AE39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F428A892-544D-43AA-B371-8510A096AE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F428A892-544D-43AA-B371-8510A096AE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F428A892-544D-43AA-B371-8510A096AE39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
 		{F39DC121-CCDB-46C9-8940-C0FFF4CB8D2D} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
 		{CC01C509-584C-4ED1-A9E3-61321C443C43} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
+		{F428A892-544D-43AA-B371-8510A096AE39} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30D672E2-9D09-4FAB-B35D-E3B579BCA232}
