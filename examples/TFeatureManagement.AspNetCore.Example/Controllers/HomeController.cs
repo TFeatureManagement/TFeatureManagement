@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using TFeatureManagement.AspNetCore.Example.Models;
-using TFeatureManagement.AspNetCore.Example.Mvc.ActionConstraints;
-using TFeatureManagement.AspNetCore.Example.Mvc.Filters;
+using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
+using TFeatureManagement.AspNetCore.Mvc.Filters;
 
 namespace TFeatureManagement.AspNetCore.Example.Controllers
 {
@@ -34,8 +32,8 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
         }
 
         [HttpGet]
-        [FeatureActionConstraint(RequirementType.Any, Feature.Example1, Feature.Example2)]
-        [FeatureActionConstraint(RequirementType.Any, Feature.Example3, Feature.Example4)]
+        [FeatureActionConstraint<Feature>(RequirementType.Any, Feature.Example1, Feature.Example2)]
+        [FeatureActionConstraint<Feature>(RequirementType.Any, Feature.Example3, Feature.Example4)]
         public IActionResult FeatureConstrained()
         {
             return View();
@@ -47,8 +45,8 @@ namespace TFeatureManagement.AspNetCore.Example.Controllers
             return View();
         }
 
-        [FeatureActionFilter(RequirementType.Any, Feature.Example1, Feature.Example2)]
-        [FeatureActionFilter(RequirementType.Any, Feature.Example3, Feature.Example4)]
+        [FeatureActionFilter<Feature>(RequirementType.Any, Feature.Example1, Feature.Example2)]
+        [FeatureActionFilter<Feature>(RequirementType.Any, Feature.Example3, Feature.Example4)]
         public IActionResult FeatureFiltered()
         {
             return View();

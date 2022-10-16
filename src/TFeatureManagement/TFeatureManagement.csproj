@@ -5,9 +5,9 @@
   <Import Project="$(BuildDirectory)SignAssembly.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
     <RootNamespace>TFeatureManagement</RootNamespace>
-		<LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
    
 	<PropertyGroup>
