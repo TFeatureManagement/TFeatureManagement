@@ -146,20 +146,20 @@ using TFeatureManagement.AspNetCore.Example.Models;
 using TFeatureManagement.AspNetCore.Mvc.Filters;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-public class FeatureActionFilterAttribute : Attribute, IFeatureActionFilterMetadata<MyFeatureFlags>
+public class FeatureActionFilterAttribute : Attribute, IFeatureActionFilterMetadata<Feature>
 {
-    public FeatureActionFilterAttribute(params MyFeatureFlags[] features)
+    public FeatureActionFilterAttribute(params Feature[] features)
         : this(RequirementType.All, features)
     {
     }
 
-    public FeatureActionFilterAttribute(RequirementType requirementType, params MyFeatureFlags[] features)
+    public FeatureActionFilterAttribute(RequirementType requirementType, params Feature[] features)
     {
         Features = features;
         RequirementType = requirementType;
     }
 
-    public IEnumerable<MyFeatureFlags> Features { get; }
+    public IEnumerable<Feature> Features { get; }
 
     public RequirementType RequirementType { get; }
 
