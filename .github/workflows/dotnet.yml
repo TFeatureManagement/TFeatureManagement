@@ -51,7 +51,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Publish TFeatureManagement
-      #if: ${{ github.event_name == 'push' }}
+      if: ${{ github.event_name == 'push' }}
       uses: rohith/publish-nuget@v2
       with:
         PROJECT_FILE_PATH: src/TFeatureManagement/TFeatureManagement.csproj
@@ -59,7 +59,7 @@ jobs:
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
     - name: Publish TFeatureManagement.AspNetCore
-      #if: ${{ github.event_name == 'push' }}
+      if: ${{ github.event_name == 'push' }}
       uses: rohith/publish-nuget@v2
       with:
         PROJECT_FILE_PATH: src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj
