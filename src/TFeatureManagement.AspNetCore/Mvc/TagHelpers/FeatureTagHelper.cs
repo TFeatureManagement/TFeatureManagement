@@ -48,6 +48,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
         /// cref="RequirementType.Any" /> then the content will display if none of the features in <see cref="Features"
         /// /> are enabled.
         /// </remarks>
+        [Obsolete("Use RequirementType.NotAny or RequirementType.NotAll in the RequirementType property instead. This will be removed in an upcoming major release.")]
         public bool Negate { get; set; }
 
         /// <summary>
