@@ -24,7 +24,7 @@ namespace TFeatureManagement
         /// Checks whether a given feature is enabled.
         /// </summary>
         /// <param name="feature">The feature to check.</param>
-        /// <returns>True if the feature is enabled, otherwise false.</returns>
+        /// <returns><see langword="true"/> if the feature is enabled; otherwise, <see langword="false"/>.</returns>
         Task<bool> IsEnabledAsync(TFeature feature);
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace TFeatureManagement
         /// <param name="context">
         /// A context providing information that can be used to evaluate whether a feature should be on or off.
         /// </param>
-        /// <returns>True if the feature is enabled, otherwise false.</returns>
+        /// <returns><see langword="true"/> if the feature is enabled; otherwise, <see langword="false"/>.</returns>
         Task<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context);
     }
 }
