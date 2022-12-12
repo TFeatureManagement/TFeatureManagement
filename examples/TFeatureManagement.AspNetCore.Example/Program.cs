@@ -1,3 +1,5 @@
+using TFeatureManagement;
+using TFeatureManagement.AspNetCore.Builder;
 using TFeatureManagement.AspNetCore.DependencyInjection;
 using TFeatureManagement.AspNetCore.Example.FeatureFilters;
 using TFeatureManagement.AspNetCore.Example.Models;
@@ -38,6 +40,13 @@ app.MapControllerRoute(
     name: "featureconstraintfallback",
     pattern: "Home/FeatureConstrained/{id?}",
     defaults: new { controller = "Home", action = "FeatureConstrainedFallback" });
+
+app.MapControllerRoute(
+    name: "FeatureFilteredByEndpointConventionBuilder",
+    pattern: "Home/FeatureFilteredByEndpointConventionBuilder/{id?}",
+    defaults: new { controller = "Home", action = "FeatureFilteredByEndpointConventionBuilder" })
+    .RequireFeatures(RequirementType.Any, Feature.Example1, Feature.Example2)
+    .RequireFeatures(RequirementType.Any, Feature.Example3, Feature.Example4);
 
 app.MapControllerRoute(
     name: "default",

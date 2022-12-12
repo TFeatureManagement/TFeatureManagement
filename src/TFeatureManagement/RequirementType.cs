@@ -1,7 +1,7 @@
 ﻿namespace TFeatureManagement;
 
 /// <summary>
-/// Describes which features in a given set should be required to be considered enabled.
+/// Describes which features in a given set should be required to be enabled for the set to be considered enabled.
 /// </summary>
 public enum RequirementType
 {
