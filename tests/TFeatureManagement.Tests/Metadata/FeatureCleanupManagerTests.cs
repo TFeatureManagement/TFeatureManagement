@@ -31,7 +31,7 @@ namespace TFeatureManagement.Tests
 
             // Assert
             featureCleanupDates.Should().ContainKey(Feature.Test1)
-                .WhichValue.CleanupDate.Should().NotBeNull();
+                .WhoseValue.CleanupDate.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -42,7 +42,7 @@ namespace TFeatureManagement.Tests
 
             // Assert
             featureCleanupDates.Should().ContainKey(Feature.Test2)
-                .WhichValue.Should().BeNull();
+                .WhoseValue.Should().BeNull();
         }
 
         [TestMethod]
