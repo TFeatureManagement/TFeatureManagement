@@ -1,5 +1,3 @@
-using TFeatureManagement;
-using TFeatureManagement.AspNetCore.Builder;
 using TFeatureManagement.AspNetCore.DependencyInjection;
 using TFeatureManagement.AspNetCore.Example.FeatureFilters;
 using TFeatureManagement.AspNetCore.Example.Models;
