@@ -37,7 +37,7 @@ jobs:
 
     - name: Publish TFeatureManagement
       if: ${{ github.event_name == 'push' }}
-      uses: rohith/publish-nuget@v2
+      uses: brandedoutcast/publish-nuget@v2
       with:
         PROJECT_FILE_PATH: src/TFeatureManagement/TFeatureManagement.csproj
         VERSION_FILE_PATH: Directory.Build.props
@@ -45,7 +45,7 @@ jobs:
 
     - name: Publish TFeatureManagement.AspNetCore
       if: ${{ github.event_name == 'push' }}
-      uses: rohith/publish-nuget@v2
+      uses: brandedoutcast/publish-nuget@v2
       with:
         PROJECT_FILE_PATH: src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj
         VERSION_FILE_PATH: Directory.Build.props
