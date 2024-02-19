@@ -6,9 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Http;
 
-namespace TFeatureManagement.AspNetCore.Mvc.Filters;
+namespace TFeatureManagement.AspNetCore.Http;
 
 /// <summary>
 /// An endpoint filter that can be used to require a set of features to be enabled for an endpoint to be enabled. If
