@@ -42,13 +42,6 @@ app.MapControllerRoute(
     defaults: new { controller = "Home", action = "FeatureConstrainedFallback" });
 
 app.MapControllerRoute(
-    name: "FeatureFilteredByEndpointConventionBuilder",
-    pattern: "Home/FeatureFilteredByEndpointConventionBuilder/{id?}",
-    defaults: new { controller = "Home", action = "FeatureFilteredByEndpointConventionBuilder" })
-    .RequireFeatures(RequirementType.Any, Feature.Example1, Feature.Example2)
-    .RequireFeatures(RequirementType.Any, Feature.Example3, Feature.Example4);
-
-app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
