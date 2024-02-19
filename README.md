@@ -1,4 +1,4 @@
-[![Status](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml/badge.svg?branch=master)](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml?query=branch%3Amaster)
+[![Status](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml?query=branch%3Amaster)
 [![Nuget](https://img.shields.io/nuget/v/TFeatureManagement?label=TFeatureManagement)](https://www.nuget.org/packages/TFeatureManagement)
 [![Nuget](https://img.shields.io/nuget/v/TFeatureManagement.AspNetCore?label=TFeatureManagement.AspNetCore)](https://www.nuget.org/packages/TFeatureManagement.AspNetCore)
 
