@@ -38,7 +38,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
         {
             if (features?.Any() != true)
             {
-                throw new ArgumentNullException(nameof(Features));
+                throw new ArgumentNullException(nameof(features));
             }
 
             Features = features;
