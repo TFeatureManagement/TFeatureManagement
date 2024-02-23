@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Authors>Brent Hogan</Authors>
     <Company>TFeatureManagement</Company>
-    <PackageTags>TFeatureManagement FeatureManagement Features FeatureFlags FeatureToggles</PackageTags>
+    <PackageTags>FeatureManagement Feature Management Features FeatureFlags Feature Flags FeatureToggles Feature Toggles</PackageTags>
     <PackageProjectUrl>https://github.com/TFeatureManagement/TFeatureManagement</PackageProjectUrl>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
