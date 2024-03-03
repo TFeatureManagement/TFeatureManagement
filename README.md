@@ -332,15 +332,15 @@ The above example requires all the features to be enabled to render the content 
 </feature>
 ```
 
-The `<feature>` tag can also be configured to negate the evaluation of the features. If configured to require all of the features to be enabled then the content will be rendered if not all of the features are enabled. If configured to require any of the features to be enabled then the content will be rendered if none of the features are enabled.
+The `<feature>` tag can also be configured to require not all or not any of the features to be enabled. If configured to require not all of the features to be enabled then the content will be rendered if not all of the features are enabled. If configured to require not any of the features to be enabled then the content will be rendered if none of the features are enabled.
 
 ``` HTML+Razor
-<feature features="new[] { Feature.FeatureX,Feature.FeatureY }" requirement-type="All" negate="true">
+<feature features="new[] { Feature.FeatureX,Feature.FeatureY }" requirement-type="NotAll">
   <p>This can be seen if not both 'FeatureX' and 'FeatureY' are enabled.</p>
 </feature>
 ```
 ``` HTML+Razor
-<feature features="new[] { Feature.FeatureX,Feature.FeatureY }" requirement-type="Any" negate="true">
+<feature features="new[] { Feature.FeatureX,Feature.FeatureY }" requirement-type="NotAny">
   <p>This can only be seen if neither 'FeatureX' or 'FeatureY' are enabled.</p>
 </feature>
 ```

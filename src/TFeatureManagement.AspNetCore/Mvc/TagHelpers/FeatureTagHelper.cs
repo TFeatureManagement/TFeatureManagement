@@ -17,8 +17,8 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
 
         /// <summary>
         /// Creates a feature tag helper that requires the provided feature(s) to be enabled to render the content
-        /// within the feature tag. The tag helper can be configured to require all or any of the provided feature(s) to
-        /// be enabled.
+        /// within the feature tag. The tag helper can be configured to require all, any, not all or not any of the
+        /// provided feature(s) to be enabled.
         /// </summary>
         /// <param name="featureManager">The feature manager snapshot to use to evaluate feature state.</param>
         public FeatureTagHelper(IFeatureManagerSnapshot<TFeature> featureManager)
@@ -39,19 +39,6 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
         public RequirementType RequirementType { get; set; } = RequirementType.All;
 
         /// <summary>
-        /// Gets or sets whether to negate the evaluation of the features.
-        /// </summary>
-        /// <remarks>
-        /// This is used to display alternate content when the provided feature(s) are not enabled. If <see
-        /// cref="RequirementType" /> is set to <see cref="RequirementType.All" /> then the content will display if not
-        /// all of the features in <see cref="Features" /> are enabled. If <see cref="RequirementType" /> is set to <see
-        /// cref="RequirementType.Any" /> then the content will display if none of the features in <see cref="Features"
-        /// /> are enabled.
-        /// </remarks>
-        [Obsolete("Use RequirementType.NotAny or RequirementType.NotAll in the RequirementType property instead. This will be removed in an upcoming major release.")]
-        public bool Negate { get; set; }
-
-        /// <summary>
         /// Processes the tag helper context to evaluate if the content within the feature tag should be rendered.
         /// </summary>
         /// <param name="context">The tag helper context.</param>
@@ -65,11 +52,6 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
             if (Features?.Any() == true)
             {
                 enabled = await _featureManager.IsEnabledAsync(RequirementType, Features).ConfigureAwait(false);
-            }
-
-            if (Negate)
-            {
-                enabled = !enabled;
             }
 
             if (!enabled)
