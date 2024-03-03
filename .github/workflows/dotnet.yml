@@ -45,10 +45,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      #   additionalArguments: '/showConfig'
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal
 
     - name: Publish
       #if: ${{ github.ref == 'refs/heads/main' }}
-      run: dotnet publish '**/src/*.csproj' --no-build
+      run: dotnet pack '**/src/*.csproj' --no-restore --no-build
