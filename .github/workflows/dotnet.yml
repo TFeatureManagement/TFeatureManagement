@@ -56,8 +56,9 @@ jobs:
     - name: Test
       run: |
         dotnet test --no-restore --no-build --verbosity normal
-
-    - name: Pack
+        
+    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+      name: Pack
       run: |
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --no-restore --no-build --verbosity normal
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --no-restore --no-build --verbosity normal
