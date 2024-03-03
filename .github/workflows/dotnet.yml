@@ -21,29 +21,29 @@ jobs:
       with:
         versionSpec: '5.x'
 
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v4
+      with: 
+        dotnet-version: |
+          2.1.x
+          3.1.x
+          5.0.x
+          6.0.x
+          7.0.x
+          8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
     - name: Determine Version
       uses: gittools/actions/gitversion/execute@v0
       with:
         useConfigFile: true
         updateAssemblyInfo: true
       #   additionalArguments: '/showConfig'
-
-    # - name: Setup dotnet
-    #   uses: actions/setup-dotnet@v4
-    #   with: 
-    #     dotnet-version: |
-    #       2.1.x
-    #       3.1.x
-    #       5.0.x
-    #       6.0.x
-    #       7.0.x
-    #       8.0.x
-
-    # - name: Restore dependencies
-    #   run: dotnet restore
-
-    # - name: Build
-    #   run: dotnet build --no-restore
-
-    # - name: Test
-    #   run: dotnet test --no-build --verbosity normal
