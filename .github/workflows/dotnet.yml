@@ -66,4 +66,4 @@ jobs:
     - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
       name: Publish NuGet packages
       run: |
-        dotnet nuget push "**/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate -n 1
+        dotnet nuget push "**/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --no-symbols
