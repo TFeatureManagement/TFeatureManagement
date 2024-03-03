@@ -23,11 +23,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/pull/')) }}
-      name: Test
-      run: |
-        echo "Test"
-
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
       with:
