@@ -83,8 +83,8 @@ jobs:
 
     - name: Pack
       run: |
-        dotnet build "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build --verbosity normal
-        dotnet build "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build --verbosity normal
+        dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build --verbosity normal
+        dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build --verbosity normal
 
     # - name: NuGet Push
       # if: ${{ github.ref == 'refs/heads/main' }}
