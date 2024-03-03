@@ -38,14 +38,14 @@ jobs:
       run: dotnet restore "src/TFeatureManagement/TFeatureManagement.csproj" --verbosity detailed
 
     - name: Build
-      run: dotnet build "src/TFeatureManagement/TFeatureManagement.csproj" --no-restore --verbosity detailed
+      run: dotnet build "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --verbosity detailed
 
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal
 
     - name: Pack
       #if: ${{ github.ref == 'refs/heads/main' }}
-      run: dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --no-restore --no-build --verbosity detailed
+      run: dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build --verbosity detailed
 
     # - name: NuGet Push
     #   run: dotnet nuget push '*.nupkg' --skip-duplicate
