@@ -23,6 +23,10 @@ jobs:
       with:
         fetch-depth: 0
 
+    - if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release/2.0.0') && inputs.publish_nuget_packages }}
+      name: Pack
+      run: echo Test
+
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
       with:
@@ -54,7 +58,7 @@ jobs:
       run: |
         dotnet test --configuration Release --no-restore --no-build --verbosity normal
         
-    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+    - if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release/2.0.0') && inputs.publish_nuget_packages }}
       name: Pack
       run: |
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
