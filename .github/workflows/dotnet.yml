@@ -48,3 +48,6 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       #   additionalArguments: '/showConfig'
+
+    - name: Publish
+      run: dotnet publish --no-build
