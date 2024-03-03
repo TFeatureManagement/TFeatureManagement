@@ -12,6 +12,6 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
-[*.{sln,proj,csproj,props,targets,xml,config}]
+[*.{sln,proj,csproj,props,targets,xml,config,yml}]
 indent_style = space
 indent_size = 2
