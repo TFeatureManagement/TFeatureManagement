@@ -1,5 +1,3 @@
-#if !NETCOREAPP2_1
-
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -414,5 +412,3 @@ namespace TFeatureManagement.AspNetCore.Tests
         }
     }
 }
-
-#endif

@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, release/* ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, release/*  ]
   workflow_dispatch:
     inputs:
       publish_nuget_packages:
@@ -38,9 +38,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with: 
         dotnet-version: |
-          2.1.x
-          3.1.x
-          5.0.x
           6.0.x
           7.0.x
           8.0.x
@@ -57,13 +54,13 @@ jobs:
       run: |
         dotnet test --configuration Release --no-restore --no-build --verbosity normal
         
-    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
       name: Pack
       run: |
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
 
-    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
       name: Publish NuGet packages
       run: |
         dotnet nuget push "**/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --no-symbols

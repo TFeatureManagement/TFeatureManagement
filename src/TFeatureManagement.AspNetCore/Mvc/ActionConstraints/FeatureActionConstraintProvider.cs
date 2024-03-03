@@ -22,7 +22,6 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
         /// <inheritdoc />
         public void OnProvidersExecuting(ActionConstraintProviderContext context)
         {
-#if !NETCOREAPP2_1
             if (_mvcOptions.EnableEndpointRouting)
             {
                 // If using endpoint routing then an endpoint selector policy is used to check feature action
@@ -32,7 +31,6 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
                 // to it as in the FeatureActionConstraint (because the IActionConstraint.Accept method is synchronous).
                 return;
             }
-#endif
 
             if (context == null)
             {
