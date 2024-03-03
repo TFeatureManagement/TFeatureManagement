@@ -60,7 +60,7 @@ jobs:
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
 
-    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+    - if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release/2.0.0') && inputs.publish_nuget_packages }}
       name: Publish NuGet packages
       run: |
         dotnet nuget push "**/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --no-symbols
