@@ -9,47 +9,43 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v4
+    - name: Checkout
+      uses: actions/checkout@v4
       with:
-        dotnet-version: |
-          2.1.x
-          3.1.x
-          5.0.x
-          6.0.x
-          7.0.x
-          8.0.x
+        fetch-depth: 0
+        fetch-tags: true
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Fetch all history for all tags and branches
+      run: git fetch --prune
 
-    - name: Build
-      run: dotnet build --no-restore
-
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-
-    - name: Publish TFeatureManagement
-      if: ${{ github.event_name == 'push' }}
-      uses: brandedoutcast/publish-nuget@v2
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
       with:
-        PROJECT_FILE_PATH: src/TFeatureManagement/TFeatureManagement.csproj
-        VERSION_FILE_PATH: Directory.Build.props
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+        versionSpec: '5.x'
 
-    - name: Publish TFeatureManagement.AspNetCore
-      if: ${{ github.event_name == 'push' }}
-      uses: brandedoutcast/publish-nuget@v2
-      with:
-        PROJECT_FILE_PATH: src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj
-        VERSION_FILE_PATH: Directory.Build.props
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-        # The commit will be tagged when publishing the TFeatureManagement
-        # package above so there is no need to tag it again here.
-        TAG_COMMIT: false
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0
+      # with:
+      #   additionalArguments: '/showConfig'
+
+    # - name: Setup dotnet
+    #   uses: actions/setup-dotnet@v4
+    #   with: 
+    #     dotnet-version: |
+    #       2.1.x
+    #       3.1.x
+    #       5.0.x
+    #       6.0.x
+    #       7.0.x
+    #       8.0.x
+
+    # - name: Restore dependencies
+    #   run: dotnet restore
+
+    # - name: Build
+    #   run: dotnet build --no-restore
+
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal
