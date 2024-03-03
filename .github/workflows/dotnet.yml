@@ -35,17 +35,17 @@ jobs:
           8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore "src/**/*.csproj"
+      run: dotnet restore "src/TFeatureManagement/TFeatureManagement.csproj"
 
     - name: Build
-      run: dotnet build "src/**/*.csproj" --no-restore
+      run: dotnet build "src/TFeatureManagement/TFeatureManagement.csproj" --no-restore
 
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal
 
     - name: Pack
       #if: ${{ github.ref == 'refs/heads/main' }}
-      run: dotnet pack "src/**/*.csproj" --no-restore --no-build
+      run: dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --no-restore --no-build
 
     # - name: NuGet Push
     #   run: dotnet nuget push '*.nupkg' --skip-duplicate
