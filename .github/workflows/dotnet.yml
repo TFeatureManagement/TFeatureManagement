@@ -63,7 +63,7 @@ jobs:
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --no-restore --no-build --verbosity normal
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --no-restore --no-build --verbosity normal
 
-    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
-      name: Publish NuGet packages
-      run: |
-        dotnet nuget push '*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+    # - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+    #   name: Publish NuGet packages
+    #   run: |
+    #     dotnet nuget push '*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
