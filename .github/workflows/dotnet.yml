@@ -23,7 +23,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - if: ${{ startsWith(github.ref, 'refs/remotes/') }}
+    - if: ${{ startsWith(github.ref, 'refs/pull/') }}
       name: Test
       run: |
         echo "Test"
