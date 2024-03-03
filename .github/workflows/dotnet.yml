@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      publish_nuget_packages:
+        description: 'Publish NuGet packages'
+        required: true
+        type: boolean
+        default: false
+
 
 jobs:
   build:
@@ -86,6 +93,6 @@ jobs:
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build --verbosity normal
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build --verbosity normal
 
-    # - name: NuGet Push
-      # if: ${{ github.ref == 'refs/heads/main' }}
-    #   run: dotnet nuget push '*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+    - if: ${{ inputs.publish_nuget_packages }}
+      name: Publish NuGet packages
+      run: dotnet nuget push '*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
