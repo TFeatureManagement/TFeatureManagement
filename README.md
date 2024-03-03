@@ -11,7 +11,7 @@ As TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.Feat
 
 ## Registration
 
-As TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore libraries, the .NET Core configuration system is used to determine the state of feature flags. See https://github.com/microsoft/FeatureManagement-Dotnet#registration for more information on declaring feature flags using the .NET Core configuration system.
+As TFeatureManagement extends the Microsoft.FeatureManagement and Microsoft.FeatureManagement.AspNetCore libraries, the .NET Core configuration system is used to determine the state of feature flags. See https://github.com/microsoft/FeatureManagement-Dotnet#feature-flag-configuration for more information on declaring feature flags using the .NET Core configuration system.
 
 ### Referencing
 
