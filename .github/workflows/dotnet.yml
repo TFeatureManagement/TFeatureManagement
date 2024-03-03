@@ -50,4 +50,5 @@ jobs:
       #   additionalArguments: '/showConfig'
 
     - name: Publish
-      run: dotnet publish --no-build
+      #if: ${{ github.ref == 'refs/heads/main' }}
+      run: dotnet publish '**/src/*.csproj' --no-build
