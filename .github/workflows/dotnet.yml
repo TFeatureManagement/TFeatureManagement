@@ -58,7 +58,7 @@ jobs:
       run: |
         dotnet test --configuration Release --no-restore --no-build --verbosity normal
         
-    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/)) && inputs.publish_nuget_packages }}
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
       name: Pack
       run: |
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
