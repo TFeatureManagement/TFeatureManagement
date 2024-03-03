@@ -47,11 +47,11 @@ jobs:
 
     - name: Restore dependencies
       run: |
-        dotnet restore --verbosity normal
+        dotnet restore
 
     - name: Build
       run: |
-        dotnet build --configuration Release --no-restore --verbosity normal
+        dotnet build --configuration Release --no-restore
 
     - name: Test
       run: |
@@ -60,8 +60,8 @@ jobs:
     - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
       name: Pack
       run: |
-        dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build --verbosity normal
-        dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build --verbosity normal
+        dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
 
     - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
       name: Publish NuGet packages
