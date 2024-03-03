@@ -1,6 +1,4 @@
-﻿#if !NETCOREAPP2_1
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,23 +30,11 @@ namespace TFeatureManagement.AspNetCore.Routing.Matching
             return appliesToEndpoints;
         }
 
-#if NETSTANDARD2_0
-
-        public async Task ApplyAsync(HttpContext httpContext, EndpointSelectorContext context, CandidateSet candidates)
-        {
-            await ApplyAsyncInternal(httpContext, candidates).ConfigureAwait(false);
-            return;
-        }
-
-#else
-
         public async Task ApplyAsync(HttpContext httpContext, CandidateSet candidates)
         {
             await ApplyAsyncInternal(httpContext, candidates).ConfigureAwait(false);
             return;
         }
-
-#endif
 
         internal static async Task ApplyAsyncInternal(HttpContext httpContext, CandidateSet candidates)
         {
@@ -88,5 +74,3 @@ namespace TFeatureManagement.AspNetCore.Routing.Matching
         }
     }
 }
-
-#endif

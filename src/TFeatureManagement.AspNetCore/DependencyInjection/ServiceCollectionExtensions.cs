@@ -21,9 +21,7 @@ namespace TFeatureManagement.AspNetCore.DependencyInjection
             builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IFilterProvider, FeatureActionFilterProvider<TFeature>>());
             builder.Services.AddSingleton<IFeatureActionConstraintFactory<TFeature>, FeatureActionConstraintFactory<TFeature>>();
             builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IActionConstraintProvider, FeatureActionConstraintProvider<TFeature>>());
-#if !NETCOREAPP2_1
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<MatcherPolicy, FeatureActionConstraintMatcherPolicy<TFeature>>());
-#endif
 
             return builder;
         }
