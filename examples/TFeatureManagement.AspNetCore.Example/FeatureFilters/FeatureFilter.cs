@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Example.Models;
+﻿using TFeatureManagement.AspNetCore.Example.Models;
 
 namespace TFeatureManagement.AspNetCore.Example.FeatureFilters
 {
@@ -10,7 +9,7 @@ namespace TFeatureManagement.AspNetCore.Example.FeatureFilters
         {
         }
 
-        public override Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<Feature> context)
+        public override Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<Feature> context, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(true);
         }

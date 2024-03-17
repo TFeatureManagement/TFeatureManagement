@@ -1,6 +1,7 @@
 ﻿using Microsoft.FeatureManagement;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TFeatureManagement
@@ -15,17 +16,20 @@ namespace TFeatureManagement
             _baseFeatureManagerSnapshot = baseFeatureManagerSnapshot;
         }
 
-        public IAsyncEnumerable<string> GetFeatureNamesAsync()
+        /// <inheritdoc />
+        public IAsyncEnumerable<string> GetFeatureNamesAsync(CancellationToken cancellationToken = default)
         {
             return _baseFeatureManagerSnapshot.GetFeatureNamesAsync();
         }
 
-        public Task<bool> IsEnabledAsync(TFeature feature)
+        /// <inheritdoc />
+        public Task<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default)
         {
             return _baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString());
         }
 
-        public Task<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context)
+        /// <inheritdoc />
+        public Task<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default)
         {
             return _baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString(), context);
         }

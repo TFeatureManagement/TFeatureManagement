@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace TFeatureManagement.Metadata
 {
@@ -22,10 +23,11 @@ namespace TFeatureManagement.Metadata
         /// Gets a list of feature names registered in the feature manager that do not have a matching value in the
         /// specified feature enum.
         /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>
         /// An enumerator which provides asynchronous iteration over the feature names registered in the feature manager
         /// that do not have a matching value in the specified feature enum.
         /// </returns>
-        IAsyncEnumerable<string> GetFeatureNamesNotInFeatureEnumAsync();
+        IAsyncEnumerable<string> GetFeatureNamesNotInFeatureEnumAsync(CancellationToken cancellationToken = default);
     }
 }

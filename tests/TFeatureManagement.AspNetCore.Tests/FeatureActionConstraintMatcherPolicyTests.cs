@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
 using TFeatureManagement.AspNetCore.Mvc.Routing;
@@ -117,7 +118,7 @@ namespace TFeatureManagement.AspNetCore.Tests
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
 
             // Assert
-            _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>()), Times.Never);
+            _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [TestMethod]
@@ -155,7 +156,7 @@ namespace TFeatureManagement.AspNetCore.Tests
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
 
             // Assert
-            _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>()), Times.Never);
+            _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [TestMethod]
@@ -195,7 +196,7 @@ namespace TFeatureManagement.AspNetCore.Tests
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
 
             // Assert
-            _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>()), Times.Never);
+            _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [TestMethod]
@@ -241,7 +242,7 @@ namespace TFeatureManagement.AspNetCore.Tests
             // Assert
             foreach (var feature in features)
             {
-                _featureManager.Verify(x => x.IsEnabledAsync(feature), Times.Once);
+                _featureManager.Verify(x => x.IsEnabledAsync(feature, It.IsAny<CancellationToken>()), Times.Once);
             }
         }
 
@@ -263,7 +264,7 @@ namespace TFeatureManagement.AspNetCore.Tests
             };
             var candidates = CreateCandidateSet(endpoints);
 
-            _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>())).ReturnsAsync(true);
+            _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
             // Act
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
@@ -290,8 +291,8 @@ namespace TFeatureManagement.AspNetCore.Tests
             };
             var candidates = CreateCandidateSet(endpoints);
 
-            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test1)).ReturnsAsync(true);
-            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test2)).ReturnsAsync(false);
+            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test1, It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test2, It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
             // Act
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
@@ -318,8 +319,8 @@ namespace TFeatureManagement.AspNetCore.Tests
             };
             var candidates = CreateCandidateSet(endpoints);
 
-            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test1)).ReturnsAsync(true);
-            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test2)).ReturnsAsync(false);
+            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test1, It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test2, It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
             // Act
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
@@ -346,7 +347,7 @@ namespace TFeatureManagement.AspNetCore.Tests
             };
             var candidates = CreateCandidateSet(endpoints);
 
-            _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>())).ReturnsAsync(false);
+            _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
             // Act
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
@@ -377,7 +378,7 @@ namespace TFeatureManagement.AspNetCore.Tests
             };
             var candidates = CreateCandidateSet(endpoints);
 
-            _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>())).ReturnsAsync(false);
+            _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
             // Act
             await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
@@ -385,11 +386,11 @@ namespace TFeatureManagement.AspNetCore.Tests
             // Assert
             foreach (var feature in features)
             {
-                _featureManager.Verify(x => x.IsEnabledAsync(feature), Times.Once);
+                _featureManager.Verify(x => x.IsEnabledAsync(feature, It.IsAny<CancellationToken>()), Times.Once);
             }
             foreach (var feature in additionalFeatures)
             {
-                _featureManager.Verify(x => x.IsEnabledAsync(feature), Times.Never);
+                _featureManager.Verify(x => x.IsEnabledAsync(feature, It.IsAny<CancellationToken>()), Times.Never);
             }
         }
 

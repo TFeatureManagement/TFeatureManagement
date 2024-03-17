@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TFeatureManagement.Tests
@@ -80,7 +81,7 @@ namespace TFeatureManagement.Tests
             var isEnabled = await _underTest.GetAsync(featureName);
 
             // Assert
-            _sessionManager.Verify(x => x.GetAsync(It.IsAny<Feature>()), Times.Never);
+            _sessionManager.Verify(x => x.GetAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [TestMethod]
@@ -96,7 +97,7 @@ namespace TFeatureManagement.Tests
             await _underTest.GetAsync(featureName);
 
             // Assert
-            _sessionManager.Verify(x => x.GetAsync(feature), Times.Once);
+            _sessionManager.Verify(x => x.GetAsync(feature, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
@@ -108,7 +109,7 @@ namespace TFeatureManagement.Tests
 
             _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
 
-            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>())).ReturnsAsync(false);
+            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
             // Act
             var isEnabled = await _underTest.GetAsync(featureName);
@@ -126,7 +127,7 @@ namespace TFeatureManagement.Tests
 
             _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
 
-            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>())).ReturnsAsync(true);
+            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
             // Act
             var isEnabled = await _underTest.GetAsync(featureName);
@@ -144,7 +145,7 @@ namespace TFeatureManagement.Tests
 
             _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
 
-            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>())).ReturnsAsync((bool?)null);
+            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync((bool?)null);
 
             // Act
             var isEnabled = await _underTest.GetAsync(featureName);
@@ -180,7 +181,7 @@ namespace TFeatureManagement.Tests
             await _underTest.SetAsync(featureName, false);
 
             // Assert
-            _sessionManager.Verify(x => x.SetAsync(It.IsAny<Feature>(), It.IsAny<bool>()), Times.Never);
+            _sessionManager.Verify(x => x.SetAsync(It.IsAny<Feature>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [TestMethod]
@@ -198,7 +199,7 @@ namespace TFeatureManagement.Tests
             await _underTest.SetAsync(featureName, isEnabled);
 
             // Assert
-            _sessionManager.Verify(x => x.SetAsync(feature, isEnabled), Times.Once);
+            _sessionManager.Verify(x => x.SetAsync(feature, isEnabled, It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }
