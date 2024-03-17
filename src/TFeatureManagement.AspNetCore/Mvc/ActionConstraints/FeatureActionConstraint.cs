@@ -63,7 +63,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints
         {
             var featureManager = context.RouteContext.HttpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
-            return Task.Run(() => featureManager.IsEnabledAsync(RequirementType, Features)).GetAwaiter().GetResult();
+            return Task.Run(() => featureManager.IsEnabledAsync(RequirementType, Features).AsTask()).GetAwaiter().GetResult();
         }
     }
 }

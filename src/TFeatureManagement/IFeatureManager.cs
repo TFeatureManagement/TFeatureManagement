@@ -28,7 +28,7 @@ namespace TFeatureManagement
         /// <param name="feature">The feature to check.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns><see langword="true"/> if the feature is enabled; otherwise, <see langword="false"/>.</returns>
-        Task<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default);
+        ValueTask<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Checks whether a given feature is enabled.
@@ -39,6 +39,6 @@ namespace TFeatureManagement
         /// </param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns><see langword="true"/> if the feature is enabled; otherwise, <see langword="false"/>.</returns>
-        Task<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default);
+        ValueTask<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default);
     }
 }
