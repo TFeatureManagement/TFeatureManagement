@@ -1,5 +1,6 @@
 ﻿using Microsoft.FeatureManagement;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TFeatureManagement
@@ -42,10 +43,11 @@ namespace TFeatureManagement
         /// Evaluates the feature filter to see if the filter's criteria for being enabled has been satisfied.
         /// </summary>
         /// <param name="context">
-        /// A feature filter evaluation context that contains information that may be needed to evalute the filter. This
+        /// A feature filter evaluation context that contains information that may be needed to evaluate the filter. This
         /// context includes configuration, if any, for this filter for the feature being evaluated.
         /// </param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns><c>true</c> if the filter's criteria has been met; otherwise, <c>false</c>.</returns>
-        public abstract Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<TFeature> context);
+        public abstract Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<TFeature> context, CancellationToken cancellationToken = default);
     }
 }

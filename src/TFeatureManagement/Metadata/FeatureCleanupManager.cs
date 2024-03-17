@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace TFeatureManagement.Metadata
 {
@@ -46,11 +48,11 @@ namespace TFeatureManagement.Metadata
         }
 
         /// <inheritdoc />
-        public async IAsyncEnumerable<string> GetFeatureNamesNotInFeatureEnumAsync()
+        public async IAsyncEnumerable<string> GetFeatureNamesNotInFeatureEnumAsync([EnumeratorCancellation]CancellationToken cancellationToken = default)
         {
             var featureKeys = Enum.GetValues(typeof(TFeature)).Cast<TFeature>().Select(f => f.ToString()).ToList();
 
-            await foreach (var featureName in _featureManager.GetFeatureNamesAsync())
+            await foreach (var featureName in _featureManager.GetFeatureNamesAsync(cancellationToken))
             {
                 if (!featureKeys.Contains(featureName))
                 {

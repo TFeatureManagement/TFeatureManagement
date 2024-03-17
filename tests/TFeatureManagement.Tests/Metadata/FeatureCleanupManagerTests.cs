@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using TFeatureManagement.Metadata;
 using TFeatureManagement.Tests.DataAnnotations;
@@ -49,7 +50,7 @@ namespace TFeatureManagement.Tests
         public async Task GetFeatureNamesNotInFeatureEnumAsync_FeatureNamesThatAreNotInFeatureEnumDoNotExist_ReturnsNoFeatureNames()
         {
             // Arrange
-            _featureManager.Setup(x => x.GetFeatureNamesAsync()).Returns(GetFeatureNamesAsync);
+            _featureManager.Setup(x => x.GetFeatureNamesAsync(It.IsAny<CancellationToken>())).Returns(GetFeatureNamesAsync);
 
             // Act
             var featureNamesNotInFeatureEnum = new List<string>();
@@ -66,7 +67,7 @@ namespace TFeatureManagement.Tests
         public async Task GetFeatureNamesNotInFeatureEnumAsync_FeatureNamesThatAreNotInFeatureEnumExist_ReturnsFeatureNames()
         {
             // Arrange
-            _featureManager.Setup(x => x.GetFeatureNamesAsync()).Returns(GetFeatureNamesIncludingFeatureNamesNotInFeatureEnumAsync);
+            _featureManager.Setup(x => x.GetFeatureNamesAsync(It.IsAny<CancellationToken>())).Returns(GetFeatureNamesIncludingFeatureNamesNotInFeatureEnumAsync);
 
             // Act
             var featureNamesNotInFeatureEnum = new List<string>();
