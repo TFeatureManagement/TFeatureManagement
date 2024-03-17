@@ -7,7 +7,7 @@ namespace TFeatureManagement.Extensions
 {
     public static class EnumerableExtensions
     {
-        public static async Task<bool> AnyAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, CancellationToken, Task<bool>> predicate, CancellationToken cancellationToken = default)
+        public static async ValueTask<bool> AnyAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
         {
             bool enabled = false;
 
@@ -24,7 +24,7 @@ namespace TFeatureManagement.Extensions
             return enabled;
         }
 
-        public static async Task<bool> AllAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, CancellationToken, Task<bool>> predicate, CancellationToken cancellationToken = default)
+        public static async ValueTask<bool> AllAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
         {
             bool enabled = true;
 

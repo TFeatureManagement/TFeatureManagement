@@ -14,7 +14,7 @@ namespace TFeatureManagement
         /// <param name="features">The features to check.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns><see langword="true"/> if the features are enabled; otherwise, <see langword="false"/>.</returns>
-        public static Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, IEnumerable<TFeature> features, CancellationToken cancellationToken = default)
+        public static ValueTask<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, IEnumerable<TFeature> features, CancellationToken cancellationToken = default)
             where TFeature : struct, Enum
         {
             return featureManager.IsEnabledAsync(RequirementType.All, features, cancellationToken);
@@ -28,7 +28,7 @@ namespace TFeatureManagement
         /// <param name="features">The features to check.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns><see langword="true"/> if the features are enabled; otherwise, <see langword="false"/>.</returns>
-        public static async Task<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, RequirementType requirementType, IEnumerable<TFeature> features, CancellationToken cancellationToken = default)
+        public static async ValueTask<bool> IsEnabledAsync<TFeature>(this IFeatureManager<TFeature> featureManager, RequirementType requirementType, IEnumerable<TFeature> features, CancellationToken cancellationToken = default)
             where TFeature : struct, Enum
         {
             var isEnabled = requirementType == RequirementType.All || requirementType == RequirementType.NotAll ?

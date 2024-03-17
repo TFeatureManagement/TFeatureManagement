@@ -23,15 +23,15 @@ namespace TFeatureManagement
         }
 
         /// <inheritdoc />
-        public Task<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default)
         {
-            return _baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString());
+            return new ValueTask<bool>(_baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString()));
         }
 
         /// <inheritdoc />
-        public Task<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default)
+        public ValueTask<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default)
         {
-            return _baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString(), context);
+            return new ValueTask<bool>(_baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString(), context));
         }
     }
 }
