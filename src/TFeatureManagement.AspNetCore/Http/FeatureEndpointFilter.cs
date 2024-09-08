@@ -2,10 +2,6 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TFeatureManagement.AspNetCore.Http;
 
@@ -58,7 +54,7 @@ public class FeatureEndpointFilter<TFeature> : IEndpointFilter
     public RequirementType RequirementType { get; }
 
     /// <inheritdoc />
-    public async ValueTask<object> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
+    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         var featureManager = context.HttpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
@@ -71,7 +67,7 @@ public class FeatureEndpointFilter<TFeature> : IEndpointFilter
             var disabledEndpointHandler = context.HttpContext.RequestServices.GetService<IDisabledEndpointHandler<TFeature>>() ?? new NotFoundDisabledEndpointHandler<TFeature>();
 
             await disabledEndpointHandler.HandleDisabledEndpoint(Features, RequirementType, context);
-            return new ValueTask<object>(Task.FromResult<object>(null));
+            return new ValueTask<object?>(Task.FromResult<object?>(null));
         }
     }
 }
