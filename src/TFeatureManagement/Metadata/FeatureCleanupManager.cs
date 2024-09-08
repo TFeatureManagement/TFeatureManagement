@@ -28,7 +28,7 @@ namespace TFeatureManagement.Metadata
         {
             var featureCleanupDates = new Dictionary<TFeature, TFeatureCleanupDate>();
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
             var features = Enum.GetValues<TFeature>();
 #else
             var features = Enum.GetValues(typeof(TFeature)).Cast<TFeature>();
