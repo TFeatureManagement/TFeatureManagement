@@ -57,9 +57,9 @@ jobs:
       name: Pack
       run: |
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
-        dotnet pack "src/TFeatureManagement/TFeatureManagement.Abstractions.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.Abstractions/TFeatureManagement.Abstractions.csproj" --configuration Release --no-restore --no-build
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
-        dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.Abstractions.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.AspNetCore.Abstractions/TFeatureManagement.AspNetCore.Abstractions.csproj" --configuration Release --no-restore --no-build
 
     - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
       name: Publish NuGet packages
