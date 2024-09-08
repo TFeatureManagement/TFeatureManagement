@@ -20,7 +20,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.Routing
 
         public async Task RouteAsync(RouteContext context)
         {
-            await DefaultHandler.RouteAsync(context).ConfigureAwait(false);
+            await DefaultHandler.RouteAsync(context);
         }
     }
 }

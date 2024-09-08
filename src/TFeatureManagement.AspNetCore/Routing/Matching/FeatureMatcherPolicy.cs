@@ -32,7 +32,7 @@ namespace TFeatureManagement.AspNetCore.Routing.Matching
 
         public async Task ApplyAsync(HttpContext httpContext, CandidateSet candidates)
         {
-            await ApplyAsyncInternal(httpContext, candidates).ConfigureAwait(false);
+            await ApplyAsyncInternal(httpContext, candidates);
             return;
         }
 
@@ -52,7 +52,7 @@ namespace TFeatureManagement.AspNetCore.Routing.Matching
                         .GetOrderedMetadata<IFeatureMetadata<TFeature>>()
                         .Where(m => m.Features?.Any() == true))
                     {
-                        enabled = enabled && await featureManager.IsEnabledAsync(metadata.RequirementType, metadata.Features).ConfigureAwait(false);
+                        enabled = enabled && await featureManager.IsEnabledAsync(metadata.RequirementType, metadata.Features);
 
                         if (!enabled)
                         {

@@ -63,15 +63,15 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
         {
             var featureManager = context.HttpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
-            if (await featureManager.IsEnabledAsync(RequirementType, Features).ConfigureAwait(false))
+            if (await featureManager.IsEnabledAsync(RequirementType, Features))
             {
-                await next().ConfigureAwait(false);
+                await next();
             }
             else
             {
                 var disabledActionHandler = context.HttpContext.RequestServices.GetService<IDisabledActionHandler<TFeature>>() ?? new NotFoundDisabledActionHandler<TFeature>();
 
-                await disabledActionHandler.HandleDisabledAction(Features, context).ConfigureAwait(false);
+                await disabledActionHandler.HandleDisabledAction(Features, context);
             }
         }
     }

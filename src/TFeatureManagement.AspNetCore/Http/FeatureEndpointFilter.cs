@@ -62,15 +62,15 @@ public class FeatureEndpointFilter<TFeature> : IEndpointFilter
     {
         var featureManager = context.HttpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
-        if (await featureManager.IsEnabledAsync(RequirementType, Features).ConfigureAwait(false))
+        if (await featureManager.IsEnabledAsync(RequirementType, Features))
         {
-            return await next(context).ConfigureAwait(false);
+            return await next(context);
         }
         else
         {
             var disabledEndpointHandler = context.HttpContext.RequestServices.GetService<IDisabledEndpointHandler<TFeature>>() ?? new NotFoundDisabledEndpointHandler<TFeature>();
 
-            await disabledEndpointHandler.HandleDisabledEndpoint(Features, RequirementType, context).ConfigureAwait(false);
+            await disabledEndpointHandler.HandleDisabledEndpoint(Features, RequirementType, context);
             return new ValueTask<object>(Task.FromResult<object>(null));
         }
     }

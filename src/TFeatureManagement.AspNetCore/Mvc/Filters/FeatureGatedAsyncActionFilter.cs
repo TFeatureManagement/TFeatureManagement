@@ -20,16 +20,16 @@ namespace TFeatureManagement.AspNetCore.Mvc.Filters
         {
             var featureManager = context.HttpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
 
-            if (await featureManager.IsEnabledAsync(Feature).ConfigureAwait(false))
+            if (await featureManager.IsEnabledAsync(Feature))
             {
                 var serviceProvider = context.HttpContext.RequestServices.GetRequiredService<IServiceProvider>();
                 var filter = ActivatorUtilities.CreateInstance<TFilter>(serviceProvider);
 
-                await filter.OnActionExecutionAsync(context, next).ConfigureAwait(false);
+                await filter.OnActionExecutionAsync(context, next);
             }
             else
             {
-                await next().ConfigureAwait(false);
+                await next();
             }
         }
     }
