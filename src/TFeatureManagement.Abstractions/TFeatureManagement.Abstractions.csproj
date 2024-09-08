@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(BuildDirectory)AssemblyInfo.props" />
+  <Import Project="$(BuildDirectory)PackageInfo.props" />
+  <Import Project="$(BuildDirectory)SignAssembly.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootNamespace>TFeatureManagement</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>TFeatureManagement.Abstractions</PackageId>
+    <Description>TFeatureManagement.Abstractions provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
+    <Product>TFeatureManagement.Abstractions</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="GitVersion.MsBuild" Version="6.0.2">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootNamespace>TFeatureManagement.AspNetCore</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>TFeatureManagement.AspNetCore.Abstractions</PackageId>
+    <Description>TFeatureManagement.AspNetCore.Abstractions provides extensions to Microsoft.FeatureManagement.AspNetCore, mainly to better support the use of an enum to specify features.</Description>
+    <Product>TFeatureManagement.AspNetCore.Abstractions</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" Version="6.0.2">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TFeatureManagement.Abstractions\TFeatureManagement.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

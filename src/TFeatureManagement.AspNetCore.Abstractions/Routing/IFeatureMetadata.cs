@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TFeatureManagement.AspNetCore.Routing;
+﻿namespace TFeatureManagement.AspNetCore.Routing;
 
 /// <summary>
 /// Represents feature metadata to be used during routing.

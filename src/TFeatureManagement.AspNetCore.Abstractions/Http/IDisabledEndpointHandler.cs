@@ -1,9 +1,6 @@
 ﻿#if NET7_0_OR_GREATER
 
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace TFeatureManagement.AspNetCore.Http;
 
