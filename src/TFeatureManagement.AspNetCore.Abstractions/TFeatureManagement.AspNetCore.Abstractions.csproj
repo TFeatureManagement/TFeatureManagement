@@ -13,7 +13,7 @@
 
   <PropertyGroup>
     <PackageId>TFeatureManagement.AspNetCore.Abstractions</PackageId>
-    <Description>TFeatureManagement.AspNetCore.Abstractions provides extensions to Microsoft.FeatureManagement.AspNetCore, mainly to better support the use of an enum to specify features.</Description>
+    <Description>TFeatureManagement.AspNetCore.Abstractions provides abstractions for TFeatureManagement.AspNetCore.</Description>
     <Product>TFeatureManagement.AspNetCore.Abstractions</Product>
   </PropertyGroup>
 

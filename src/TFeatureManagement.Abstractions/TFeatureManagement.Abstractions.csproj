@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <PackageId>TFeatureManagement.Abstractions</PackageId>
-    <Description>TFeatureManagement.Abstractions provides extensions to Microsoft.FeatureManagement, mainly to better support the use of an enum to specify features.</Description>
+    <Description>TFeatureManagement.Abstractions provides abstractions for TFeatureManagement.</Description>
     <Product>TFeatureManagement.Abstractions</Product>
   </PropertyGroup>
 
