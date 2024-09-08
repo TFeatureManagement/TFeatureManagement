@@ -1,12 +1,11 @@
 ﻿using TFeatureManagement.Tests.DataAnnotations;
 
-namespace TFeatureManagement.Tests
-{
-    public enum Feature
-    {
-        [TestFeatureCleanupDate(2000, 1, 1)]
-        Test1,
+namespace TFeatureManagement.Tests;
 
-        Test2
-    }
+public enum Feature
+{
+    [TestFeatureCleanupDate(2000, 1, 1)]
+    Test1,
+
+    Test2
 }

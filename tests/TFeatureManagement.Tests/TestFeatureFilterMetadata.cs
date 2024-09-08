@@ -1,8 +1,7 @@
 ﻿using Microsoft.FeatureManagement;
 
-namespace TFeatureManagement.Tests
+namespace TFeatureManagement.Tests;
+
+public class TestFeatureFilterMetadata : IFeatureFilterMetadata
 {
-    public class TestFeatureFilterMetadata : IFeatureFilterMetadata
-    {
-    }
 }

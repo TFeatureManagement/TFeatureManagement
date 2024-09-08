@@ -3,31 +3,30 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TFeatureManagement.DependencyInjection;
 
-namespace TFeatureManagement.Tests
+namespace TFeatureManagement.Tests;
+
+[TestClass]
+public class FeatureManagementBuilderTests
 {
-    [TestClass]
-    public class FeatureManagementBuilderTests
+    private FeatureManagementBuilder<Feature> _underTest;
+
+    private Mock<IFeatureManagementBuilder> _baseFeatureManagementBuilder;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private FeatureManagementBuilder<Feature> _underTest;
+        _baseFeatureManagementBuilder = new Mock<IFeatureManagementBuilder>();
 
-        private Mock<IFeatureManagementBuilder> _baseFeatureManagementBuilder;
+        _underTest = new FeatureManagementBuilder<Feature>(_baseFeatureManagementBuilder.Object);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _baseFeatureManagementBuilder = new Mock<IFeatureManagementBuilder>();
+    [TestMethod]
+    public void AddFeatureFilter_CallsBaseAddFeatureFilterCorrectly()
+    {
+        // Arrange and Act
+        _underTest.AddFeatureFilter<TestFeatureFilterMetadata>();
 
-            _underTest = new FeatureManagementBuilder<Feature>(_baseFeatureManagementBuilder.Object);
-        }
-
-        [TestMethod]
-        public void AddFeatureFilter_CallsBaseAddFeatureFilterCorrectly()
-        {
-            // Arrange and Act
-            _underTest.AddFeatureFilter<TestFeatureFilterMetadata>();
-
-            // Assert
-            _baseFeatureManagementBuilder.Verify(x => x.AddFeatureFilter<TestFeatureFilterMetadata>(), Times.Once);
-        }
+        // Assert
+        _baseFeatureManagementBuilder.Verify(x => x.AddFeatureFilter<TestFeatureFilterMetadata>(), Times.Once);
     }
 }
