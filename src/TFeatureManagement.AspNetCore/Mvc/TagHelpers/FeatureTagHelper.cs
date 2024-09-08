@@ -51,7 +51,7 @@ namespace TFeatureManagement.AspNetCore.Mvc.TagHelpers
 
             if (Features?.Any() == true)
             {
-                enabled = await _featureManager.IsEnabledAsync(RequirementType, Features).ConfigureAwait(false);
+                enabled = await _featureManager.IsEnabledAsync(RequirementType, Features);
             }
 
             if (!enabled)
