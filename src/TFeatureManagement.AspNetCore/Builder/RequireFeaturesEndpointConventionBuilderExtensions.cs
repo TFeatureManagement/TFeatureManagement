@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using System;
 using TFeatureManagement.AspNetCore.Http;
 
 namespace TFeatureManagement.AspNetCore.Builder;

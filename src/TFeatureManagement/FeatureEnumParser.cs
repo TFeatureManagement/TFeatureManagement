@@ -1,23 +1,20 @@
-﻿using System;
+﻿namespace TFeatureManagement;
 
-namespace TFeatureManagement
+public class FeatureEnumParser<T> : IFeatureEnumParser<T>
+    where T : struct, Enum
 {
-    public class FeatureEnumParser<T> : IFeatureEnumParser<T>
-        where T : struct, Enum
+    /// <inheritdoc />
+    public bool TryParse(string featureName, bool ignoreCase, out T feature)
     {
-        /// <inheritdoc />
-        public bool TryParse(string featureName, bool ignoreCase, out T feature)
+        if (Enum.TryParse(featureName, ignoreCase, out feature)
+            && Enum.IsDefined(typeof(T), feature))
         {
-            if (Enum.TryParse(featureName, ignoreCase, out feature)
-                && Enum.IsDefined(typeof(T), feature))
-            {
-                return true;
-            }
-            else
-            {
-                feature = default;
-                return false;
-            }
+            return true;
+        }
+        else
+        {
+            feature = default;
+            return false;
         }
     }
 }

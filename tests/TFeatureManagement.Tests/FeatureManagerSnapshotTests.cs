@@ -5,83 +5,82 @@ using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TFeatureManagement.Tests
+namespace TFeatureManagement.Tests;
+
+[TestClass]
+public class FeatureManagerSnapshotTests
 {
-    [TestClass]
-    public class FeatureManagerSnapshotTests
+    private FeatureManagerSnapshot<Feature> _underTest;
+
+    private Mock<IFeatureManagerSnapshot> _baseFeatureManagerSnapshot;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private FeatureManagerSnapshot<Feature> _underTest;
+        _baseFeatureManagerSnapshot = new Mock<IFeatureManagerSnapshot>();
 
-        private Mock<IFeatureManagerSnapshot> _baseFeatureManagerSnapshot;
+        _underTest = new FeatureManagerSnapshot<Feature>(_baseFeatureManagerSnapshot.Object);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _baseFeatureManagerSnapshot = new Mock<IFeatureManagerSnapshot>();
+    [TestMethod]
+    public void GetFeatureNamesAsync_CallsBaseGetFeatureNamesAsyncCorrectly()
+    {
+        _underTest.GetFeatureNamesAsync();
 
-            _underTest = new FeatureManagerSnapshot<Feature>(_baseFeatureManagerSnapshot.Object);
-        }
+        _baseFeatureManagerSnapshot.Verify(x => x.GetFeatureNamesAsync(), Times.Once);
+    }
 
-        [TestMethod]
-        public void GetFeatureNamesAsync_CallsBaseGetFeatureNamesAsyncCorrectly()
-        {
-            _underTest.GetFeatureNamesAsync();
+    [TestMethod]
+    public void GetFeatureNamesAsync_ReturnsBaseGetFeatureNamesAsyncResult()
+    {
+        var expectedFeatureNames = new Mock<IAsyncEnumerable<string>>();
+        _baseFeatureManagerSnapshot.Setup(x => x.GetFeatureNamesAsync()).Returns(expectedFeatureNames.Object);
 
-            _baseFeatureManagerSnapshot.Verify(x => x.GetFeatureNamesAsync(), Times.Once);
-        }
+        var featureNames = _underTest.GetFeatureNamesAsync();
 
-        [TestMethod]
-        public void GetFeatureNamesAsync_ReturnsBaseGetFeatureNamesAsyncResult()
-        {
-            var expectedFeatureNames = new Mock<IAsyncEnumerable<string>>();
-            _baseFeatureManagerSnapshot.Setup(x => x.GetFeatureNamesAsync()).Returns(expectedFeatureNames.Object);
+        featureNames.Should().Be(expectedFeatureNames.Object);
+    }
 
-            var featureNames = _underTest.GetFeatureNamesAsync();
+    [TestMethod]
+    public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly()
+    {
+        var expectedFeature = Feature.Test1;
 
-            featureNames.Should().Be(expectedFeatureNames.Object);
-        }
+        await _underTest.IsEnabledAsync(expectedFeature);
 
-        [TestMethod]
-        public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly()
-        {
-            var expectedFeature = Feature.Test1;
+        _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeature.ToString()), Times.Once);
+    }
 
-            await _underTest.IsEnabledAsync(expectedFeature);
+    [TestMethod]
+    public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult()
+    {
+        _baseFeatureManagerSnapshot.Setup(x => x.IsEnabledAsync(It.IsAny<string>())).ReturnsAsync(true);
 
-            _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeature.ToString()), Times.Once);
-        }
+        var isEnabled = await _underTest.IsEnabledAsync(Feature.Test1);
 
-        [TestMethod]
-        public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult()
-        {
-            _baseFeatureManagerSnapshot.Setup(x => x.IsEnabledAsync(It.IsAny<string>())).ReturnsAsync(true);
+        isEnabled.Should().BeTrue();
+    }
 
-            var isEnabled = await _underTest.IsEnabledAsync(Feature.Test1);
+    [TestMethod]
+    public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly_WithContext()
+    {
+        var expectedFeature = Feature.Test1;
+        var expectedContext = new object();
 
-            isEnabled.Should().BeTrue();
-        }
+        await _underTest.IsEnabledAsync(expectedFeature, expectedContext);
 
-        [TestMethod]
-        public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly_WithContext()
-        {
-            var expectedFeature = Feature.Test1;
-            var expectedContext = new object();
+        _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeature.ToString(), expectedContext), Times.Once);
+    }
 
-            await _underTest.IsEnabledAsync(expectedFeature, expectedContext);
+    [TestMethod]
+    public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult_WithContext()
+    {
+        var expectedFeature = Feature.Test1;
+        var expectedContext = new object();
+        _baseFeatureManagerSnapshot.Setup(x => x.IsEnabledAsync(It.IsAny<string>(), It.IsAny<object>())).ReturnsAsync(true);
 
-            _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeature.ToString(), expectedContext), Times.Once);
-        }
+        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext);
 
-        [TestMethod]
-        public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult_WithContext()
-        {
-            var expectedFeature = Feature.Test1;
-            var expectedContext = new object();
-            _baseFeatureManagerSnapshot.Setup(x => x.IsEnabledAsync(It.IsAny<string>(), It.IsAny<object>())).ReturnsAsync(true);
-
-            var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext);
-
-            isEnabled.Should().BeTrue();
-        }
+        isEnabled.Should().BeTrue();
     }
 }

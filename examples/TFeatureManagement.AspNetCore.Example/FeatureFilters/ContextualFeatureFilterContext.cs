@@ -1,6 +1,5 @@
-﻿namespace TFeatureManagement.AspNetCore.Example.FeatureFilters
+﻿namespace TFeatureManagement.AspNetCore.Example.FeatureFilters;
+
+public class ContextualFeatureFilterContext
 {
-    public class ContextualFeatureFilterContext
-    {
-    }
 }
