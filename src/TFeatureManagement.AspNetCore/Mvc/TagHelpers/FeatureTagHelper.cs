@@ -26,7 +26,7 @@ public class FeatureTagHelper<TFeature> : TagHelper
     /// Gets or sets the features that should be enabled.
     /// </summary>
     [HtmlAttributeName("features")]
-    public IEnumerable<TFeature> Features { get; set; }
+    public IEnumerable<TFeature>? Features { get; set; }
 
     /// <summary>
     /// Gets or sets whether all or any features in <see cref="Features" /> should be enabled.

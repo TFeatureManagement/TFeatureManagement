@@ -17,5 +17,5 @@ public class FeatureFilterEvaluationContext<TFeature>
     /// <summary>
     /// The settings provided for the feature filter to use when evaluating whether the feature should be enabled.
     /// </summary>
-    public IConfiguration Parameters { get; set; }
+    public IConfiguration? Parameters { get; set; }
 }

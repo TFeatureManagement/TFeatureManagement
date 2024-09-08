@@ -12,7 +12,7 @@ public class FeatureMvcRouteHandler : IRouter
     /// <inheritdoc />
     public IRouter DefaultHandler { get; set; }
 
-    public VirtualPathData GetVirtualPath(VirtualPathContext context)
+    public VirtualPathData? GetVirtualPath(VirtualPathContext context)
     {
         return DefaultHandler.GetVirtualPath(context);
     }
