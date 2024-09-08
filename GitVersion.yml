@@ -1,4 +1,2 @@
 mode: ContinuousDelivery
-source-branches:
-  - main
-  - release/2.0.0
+source-branches: [main, release/2.0.0]
