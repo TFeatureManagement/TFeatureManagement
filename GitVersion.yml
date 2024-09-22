@@ -1,2 +1,2 @@
+workflow: GitHubFlow/v1
 mode: ContinuousDelivery
-source-branches: [main, release/2.0.0]
