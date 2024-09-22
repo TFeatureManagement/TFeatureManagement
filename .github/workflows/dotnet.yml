@@ -38,9 +38,9 @@ jobs:
     - name: Tag Commit
       run: |
         $versionTag = "v${{ steps.determineVersion.outputs.semVer }}"
-        echo $versionTag
-        # git tag v
-        # git push origin --tags
+        echo "Tagging Commit with $versionTag"
+        git tag $versionTag
+        git push origin --tags
 
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
