@@ -46,6 +46,13 @@ jobs:
       uses: gittools/actions/gitversion/command@v3.0.0
       with:
         arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles
+        
+    #- if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+    - name: Tag Commit
+      run: |
+        echo ${{ steps.updateVersion.outputs.semVer }}
+        # git tag v
+        # git push origin --tags
 
     - name: Restore dependencies
       run: |
@@ -58,12 +65,6 @@ jobs:
     - name: Test
       run: |
         dotnet test --configuration Release --no-restore --no-build --verbosity normal
-        
-    #- if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
-    - name: Tag Commit
-      run: |
-        git tag v${{ steps.updateVersion.outputs.semVer }}
-        git push origin --tags
         
     # - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
     #   name: Pack
