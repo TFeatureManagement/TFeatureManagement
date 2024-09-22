@@ -40,6 +40,11 @@ jobs:
           6.0.x
           8.0.x
 
+    - name: Update Version
+      uses: gittools/actions/gitversion/command@v0
+      with:
+        arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles
+
     - name: Restore dependencies
       run: |
         dotnet restore
@@ -51,12 +56,6 @@ jobs:
     - name: Test
       run: |
         dotnet test --configuration Release --no-restore --no-build --verbosity normal
-
-    - name: Update Version
-      uses: gittools/actions/gitversion/execute@v0
-      with:
-        useConfigFile: true
-        updateAssemblyInfo: true
         
     - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
       name: Pack
