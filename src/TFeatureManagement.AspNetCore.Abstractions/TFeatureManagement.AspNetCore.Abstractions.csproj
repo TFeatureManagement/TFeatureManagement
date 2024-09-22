@@ -26,12 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitVersion.MsBuild" Version="6.0.2">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TFeatureManagement.Abstractions\TFeatureManagement.Abstractions.csproj" />
   </ItemGroup>
 
