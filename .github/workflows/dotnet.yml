@@ -44,12 +44,7 @@ jobs:
       name: Update Version
       uses: gittools/actions/gitversion/command@v3.0.0
       with:
-        arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles /verbosity Diagnostic
-
-    - name: Update Version
-      uses: gittools/actions/gitversion/command@v3.0.0
-      with:
-        arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles /verbosity Diagnostic
+        arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles
 
     - name: Restore dependencies
       run: |
