@@ -37,7 +37,8 @@ jobs:
     #- if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
     - name: Tag Commit
       run: |
-        echo "${{ steps.determineVersion.outputs.semVer }}"
+        $versionTag = "v${{ steps.determineVersion.outputs.semVer }}"
+        echo $versionTag
         # git tag v
         # git push origin --tags
 
