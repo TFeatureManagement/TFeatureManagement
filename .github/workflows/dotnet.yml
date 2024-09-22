@@ -33,14 +33,6 @@ jobs:
       uses: gittools/actions/gitversion/execute@v3.0.0
       with:
         useConfigFile: true
-        
-    #- if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
-    - name: Tag Commit
-      run: |
-        $versionTag = "v${{ steps.determineVersion.outputs.semVer }}"
-        echo "Tagging Commit with $versionTag"
-        git tag $versionTag
-        git push origin --tags
 
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
@@ -49,9 +41,8 @@ jobs:
           6.0.x
           8.0.x
           
-    #- if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
-    - name: Update Version
-      id: updateVersion
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+      name: Update Version
       uses: gittools/actions/gitversion/command@v3.0.0
       with:
         arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles
@@ -68,15 +59,23 @@ jobs:
       run: |
         dotnet test --configuration Release --no-restore --no-build --verbosity normal
         
-    # - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
-    #   name: Pack
-    #   run: |
-    #     dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
-    #     dotnet pack "src/TFeatureManagement.Abstractions/TFeatureManagement.Abstractions.csproj" --configuration Release --no-restore --no-build
-    #     dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
-    #     dotnet pack "src/TFeatureManagement.AspNetCore.Abstractions/TFeatureManagement.AspNetCore.Abstractions.csproj" --configuration Release --no-restore --no-build
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+      name: Tag Commit
+      run: |
+        $versionTag = "v${{ steps.determineVersion.outputs.semVer }}"
+        echo "Tagging commit with $versionTag"
+        git tag $versionTag
+        git push origin --tags
+        
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+      name: Pack
+      run: |
+        dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.Abstractions/TFeatureManagement.Abstractions.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.AspNetCore.Abstractions/TFeatureManagement.AspNetCore.Abstractions.csproj" --configuration Release --no-restore --no-build
 
-    # - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
-    #   name: Publish NuGet packages
-    #   run: |
-    #     dotnet nuget push "**/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --no-symbols
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+      name: Publish NuGet packages
+      run: |
+        dotnet nuget push "**/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --no-symbols
