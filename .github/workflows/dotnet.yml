@@ -29,9 +29,17 @@ jobs:
         versionSpec: '6.x'
 
     - name: Determine Version
+      id: determineVersion
       uses: gittools/actions/gitversion/execute@v3.0.0
       with:
         useConfigFile: true
+        
+    #- if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+    - name: Tag Commit
+      run: |
+        echo "${{ steps.determineVersion.outputs.semVer }}"
+        # git tag v
+        # git push origin --tags
 
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
@@ -46,13 +54,6 @@ jobs:
       uses: gittools/actions/gitversion/command@v3.0.0
       with:
         arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles
-        
-    #- if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
-    - name: Tag Commit
-      run: |
-        echo ${{ steps.updateVersion.outputs.semVer }}
-        # git tag v
-        # git push origin --tags
 
     - name: Restore dependencies
       run: |
