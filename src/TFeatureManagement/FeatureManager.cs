@@ -2,7 +2,7 @@
 
 namespace TFeatureManagement;
 
-public class FeatureManager<TFeature> : IFeatureManager<TFeature>
+public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
     where TFeature : struct, Enum
 {
     private readonly IFeatureManager _baseFeatureManager;

@@ -2,7 +2,7 @@
 
 namespace TFeatureManagement;
 
-public class FeatureManagerSnapshot<TFeature> : IFeatureManagerSnapshot<TFeature>
+public sealed class FeatureManagerSnapshot<TFeature> : IFeatureManagerSnapshot<TFeature>
     where TFeature : struct, Enum
 {
     private readonly IFeatureManagerSnapshot _baseFeatureManagerSnapshot;
