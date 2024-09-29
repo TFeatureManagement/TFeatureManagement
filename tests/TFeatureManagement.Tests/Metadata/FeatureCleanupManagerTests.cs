@@ -15,13 +15,20 @@ public class FeatureCleanupManagerTests
     private FeatureCleanupManager<Feature> _underTest;
 
     private Mock<IFeatureManager<Feature>> _featureManager;
+    private Mock<IFeatureEnumConverter<Feature>> _featureEnumConverter;
 
     [TestInitialize]
     public void Setup()
     {
         _featureManager = new Mock<IFeatureManager<Feature>>();
+        _featureEnumConverter = new Mock<IFeatureEnumConverter<Feature>>();
+        _featureEnumConverter
+            .Setup(x => x.GetFeatureName(It.IsAny<Feature>()))
+            .Returns((Feature feature) => feature.ToString());
 
-        _underTest = new FeatureCleanupManager<Feature>(_featureManager.Object);
+        _underTest = new FeatureCleanupManager<Feature>(
+            _featureManager.Object,
+            _featureEnumConverter.Object);
     }
 
     [TestMethod]
