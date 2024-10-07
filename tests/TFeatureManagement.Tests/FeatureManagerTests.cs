@@ -2,8 +2,8 @@ using FluentAssertions;
 using Microsoft.FeatureManagement;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace TFeatureManagement.Tests;
@@ -14,13 +14,20 @@ public class FeatureManagerTests
     private FeatureManager<Feature> _underTest;
 
     private IFeatureManager _baseFeatureManager;
+    private IFeatureNameProvider<Feature> _featureNameProvider;
+
+    private readonly Func<Feature, string> _getFeatureName = (Feature feature) => feature.ToString();
 
     [TestInitialize]
     public void Setup()
     {
         _baseFeatureManager = Substitute.For<IFeatureManager>();
+        _featureNameProvider = Substitute.For<IFeatureNameProvider<Feature>>();
+        _featureNameProvider.GetFeatureName(Arg.Any<Feature>()).Returns(x => _getFeatureName((Feature)x[0]));
 
-        _underTest = new FeatureManager<Feature>(_baseFeatureManager);
+        _underTest = new FeatureManager<Feature>(
+            _baseFeatureManager,
+            _featureNameProvider);
     }
 
     [TestMethod]
@@ -52,13 +59,14 @@ public class FeatureManagerTests
     {
         // Arrange
         var expectedFeature = Feature.Test1;
+        var expectedFeatureName = _getFeatureName(Feature.Test1);
 
         // Act
         await _underTest.IsEnabledAsync(expectedFeature);
 
         // Assert
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeature.ToString());
+        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 
@@ -80,6 +88,7 @@ public class FeatureManagerTests
     {
         // Arrange
         var expectedFeature = Feature.Test1;
+        var expectedFeatureName = _getFeatureName(Feature.Test1);
         var expectedContext = new object();
 
         // Act
@@ -87,7 +96,7 @@ public class FeatureManagerTests
 
         // Assert
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeature.ToString(), expectedContext);
+        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedContext);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 

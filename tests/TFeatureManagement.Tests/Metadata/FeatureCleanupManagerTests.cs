@@ -15,13 +15,18 @@ public class FeatureCleanupManagerTests
     private FeatureCleanupManager<Feature> _underTest;
 
     private IFeatureManager<Feature> _featureManager;
+    private IFeatureNameProvider<Feature> _featureNameProvider;
 
     [TestInitialize]
     public void Setup()
     {
         _featureManager = Substitute.For<IFeatureManager<Feature>>();
+        _featureNameProvider = Substitute.For<IFeatureNameProvider<Feature>>();
+        _featureNameProvider.GetFeatureName(Arg.Any<Feature>()).Returns(x => x[0].ToString());
 
-        _underTest = new FeatureCleanupManager<Feature>(_featureManager);
+        _underTest = new FeatureCleanupManager<Feature>(
+            _featureManager,
+            _featureNameProvider);
     }
 
     [TestMethod]

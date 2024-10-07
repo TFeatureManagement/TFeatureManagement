@@ -17,5 +17,5 @@ public interface IFeatureEnumParser<TFeature>
     /// <returns>
     /// <c>true</c> if the <paramref name="featureName" /> parameter was converted successfully; otherwise, false.
     /// </returns>
-    bool TryParse(string featureName, bool ignoreCase, out TFeature feature);
+    public bool TryParse(string featureName, bool ignoreCase, out TFeature feature);
 }

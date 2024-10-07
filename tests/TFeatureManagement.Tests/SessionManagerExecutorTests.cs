@@ -21,7 +21,9 @@ public class SessionManagerExecutorTests
         _sessionManager = Substitute.For<ISessionManager<Feature>>();
         _featureEnumParser = Substitute.For<IFeatureEnumParser<Feature>>();
 
-        _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(_sessionManager, _featureEnumParser);
+        _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(
+            _sessionManager,
+            _featureEnumParser);
     }
 
     [TestMethod]
