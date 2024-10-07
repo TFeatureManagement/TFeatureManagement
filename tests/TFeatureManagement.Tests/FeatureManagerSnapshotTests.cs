@@ -14,7 +14,7 @@ public class FeatureManagerSnapshotTests
     private FeatureManagerSnapshot<Feature> _underTest;
 
     private Mock<IFeatureManagerSnapshot> _baseFeatureManagerSnapshot;
-    private Mock<IFeatureEnumConverter<Feature>> _featureEnumConverter;
+    private Mock<IFeatureNameProvider<Feature>> _featureNameProvider;
 
     private readonly Func<Feature, string> _getFeatureName = (Feature feature) => feature.ToString();
 
@@ -22,14 +22,14 @@ public class FeatureManagerSnapshotTests
     public void Setup()
     {
         _baseFeatureManagerSnapshot = new Mock<IFeatureManagerSnapshot>();
-        _featureEnumConverter = new Mock<IFeatureEnumConverter<Feature>>();
-        _featureEnumConverter
+        _featureNameProvider = new Mock<IFeatureNameProvider<Feature>>();
+        _featureNameProvider
             .Setup(x => x.GetFeatureName(It.IsAny<Feature>()))
             .Returns(_getFeatureName);
 
         _underTest = new FeatureManagerSnapshot<Feature>(
             _baseFeatureManagerSnapshot.Object,
-            _featureEnumConverter.Object);
+            _featureNameProvider.Object);
     }
 
     [TestMethod]

@@ -21,8 +21,8 @@ public static class UseWhenFeatureEnabledExtensions
     public static IApplicationBuilder UseWhenFeatureEnabled<TFeature>(this IApplicationBuilder app, TFeature feature, Action<IApplicationBuilder> configuration)
         where TFeature : struct, Enum
     {
-        var featureEnumConverter = app.ApplicationServices.GetRequiredService<IFeatureEnumConverter<TFeature>>();
+        var featureNameProvider = app.ApplicationServices.GetRequiredService<IFeatureNameProvider<TFeature>>();
 
-        return app.UseForFeature(featureEnumConverter.GetFeatureName(feature), configuration);
+        return app.UseForFeature(featureNameProvider.GetFeatureName(feature), configuration);
     }
 }

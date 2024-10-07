@@ -1,6 +1,10 @@
 ﻿namespace TFeatureManagement;
 
-public interface IFeatureEnumConverter<TFeature>
+/// <summary>
+/// Used for getting the name of features.
+/// </summary>
+/// <typeparam name="TFeature">The feature enum type.</typeparam>
+public interface IFeatureNameProvider<TFeature>
     where TFeature : struct, Enum
 {
     /// <summary>

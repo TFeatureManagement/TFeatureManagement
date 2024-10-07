@@ -50,7 +50,7 @@ public static class ServiceCollectionExtensions
         featureManagementBuilder.Services.AddSingleton<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
         featureManagementBuilder.Services.AddScoped<IFeatureManagerSnapshot<TFeature>, FeatureManagerSnapshot<TFeature>>();
 
-        featureManagementBuilder.Services.TryAddSingleton<IFeatureEnumConverter<TFeature>, FeatureEnumConverter<TFeature>>();
+        featureManagementBuilder.Services.TryAddSingleton<IFeatureNameProvider<TFeature>, FeatureNameProvider<TFeature>>();
         featureManagementBuilder.Services.TryAddSingleton<IFeatureEnumParser<TFeature>, FeatureEnumParser<TFeature>>();
 
         return featureManagementBuilder;

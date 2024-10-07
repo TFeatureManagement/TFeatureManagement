@@ -6,14 +6,14 @@ public class FeatureManager<TFeature> : IFeatureManager<TFeature>
     where TFeature : struct, Enum
 {
     private readonly IFeatureManager _baseFeatureManager;
-    private readonly IFeatureEnumConverter<TFeature> _featureEnumConverter;
+    private readonly IFeatureNameProvider<TFeature> _featureNameProvider;
 
     public FeatureManager(
         IFeatureManager baseFeatureManager,
-        IFeatureEnumConverter<TFeature> featureEnumConverter)
+        IFeatureNameProvider<TFeature> featureNameProvider)
     {
         _baseFeatureManager = baseFeatureManager ?? throw new ArgumentNullException(nameof(baseFeatureManager));
-        _featureEnumConverter = featureEnumConverter ?? throw new ArgumentNullException(nameof(featureEnumConverter));
+        _featureNameProvider = featureNameProvider ?? throw new ArgumentNullException(nameof(featureNameProvider));
     }
 
     /// <inheritdoc />
@@ -25,12 +25,12 @@ public class FeatureManager<TFeature> : IFeatureManager<TFeature>
     /// <inheritdoc />
     public ValueTask<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default)
     {
-        return new ValueTask<bool>(_baseFeatureManager.IsEnabledAsync(_featureEnumConverter.GetFeatureName(feature)));
+        return new ValueTask<bool>(_baseFeatureManager.IsEnabledAsync(_featureNameProvider.GetFeatureName(feature)));
     }
 
     /// <inheritdoc />
     public ValueTask<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default)
     {
-        return new ValueTask<bool>(_baseFeatureManager.IsEnabledAsync(_featureEnumConverter.GetFeatureName(feature), context));
+        return new ValueTask<bool>(_baseFeatureManager.IsEnabledAsync(_featureNameProvider.GetFeatureName(feature), context));
     }
 }
