@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using NSubstitute;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,14 +14,14 @@ public class FeatureCleanupManagerTests
 {
     private FeatureCleanupManager<Feature> _underTest;
 
-    private Mock<IFeatureManager<Feature>> _featureManager;
+    private IFeatureManager<Feature> _featureManager;
 
     [TestInitialize]
     public void Setup()
     {
-        _featureManager = new Mock<IFeatureManager<Feature>>();
+        _featureManager = Substitute.For<IFeatureManager<Feature>>();
 
-        _underTest = new FeatureCleanupManager<Feature>(_featureManager.Object);
+        _underTest = new FeatureCleanupManager<Feature>(_featureManager);
     }
 
     [TestMethod]
@@ -50,7 +50,7 @@ public class FeatureCleanupManagerTests
     public async Task GetFeatureNamesNotInFeatureEnumAsync_FeatureNamesThatAreNotInFeatureEnumDoNotExist_ReturnsNoFeatureNames()
     {
         // Arrange
-        _featureManager.Setup(x => x.GetFeatureNamesAsync(It.IsAny<CancellationToken>())).Returns(GetFeatureNamesAsync);
+        _featureManager.GetFeatureNamesAsync(Arg.Any<CancellationToken>()).Returns(GetFeatureNamesAsync());
 
         // Act
         var featureNamesNotInFeatureEnum = new List<string>();
@@ -67,7 +67,7 @@ public class FeatureCleanupManagerTests
     public async Task GetFeatureNamesNotInFeatureEnumAsync_FeatureNamesThatAreNotInFeatureEnumExist_ReturnsFeatureNames()
     {
         // Arrange
-        _featureManager.Setup(x => x.GetFeatureNamesAsync(It.IsAny<CancellationToken>())).Returns(GetFeatureNamesIncludingFeatureNamesNotInFeatureEnumAsync);
+        _featureManager.GetFeatureNamesAsync(Arg.Any<CancellationToken>()).Returns(GetFeatureNamesIncludingFeatureNamesNotInFeatureEnumAsync());
 
         // Act
         var featureNamesNotInFeatureEnum = new List<string>();
