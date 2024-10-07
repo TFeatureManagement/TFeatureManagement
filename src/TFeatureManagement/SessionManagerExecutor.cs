@@ -8,7 +8,7 @@ namespace TFeatureManagement;
 /// </summary>
 /// <typeparam name="TFeature">The feature enum type.</typeparam>
 /// <typeparam name="TSessionManager">The session manager type.</typeparam>
-internal class SessionManagerExecutor<TFeature, TSessionManager> : ISessionManager
+public sealed class SessionManagerExecutor<TFeature, TSessionManager> : ISessionManager
     where TFeature : struct, Enum
     where TSessionManager : class, ISessionManager<TFeature>
 {
