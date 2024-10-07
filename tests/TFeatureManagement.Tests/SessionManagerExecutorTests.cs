@@ -21,7 +21,9 @@ public class SessionManagerExecutorTests
         _sessionManager = new Mock<ISessionManager<Feature>>();
         _featureEnumParser = new Mock<IFeatureEnumParser<Feature>>();
 
-        _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(_sessionManager.Object, _featureEnumParser.Object);
+        _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(
+            _sessionManager.Object,
+            _featureEnumParser.Object);
     }
 
     [TestMethod]

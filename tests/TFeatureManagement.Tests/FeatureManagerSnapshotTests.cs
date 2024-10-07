@@ -2,6 +2,7 @@
 using Microsoft.FeatureManagement;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,13 +14,22 @@ public class FeatureManagerSnapshotTests
     private FeatureManagerSnapshot<Feature> _underTest;
 
     private Mock<IFeatureManagerSnapshot> _baseFeatureManagerSnapshot;
+    private Mock<IFeatureNameProvider<Feature>> _featureNameProvider;
+
+    private readonly Func<Feature, string> _getFeatureName = (Feature feature) => feature.ToString();
 
     [TestInitialize]
     public void Setup()
     {
         _baseFeatureManagerSnapshot = new Mock<IFeatureManagerSnapshot>();
+        _featureNameProvider = new Mock<IFeatureNameProvider<Feature>>();
+        _featureNameProvider
+            .Setup(x => x.GetFeatureName(It.IsAny<Feature>()))
+            .Returns(_getFeatureName);
 
-        _underTest = new FeatureManagerSnapshot<Feature>(_baseFeatureManagerSnapshot.Object);
+        _underTest = new FeatureManagerSnapshot<Feature>(
+            _baseFeatureManagerSnapshot.Object,
+            _featureNameProvider.Object);
     }
 
     [TestMethod]
@@ -45,10 +55,11 @@ public class FeatureManagerSnapshotTests
     public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly()
     {
         var expectedFeature = Feature.Test1;
+        var expectedFeatureName = _getFeatureName(Feature.Test1);
 
         await _underTest.IsEnabledAsync(expectedFeature);
 
-        _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeature.ToString()), Times.Once);
+        _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeatureName), Times.Once);
     }
 
     [TestMethod]
@@ -65,11 +76,12 @@ public class FeatureManagerSnapshotTests
     public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly_WithContext()
     {
         var expectedFeature = Feature.Test1;
+        var expectedFeatureName = _getFeatureName(Feature.Test1);
         var expectedContext = new object();
 
         await _underTest.IsEnabledAsync(expectedFeature, expectedContext);
 
-        _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeature.ToString(), expectedContext), Times.Once);
+        _baseFeatureManagerSnapshot.Verify(x => x.IsEnabledAsync(expectedFeatureName, expectedContext), Times.Once);
     }
 
     [TestMethod]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 
 namespace TFeatureManagement.AspNetCore.Builder;
@@ -20,6 +21,8 @@ public static class UseWhenFeatureEnabledExtensions
     public static IApplicationBuilder UseWhenFeatureEnabled<TFeature>(this IApplicationBuilder app, TFeature feature, Action<IApplicationBuilder> configuration)
         where TFeature : struct, Enum
     {
-        return app.UseForFeature(feature.ToString(), configuration);
+        var featureNameProvider = app.ApplicationServices.GetRequiredService<IFeatureNameProvider<TFeature>>();
+
+        return app.UseForFeature(featureNameProvider.GetFeatureName(feature), configuration);
     }
 }

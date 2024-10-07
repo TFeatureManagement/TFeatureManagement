@@ -90,6 +90,7 @@ public static class ServiceCollectionExtensions
     {
         builder.Services.TryAddScoped<IFeatureManagerSnapshot<TFeature>, FeatureManagerSnapshot<TFeature>>();
 
+        builder.Services.TryAddSingleton<IFeatureNameProvider<TFeature>, FeatureNameProvider<TFeature>>();
         builder.Services.TryAddSingleton<IFeatureEnumParser<TFeature>, FeatureEnumParser<TFeature>>();
 
         return builder;
