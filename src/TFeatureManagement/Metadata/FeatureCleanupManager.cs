@@ -24,10 +24,10 @@ public class FeatureCleanupManager<TFeature> : IFeatureCleanupManager<TFeature>
     }
 
     /// <inheritdoc />
-    public IDictionary<TFeature, TFeatureCleanupDate> GetFeatureCleanupDates<TFeatureCleanupDate>()
+    public IDictionary<TFeature, TFeatureCleanupDate?> GetFeatureCleanupDates<TFeatureCleanupDate>()
         where TFeatureCleanupDate : Attribute, IFeatureCleanupDate
     {
-        var featureCleanupDates = new Dictionary<TFeature, TFeatureCleanupDate>();
+        var featureCleanupDates = new Dictionary<TFeature, TFeatureCleanupDate?>();
 
 #if NET6_0_OR_GREATER
         var features = Enum.GetValues<TFeature>();
