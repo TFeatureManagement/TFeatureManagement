@@ -30,15 +30,34 @@ internal class FeatureManagementBuilder<TFeature> : IFeatureManagementBuilder<TF
     public IFeatureManagementBuilder<TFeature> AddSessionManager<T>()
         where T : class, ISessionManager<TFeature>
     {
-        _baseFeatureManagementBuilder.Services.AddSingleton(typeof(T));
+        if (Services.Any(descriptor => descriptor.ServiceType == typeof(IFeatureManager<TFeature>) &&
+            descriptor.Lifetime == ServiceLifetime.Scoped))
+        {
+            _baseFeatureManagementBuilder.Services.AddScoped(typeof(T));
+        }
+        else
+        {
+            _baseFeatureManagementBuilder.Services.AddSingleton(typeof(T));
+        }
+
         _baseFeatureManagementBuilder.AddSessionManager<SessionManagerExecutor<TFeature, T>>();
+
         return this;
     }
 
     /// <inheritdoc />
     public IFeatureManagementBuilder<TFeature> AddFeatureCleanupManagement()
     {
-        _baseFeatureManagementBuilder.Services.AddSingleton<IFeatureCleanupManager<TFeature>, FeatureCleanupManager<TFeature>>();
+        if (Services.Any(descriptor => descriptor.ServiceType == typeof(IFeatureManager<TFeature>) &&
+            descriptor.Lifetime == ServiceLifetime.Scoped))
+        {
+            _baseFeatureManagementBuilder.Services.AddScoped<IFeatureCleanupManager<TFeature>, FeatureCleanupManager<TFeature>>();
+        }
+        else
+        {
+            _baseFeatureManagementBuilder.Services.AddSingleton<IFeatureCleanupManager<TFeature>, FeatureCleanupManager<TFeature>>();
+        }
+
         return this;
     }
 }
