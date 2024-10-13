@@ -20,7 +20,9 @@ public static class UseDisabledActionHandlerFeatureManagementBuilderExtensions
     public static IFeatureManagementBuilder<TFeature> UseDisabledActionHandler<TFeature>(this IFeatureManagementBuilder<TFeature> builder, IDisabledActionHandler<TFeature> disabledActionHandler)
         where TFeature : struct, Enum
     {
-        builder.Services.AddSingleton(disabledActionHandler ?? throw new ArgumentNullException(nameof(disabledActionHandler)));
+        ArgumentNullException.ThrowIfNull(disabledActionHandler);
+
+        builder.Services.AddSingleton(disabledActionHandler);
 
         return builder;
     }
@@ -35,10 +37,7 @@ public static class UseDisabledActionHandlerFeatureManagementBuilderExtensions
     public static IFeatureManagementBuilder<TFeature> UseDisabledActionHandler<TFeature>(this IFeatureManagementBuilder<TFeature> builder, Action<IEnumerable<TFeature>, ActionExecutingContext> handler)
         where TFeature : struct, Enum
     {
-        if (handler == null)
-        {
-            throw new ArgumentNullException(nameof(handler));
-        }
+        ArgumentNullException.ThrowIfNull(handler);
 
         builder.UseDisabledActionHandler(new InlineDisabledActionHandler<TFeature>(handler));
 

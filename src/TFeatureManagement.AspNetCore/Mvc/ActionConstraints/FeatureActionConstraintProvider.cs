@@ -31,10 +31,7 @@ public class FeatureActionConstraintProvider<TFeature> : IActionConstraintProvid
             return;
         }
 
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        ArgumentNullException.ThrowIfNull(context);
 
         var factory = context.HttpContext.RequestServices.GetRequiredService<IFeatureActionConstraintFactory<TFeature>>();
 
