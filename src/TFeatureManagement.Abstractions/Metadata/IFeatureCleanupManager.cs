@@ -12,7 +12,7 @@ public interface IFeatureCleanupManager<TFeature>
     /// </summary>
     /// <typeparam name="TFeatureCleanupDate">The feature cleanup date attribute type.</typeparam>
     /// <returns>The feature cleanup dates.</returns>
-    public IDictionary<TFeature, TFeatureCleanupDate> GetFeatureCleanupDates<TFeatureCleanupDate>()
+    public IDictionary<TFeature, TFeatureCleanupDate?> GetFeatureCleanupDates<TFeatureCleanupDate>()
         where TFeatureCleanupDate : Attribute, IFeatureCleanupDate;
 
     /// <summary>
