@@ -35,11 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.Tests", "tests\TFeatureManagement.Tests\TFeatureManagement.Tests.csproj", "{CC01C509-584C-4ED1-A9E3-61321C443C43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Example.PreGenericAttributes", "examples\TFeatureManagement.AspNetCore.Example.PreGenericAttributes\TFeatureManagement.AspNetCore.Example.PreGenericAttributes.csproj", "{F428A892-544D-43AA-B371-8510A096AE39}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.Abstractions", "src\TFeatureManagement.Abstractions\TFeatureManagement.Abstractions.csproj", "{376264F0-BA9D-4269-9E35-E83B9B367DD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFeatureManagement.AspNetCore.Abstractions", "src\TFeatureManagement.AspNetCore.Abstractions\TFeatureManagement.AspNetCore.Abstractions.csproj", "{642FD898-50B0-45EF-A251-340C7613BAD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFeatureManagement.AspNetCore.Abstractions", "src\TFeatureManagement.AspNetCore.Abstractions\TFeatureManagement.AspNetCore.Abstractions.csproj", "{642FD898-50B0-45EF-A251-340C7613BAD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,10 +69,6 @@ Global
 		{CC01C509-584C-4ED1-A9E3-61321C443C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC01C509-584C-4ED1-A9E3-61321C443C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC01C509-584C-4ED1-A9E3-61321C443C43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F428A892-544D-43AA-B371-8510A096AE39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F428A892-544D-43AA-B371-8510A096AE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F428A892-544D-43AA-B371-8510A096AE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F428A892-544D-43AA-B371-8510A096AE39}.Release|Any CPU.Build.0 = Release|Any CPU
 		{376264F0-BA9D-4269-9E35-E83B9B367DD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{376264F0-BA9D-4269-9E35-E83B9B367DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{376264F0-BA9D-4269-9E35-E83B9B367DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -92,7 +86,6 @@ Global
 		{809A9FAB-B7E3-4E8A-90A5-4E54FD5530B1} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
 		{F39DC121-CCDB-46C9-8940-C0FFF4CB8D2D} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
 		{CC01C509-584C-4ED1-A9E3-61321C443C43} = {F6B7612F-CE7E-4270-8CD3-213B174E20DB}
-		{F428A892-544D-43AA-B371-8510A096AE39} = {3C5DE1C9-2542-49D4-9BF4-60173D3220B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30D672E2-9D09-4FAB-B35D-E3B579BCA232}

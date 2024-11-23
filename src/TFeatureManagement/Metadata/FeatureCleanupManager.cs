@@ -29,7 +29,7 @@ public class FeatureCleanupManager<TFeature> : IFeatureCleanupManager<TFeature>
     {
         var featureCleanupDates = new Dictionary<TFeature, TFeatureCleanupDate>();
 
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
         var features = Enum.GetValues<TFeature>();
 #else
         var features = Enum
@@ -53,7 +53,7 @@ public class FeatureCleanupManager<TFeature> : IFeatureCleanupManager<TFeature>
     /// <inheritdoc />
     public async IAsyncEnumerable<string> GetFeatureNamesNotInFeatureEnumAsync([EnumeratorCancellation]CancellationToken cancellationToken = default)
     {
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
         var featureKeys = Enum
             .GetValues<TFeature>()
             .Select(_featureNameProvider.GetFeatureName)
