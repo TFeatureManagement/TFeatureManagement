@@ -10,10 +10,7 @@ public class FeatureActionFilterProvider<TFeature> : IFilterProvider
 
     public void OnProvidersExecuting(FilterProviderContext context)
     {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        ArgumentNullException.ThrowIfNull(context);
 
         if (context.ActionContext.ActionDescriptor.FilterDescriptors != null)
         {

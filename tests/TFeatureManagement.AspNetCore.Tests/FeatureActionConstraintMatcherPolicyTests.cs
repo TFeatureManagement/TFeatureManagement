@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -20,26 +20,26 @@ public class FeatureActionConstraintMatcherPolicyTests
 {
     private FeatureActionConstraintMatcherPolicy<Feature> _underTest;
 
-    private Mock<IFeatureManagerSnapshot<Feature>> _featureManager;
-    private Mock<HttpContext> _httpContext;
-    private Mock<HttpRequest> _httpRequest;
-    private Mock<IFeatureCollection> _httpFeatures;
+    private IFeatureManagerSnapshot<Feature> _featureManager;
+    private HttpContext _httpContext;
+    private HttpRequest _httpRequest;
+    private IFeatureCollection _httpFeatures;
 
     [TestInitialize]
     public void Initialize()
     {
         _underTest = new FeatureActionConstraintMatcherPolicy<Feature>();
 
-        _featureManager = new Mock<IFeatureManagerSnapshot<Feature>>();
+        _featureManager = Substitute.For<IFeatureManagerSnapshot<Feature>>();
 
-        _httpContext = new Mock<HttpContext>();
-        _httpContext.Setup(x => x.RequestServices.GetService(typeof(IFeatureManagerSnapshot<Feature>))).Returns(_featureManager.Object);
+        _httpContext = Substitute.For<HttpContext>();
+        _httpContext.RequestServices.GetService(typeof(IFeatureManagerSnapshot<Feature>)).Returns(_featureManager);
 
-        _httpRequest = new Mock<HttpRequest>();
-        _httpContext.Setup(x => x.Request).Returns(_httpRequest.Object);
+        _httpRequest = Substitute.For<HttpRequest>();
+        _httpContext.Request.Returns(_httpRequest);
 
-        _httpFeatures = new Mock<IFeatureCollection>();
-        _httpContext.Setup(x => x.Features).Returns(_httpFeatures.Object);
+        _httpFeatures = Substitute.For<IFeatureCollection>();
+        _httpContext.Features.Returns(_httpFeatures);
     }
 
     [TestMethod]
@@ -77,7 +77,7 @@ public class FeatureActionConstraintMatcherPolicyTests
         // Arrange
         var endpoints = new List<Endpoint>
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { new Mock<IFeatureActionConstraintMetadata<Feature>>().Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { Substitute.For<IFeatureActionConstraintMetadata<Feature>>() })
         };
 
         // Act
@@ -97,10 +97,10 @@ public class FeatureActionConstraintMatcherPolicyTests
         var candidates = CreateCandidateSet(endpoints);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
-        _httpContext.Verify(x => x.RequestServices.GetService(typeof(IFeatureManagerSnapshot<Feature>)), Times.Once);
+        _httpContext.Received().RequestServices.GetService(typeof(IFeatureManagerSnapshot<Feature>));
     }
 
     [TestMethod]
@@ -109,16 +109,18 @@ public class FeatureActionConstraintMatcherPolicyTests
         // Arrange
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { new Mock<IFeatureActionConstraintMetadata<Feature>>().Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { Substitute.For<IFeatureActionConstraintMetadata<Feature>>() })
         };
         var candidates = CreateCandidateSet(endpoints);
         candidates.SetValidity(0, false);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
-        _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>()), Times.Never);
+#pragma warning disable CA2012 // Use ValueTasks correctly
+        _ = _featureManager.DidNotReceive().IsEnabledAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>());
+#pragma warning restore CA2012 // Use ValueTasks correctly
     }
 
     [TestMethod]
@@ -127,13 +129,13 @@ public class FeatureActionConstraintMatcherPolicyTests
         // Arrange
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { new Mock<IFeatureActionConstraintMetadata<Feature>>().Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { Substitute.For<IFeatureActionConstraintMetadata<Feature>>() })
         };
         var candidates = CreateCandidateSet(endpoints);
         candidates.SetValidity(0, false);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         candidates.IsValidCandidate(0).Should().BeFalse();
@@ -144,19 +146,21 @@ public class FeatureActionConstraintMatcherPolicyTests
     {
         // Arrange
         var features = default(List<Feature>);
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
-        _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>()), Times.Never);
+#pragma warning disable CA2012 // Use ValueTasks correctly
+        _ = _featureManager.DidNotReceive().IsEnabledAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>());
+#pragma warning restore CA2012 // Use ValueTasks correctly
     }
 
     [TestMethod]
@@ -164,16 +168,16 @@ public class FeatureActionConstraintMatcherPolicyTests
     {
         // Arrange
         var features = default(List<Feature>);
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         candidates.IsValidCandidate(0).Should().BeTrue();
@@ -184,19 +188,21 @@ public class FeatureActionConstraintMatcherPolicyTests
     {
         // Arrange
         var features = new List<Feature>();
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
-        _featureManager.Verify(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>()), Times.Never);
+#pragma warning disable CA2012 // Use ValueTasks correctly
+        _ = _featureManager.DidNotReceive().IsEnabledAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>());
+#pragma warning restore CA2012 // Use ValueTasks correctly
     }
 
     [TestMethod]
@@ -204,16 +210,16 @@ public class FeatureActionConstraintMatcherPolicyTests
     {
         // Arrange
         var features = new List<Feature>();
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         candidates.IsValidCandidate(0).Should().BeTrue();
@@ -228,21 +234,23 @@ public class FeatureActionConstraintMatcherPolicyTests
             Feature.Test1,
             Feature.Test2
         };
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         foreach (var feature in features)
         {
-            _featureManager.Verify(x => x.IsEnabledAsync(feature, It.IsAny<CancellationToken>()), Times.Once);
+#pragma warning disable CA2012 // Use ValueTasks correctly
+            _ = _featureManager.Received().IsEnabledAsync(feature, Arg.Any<CancellationToken>());
+#pragma warning restore CA2012 // Use ValueTasks correctly
         }
     }
 
@@ -255,19 +263,19 @@ public class FeatureActionConstraintMatcherPolicyTests
             Feature.Test1,
             Feature.Test2
         };
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
-        endpointMetadata.Setup(x => x.RequirementType).Returns(RequirementType.All);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
+        endpointMetadata.RequirementType.Returns(RequirementType.All);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
-        _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
+        _featureManager.IsEnabledAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         candidates.IsValidCandidate(0).Should().BeTrue();
@@ -282,20 +290,20 @@ public class FeatureActionConstraintMatcherPolicyTests
             Feature.Test1,
             Feature.Test2
         };
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
-        endpointMetadata.Setup(x => x.RequirementType).Returns(RequirementType.All);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
+        endpointMetadata.RequirementType.Returns(RequirementType.All);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
-        _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test1, It.IsAny<CancellationToken>())).ReturnsAsync(true);
-        _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test2, It.IsAny<CancellationToken>())).ReturnsAsync(false);
+        _featureManager.IsEnabledAsync(Feature.Test1, Arg.Any<CancellationToken>()).Returns(true);
+        _featureManager.IsEnabledAsync(Feature.Test2, Arg.Any<CancellationToken>()).Returns(false);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         candidates.IsValidCandidate(0).Should().BeFalse();
@@ -310,20 +318,20 @@ public class FeatureActionConstraintMatcherPolicyTests
             Feature.Test1,
             Feature.Test2
         };
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
-        endpointMetadata.Setup(x => x.RequirementType).Returns(RequirementType.Any);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
+        endpointMetadata.RequirementType.Returns(RequirementType.Any);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
-        _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test1, It.IsAny<CancellationToken>())).ReturnsAsync(true);
-        _featureManager.Setup(x => x.IsEnabledAsync(Feature.Test2, It.IsAny<CancellationToken>())).ReturnsAsync(false);
+        _featureManager.IsEnabledAsync(Feature.Test1, Arg.Any<CancellationToken>()).Returns(true);
+        _featureManager.IsEnabledAsync(Feature.Test2, Arg.Any<CancellationToken>()).Returns(false);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         candidates.IsValidCandidate(0).Should().BeTrue();
@@ -338,19 +346,19 @@ public class FeatureActionConstraintMatcherPolicyTests
             Feature.Test1,
             Feature.Test2
         };
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
-        endpointMetadata.Setup(x => x.RequirementType).Returns(RequirementType.Any);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
+        endpointMetadata.RequirementType.Returns(RequirementType.Any);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
-        _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
+        _featureManager.IsEnabledAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>()).Returns(false);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         candidates.IsValidCandidate(0).Should().BeFalse();
@@ -364,33 +372,37 @@ public class FeatureActionConstraintMatcherPolicyTests
         {
             Feature.Test1
         };
-        var endpointMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        endpointMetadata.Setup(x => x.Features).Returns(features);
+        var endpointMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        endpointMetadata.Features.Returns(features);
         var additionalFeatures = new List<Feature>
         {
             Feature.Test2
         };
-        var additionalMetadata = new Mock<IFeatureActionConstraintMetadata<Feature>>();
-        additionalMetadata.Setup(x => x.Features).Returns(additionalFeatures);
+        var additionalMetadata = Substitute.For<IFeatureActionConstraintMetadata<Feature>>();
+        additionalMetadata.Features.Returns(additionalFeatures);
         var endpoints = new[]
         {
-            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata.Object, additionalMetadata.Object })
+            CreateEndpoint<Feature>("/", new List<IFeatureActionConstraintMetadata<Feature>> { endpointMetadata, additionalMetadata })
         };
         var candidates = CreateCandidateSet(endpoints);
 
-        _featureManager.Setup(x => x.IsEnabledAsync(It.IsAny<Feature>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
+        _featureManager.IsEnabledAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>()).Returns(false);
 
         // Act
-        await _underTest.ApplyAsyncInternal(_httpContext.Object, candidates);
+        await _underTest.ApplyAsyncInternal(_httpContext, candidates);
 
         // Assert
         foreach (var feature in features)
         {
-            _featureManager.Verify(x => x.IsEnabledAsync(feature, It.IsAny<CancellationToken>()), Times.Once);
+#pragma warning disable CA2012 // Use ValueTasks correctly
+            _ = _featureManager.Received().IsEnabledAsync(feature, Arg.Any<CancellationToken>());
+#pragma warning restore CA2012 // Use ValueTasks correctly
         }
         foreach (var feature in additionalFeatures)
         {
-            _featureManager.Verify(x => x.IsEnabledAsync(feature, It.IsAny<CancellationToken>()), Times.Never);
+#pragma warning disable CA2012 // Use ValueTasks correctly
+            _ = _featureManager.DidNotReceive().IsEnabledAsync(feature, Arg.Any<CancellationToken>());
+#pragma warning restore CA2012 // Use ValueTasks correctly
         }
     }
 

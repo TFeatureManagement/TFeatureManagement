@@ -1,6 +1,6 @@
 ﻿using Microsoft.FeatureManagement;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using NSubstitute;
 using TFeatureManagement.DependencyInjection;
 
 namespace TFeatureManagement.Tests;
@@ -10,14 +10,14 @@ public class FeatureManagementBuilderTests
 {
     private FeatureManagementBuilder<Feature> _underTest;
 
-    private Mock<IFeatureManagementBuilder> _baseFeatureManagementBuilder;
+    private IFeatureManagementBuilder _baseFeatureManagementBuilder;
 
     [TestInitialize]
     public void Setup()
     {
-        _baseFeatureManagementBuilder = new Mock<IFeatureManagementBuilder>();
+        _baseFeatureManagementBuilder = Substitute.For<IFeatureManagementBuilder>();
 
-        _underTest = new FeatureManagementBuilder<Feature>(_baseFeatureManagementBuilder.Object);
+        _underTest = new FeatureManagementBuilder<Feature>(_baseFeatureManagementBuilder);
     }
 
     [TestMethod]
@@ -27,6 +27,6 @@ public class FeatureManagementBuilderTests
         _underTest.AddFeatureFilter<TestFeatureFilterMetadata>();
 
         // Assert
-        _baseFeatureManagementBuilder.Verify(x => x.AddFeatureFilter<TestFeatureFilterMetadata>(), Times.Once);
+        _baseFeatureManagementBuilder.Received().AddFeatureFilter<TestFeatureFilterMetadata>();
     }
 }
