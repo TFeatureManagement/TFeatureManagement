@@ -9,7 +9,7 @@ public class FeatureNameProvider<TFeature> : IFeatureNameProvider<TFeature>
     {
         _featureNames = [];
 
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
         var features = Enum.GetValues<TFeature>();
 #else
         var features = Enum
