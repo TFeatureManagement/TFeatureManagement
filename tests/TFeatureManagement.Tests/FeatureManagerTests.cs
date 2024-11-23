@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TFeatureManagement.Tests;
@@ -13,7 +14,7 @@ public class FeatureManagerTests
 {
     private FeatureManager<Feature> _underTest;
 
-    private IFeatureManager _baseFeatureManager;
+    private IVariantFeatureManager _baseFeatureManager;
     private IFeatureNameProvider<Feature> _featureNameProvider;
 
     private readonly Func<Feature, string> _getFeatureName = (Feature feature) => feature.ToString();
@@ -21,7 +22,7 @@ public class FeatureManagerTests
     [TestInitialize]
     public void Setup()
     {
-        _baseFeatureManager = Substitute.For<IFeatureManager>();
+        _baseFeatureManager = Substitute.For<IVariantFeatureManager>();
         _featureNameProvider = Substitute.For<IFeatureNameProvider<Feature>>();
         _featureNameProvider.GetFeatureName(Arg.Any<Feature>()).Returns(x => _getFeatureName((Feature)x[0]));
 
@@ -60,9 +61,10 @@ public class FeatureManagerTests
         // Arrange
         var expectedFeature = Feature.Test1;
         var expectedFeatureName = _getFeatureName(Feature.Test1);
+        var expectedCancellationToken = CancellationToken.None;
 
         // Act
-        await _underTest.IsEnabledAsync(expectedFeature);
+        await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
         // Assert
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -74,10 +76,12 @@ public class FeatureManagerTests
     public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult()
     {
         // Arrange
-        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>()).Returns(true);
+        var expectedFeature = Feature.Test1;
+        var expectedCancellationToken = CancellationToken.None;
+        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        var isEnabled = await _underTest.IsEnabledAsync(Feature.Test1);
+        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
         // Assert
         isEnabled.Should().BeTrue();
@@ -90,13 +94,14 @@ public class FeatureManagerTests
         var expectedFeature = Feature.Test1;
         var expectedFeatureName = _getFeatureName(Feature.Test1);
         var expectedContext = new object();
+        var expectedCancellationToken = CancellationToken.None;
 
         // Act
-        await _underTest.IsEnabledAsync(expectedFeature, expectedContext);
+        await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
         // Assert
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedContext);
+        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedContext, expectedCancellationToken);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 
@@ -106,10 +111,11 @@ public class FeatureManagerTests
         // Arrange
         var expectedFeature = Feature.Test1;
         var expectedContext = new object();
-        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>()).Returns(true);
+        var expectedCancellationToken = CancellationToken.None;
+        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
-        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext);
+        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
         // Assert
         isEnabled.Should().BeTrue();
