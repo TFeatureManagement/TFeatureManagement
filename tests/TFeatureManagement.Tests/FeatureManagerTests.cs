@@ -61,7 +61,7 @@ public class FeatureManagerTests
         // Arrange
         var expectedFeature = Feature.Test1;
         var expectedFeatureName = _getFeatureName(Feature.Test1);
-        var expectedCancellationToken = CancellationToken.None;
+        var expectedCancellationToken = new CancellationToken(true);
 
         // Act
         await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
@@ -69,7 +69,7 @@ public class FeatureManagerTests
         // Assert
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 #pragma warning disable CA2012 // Use ValueTasks correctly
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName);
+        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedCancellationToken);
 #pragma warning restore CA2012 // Use ValueTasks correctly
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
@@ -79,7 +79,7 @@ public class FeatureManagerTests
     {
         // Arrange
         var expectedFeature = Feature.Test1;
-        var expectedCancellationToken = CancellationToken.None;
+        var expectedCancellationToken = new CancellationToken(true);
         _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
@@ -96,7 +96,7 @@ public class FeatureManagerTests
         var expectedFeature = Feature.Test1;
         var expectedFeatureName = _getFeatureName(Feature.Test1);
         var expectedContext = new object();
-        var expectedCancellationToken = CancellationToken.None;
+        var expectedCancellationToken = new CancellationToken(true);
 
         // Act
         await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
@@ -115,7 +115,7 @@ public class FeatureManagerTests
         // Arrange
         var expectedFeature = Feature.Test1;
         var expectedContext = new object();
-        var expectedCancellationToken = CancellationToken.None;
+        var expectedCancellationToken = new CancellationToken(true);
         _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
