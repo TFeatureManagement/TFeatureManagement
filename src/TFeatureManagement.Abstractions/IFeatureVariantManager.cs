@@ -13,7 +13,7 @@ public interface IFeatureVariantManager<TFeature>
     /// <param name="feature">The feature to evaluate.</param>
     /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
     /// <returns>A variant assigned to the user based on the feature's configured allocation.</returns>
-    ValueTask<FeatureVariant> GetVariantAsync(TFeature feature, CancellationToken cancellationToken = default);
+    ValueTask<FeatureVariant?> GetVariantAsync(TFeature feature, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets the assigned variant for a specific feature.
@@ -22,5 +22,5 @@ public interface IFeatureVariantManager<TFeature>
     /// <param name="context">A context that provides information to evaluate which variant will be assigned to the user.</param>
     /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
     /// <returns>A variant assigned to the user based on the feature's configured allocation.</returns>
-    ValueTask<FeatureVariant> GetVariantAsync(TFeature feature, ITargetingContext context, CancellationToken cancellationToken = default);
+    ValueTask<FeatureVariant?> GetVariantAsync(TFeature feature, ITargetingContext context, CancellationToken cancellationToken = default);
 }

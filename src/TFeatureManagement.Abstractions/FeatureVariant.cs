@@ -14,12 +14,12 @@ public class FeatureVariant
     }
 
     /// <summary>
-    /// The name of the variant.
+    /// The name of the feature variant.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// The configuration of the variant.
+    /// The configuration of the feature variant.
     /// </summary>
     public IConfigurationSection Configuration { get; set; }
 }
