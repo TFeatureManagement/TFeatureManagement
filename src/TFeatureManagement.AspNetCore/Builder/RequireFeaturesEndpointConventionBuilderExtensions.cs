@@ -1,6 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using TFeatureManagement.AspNetCore.Http;
 
@@ -75,5 +73,3 @@ public static class RequiresFeaturesEndpointConventionBuilderExtensions
         return builder;
     }
 }
-
-#endif

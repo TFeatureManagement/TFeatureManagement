@@ -1,9 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace TFeatureManagement.AspNetCore.Http;
 
@@ -21,5 +16,3 @@ public class NotFoundDisabledEndpointHandler<TFeature> : IDisabledEndpointHandle
         return Task.CompletedTask;
     }
 }
-
-#endif
