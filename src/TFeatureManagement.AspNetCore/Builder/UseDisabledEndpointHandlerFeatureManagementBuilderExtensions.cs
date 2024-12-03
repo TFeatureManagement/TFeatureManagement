@@ -1,6 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using TFeatureManagement.AspNetCore.Http;
 using TFeatureManagement.DependencyInjection;
@@ -46,5 +44,3 @@ public static class UseDisabledEndpointHandlerFeatureManagementBuilderExtensions
         return builder;
     }
 }
-
-#endif

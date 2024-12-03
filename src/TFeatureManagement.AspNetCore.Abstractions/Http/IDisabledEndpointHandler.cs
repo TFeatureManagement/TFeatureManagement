@@ -1,6 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace TFeatureManagement.AspNetCore.Http;
 
@@ -20,5 +18,3 @@ public interface IDisabledEndpointHandler<TFeature>
     /// <returns>A <see cref="Task" /> that on completion indicates the handler has executed.</returns>
     Task HandleDisabledEndpoint(IEnumerable<TFeature> features, RequirementType requirementType, EndpointFilterInvocationContext context);
 }
-
-#endif

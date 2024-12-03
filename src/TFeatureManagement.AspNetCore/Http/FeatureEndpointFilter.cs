@@ -1,6 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TFeatureManagement.AspNetCore.Http;
@@ -71,5 +69,3 @@ public class FeatureEndpointFilter<TFeature> : IEndpointFilter
         }
     }
 }
-
-#endif
