@@ -127,43 +127,13 @@ public class HomeController : Controller
 
 ### Enabling / Disabling Controllers and Actions
 
-MVC controllers and actions can require a feature to be enabled for the controller or action to be enabled. In .NET 7.0 and above this can be done by using a `FeatureActionFilterAttribute`, which can be found in the `TFeatureManagement.AspNetCore.Mvc.Filters` namespace.
+MVC controllers and actions can require a feature to be enabled for the controller or action to be enabled. This can be done by using a `FeatureActionFilterAttribute`, which can be found in the `TFeatureManagement.AspNetCore.Mvc.Filters` namespace.
 
 ``` C#
 [FeatureActionFilter<Feature>(Feature.FeatureX)]
 public class HomeController : Controller
 {
     …
-}
-```
-
-For .NET 6.0 and earlier this requires you to create a `FeatureActionFilterAttribute` that implements `IFeatureActionFilterMetadata<TFeature>` to work (as .NET 6.0 and earlier do not support generic attributes - see https://github.com/dotnet/csharplang/issues/124). This attribute should then be used instead of the generic attribute above.
-
-``` C#
-using System;
-using System.Collections.Generic;
-using TFeatureManagement.AspNetCore.Example.Models;
-using TFeatureManagement.AspNetCore.Mvc.Filters;
-
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-public class FeatureActionFilterAttribute : Attribute, IFeatureActionFilterMetadata<Feature>
-{
-    public FeatureActionFilterAttribute(params Feature[] features)
-        : this(RequirementType.All, features)
-    {
-    }
-
-    public FeatureActionFilterAttribute(RequirementType requirementType, params Feature[] features)
-    {
-        Features = features;
-        RequirementType = requirementType;
-    }
-
-    public IEnumerable<Feature> Features { get; }
-
-    public RequirementType RequirementType { get; }
-
-    public int Order { get; set; }
 }
 ```
 
@@ -199,7 +169,7 @@ public interface IDisabledActionHandler<TFeature>
 
 ### Enabling / Disabling Controller and Action route matching
 
-MVC controllers and actions can require a feature to be enabled for the controller or action to be matched during routing. This allows for multiple actions to have the same route but only have one of them matching during routing. In .NET 7.0 and above this can be done by using a `FeatureActionConstraintAttribute`, which can be found in the `TFeatureManagement.AspNetCore.Mvc.ActionConstraints` namespace.
+MVC controllers and actions can require a feature to be enabled for the controller or action to be matched during routing. This allows for multiple actions to have the same route but only have one of them matching during routing. This can be done by using a `FeatureActionConstraintAttribute`, which can be found in the `TFeatureManagement.AspNetCore.Mvc.ActionConstraints` namespace.
 
 ``` C#
 [HttpGet("featureconstrained", Order = -1)]
@@ -217,36 +187,6 @@ public IActionResult FeatureConstrainedFallback()
 ```
 
 **Note:** It is important that the routes have an order defined otherwise multiple routes will be returned from matching if they are all enabled. In conventional routing (including legacy routing) the routes will have an order based on the order they are defined in, but for attribute routing it is important to define an order for the routes. Generally, the order value for the route with the `FeatureActionConstraintAttribute` on it should be lower than the order value for the other route(s).
-
-For .NET 6.0 and earlier this requires you to create a `FeatureActionConstraintAttribute` that implements `IFeatureActionConstraintMetadata<TFeature>` to work (as .NET 6.0 and earlier do not support generic attributes - see https://github.com/dotnet/csharplang/issues/124). This attribute should then be used instead of the generic attribute above.
-
-``` C#
-using System;
-using System.Collections.Generic;
-using TFeatureManagement.AspNetCore.Example.Models;
-using TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
-
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-public class FeatureActionConstraintAttribute : Attribute, IFeatureActionConstraintMetadata<Feature>
-{
-    public FeatureActionConstraintAttribute(params Feature[] features)
-        : this(RequirementType.All, features)
-    {
-    }
-
-    public FeatureActionConstraintAttribute(RequirementType requirementType, params Feature[] features)
-    {
-        Features = features;
-        RequirementType = requirementType;
-    }
-
-    public IEnumerable<Feature> Features { get; }
-
-    public RequirementType RequirementType { get; }
-
-    public int Order { get; set; }
-}
-```
 
 MVC controllers and actions can also require a set of features to be enabled for the controller or action to be matched during routing.
 
