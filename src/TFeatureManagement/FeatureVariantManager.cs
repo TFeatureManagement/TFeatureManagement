@@ -19,7 +19,7 @@ public sealed class FeatureVariantManager<TFeature> : IFeatureVariantManager<TFe
     /// <inheritdoc />
     public async ValueTask<FeatureVariant?> GetVariantAsync(TFeature feature, CancellationToken cancellationToken = default)
     {
-        var variant = await _baseFeatureVariantManager.GetVariantAsync(_featureNameProvider.GetFeatureName(feature), cancellationToken);
+        var variant = await _baseFeatureVariantManager.GetVariantAsync(_featureNameProvider.GetFeatureName(feature), cancellationToken).ConfigureAwait(false);
 
         return variant != null ? new FeatureVariant(variant.Name, variant.Configuration) : null;
     }
@@ -33,7 +33,7 @@ public sealed class FeatureVariantManager<TFeature> : IFeatureVariantManager<TFe
             Groups = context.Groups
         };
 
-        var variant = await _baseFeatureVariantManager.GetVariantAsync(_featureNameProvider.GetFeatureName(feature), targetingContext, cancellationToken);
+        var variant = await _baseFeatureVariantManager.GetVariantAsync(_featureNameProvider.GetFeatureName(feature), targetingContext, cancellationToken).ConfigureAwait(false);
 
         return variant != null ? new FeatureVariant(variant.Name, variant.Configuration) : null;
     }
