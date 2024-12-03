@@ -56,7 +56,7 @@ public class FeatureManagerTests
     }
 
     [TestMethod]
-    public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly()
+    public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly_CalledWithoutTargetingContext()
     {
         // Arrange
         var expectedFeature = Feature.Test1;
@@ -75,7 +75,7 @@ public class FeatureManagerTests
     }
 
     [TestMethod]
-    public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult()
+    public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult_CalledWithoutTargetingContext()
     {
         // Arrange
         var expectedFeature = Feature.Test1;
@@ -90,7 +90,7 @@ public class FeatureManagerTests
     }
 
     [TestMethod]
-    public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly_WithContext()
+    public async Task IsEnabledAsync_CallsBaseIsEnabledAsyncCorrectly_CalledWithTargetingContext()
     {
         // Arrange
         var expectedFeature = Feature.Test1;
@@ -110,7 +110,7 @@ public class FeatureManagerTests
     }
 
     [TestMethod]
-    public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult_WithContext()
+    public async Task IsEnabledAsync_ReturnsBaseIsEnabledAsyncResult_CalledWithTargetingContext()
     {
         // Arrange
         var expectedFeature = Feature.Test1;
