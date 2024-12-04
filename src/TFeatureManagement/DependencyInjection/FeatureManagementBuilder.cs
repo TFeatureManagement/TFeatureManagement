@@ -19,6 +19,9 @@ internal class FeatureManagementBuilder<TFeature> : IFeatureManagementBuilder<TF
     public IServiceCollection Services => _baseFeatureManagementBuilder.Services;
 
     /// <inheritdoc />
+    public IFeatureManagementBuilder BaseFeatureManagementBuilder => _baseFeatureManagementBuilder;
+
+    /// <inheritdoc />
     public IFeatureManagementBuilder<TFeature> AddFeatureFilter<T>()
         where T : IFeatureFilterMetadata
     {
