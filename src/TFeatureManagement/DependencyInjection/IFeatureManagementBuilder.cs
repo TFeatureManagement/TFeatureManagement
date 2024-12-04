@@ -14,7 +14,7 @@ public interface IFeatureManagementBuilder<TFeature>
     IServiceCollection Services { get; }
 
     /// <summary>
-    /// Gets the base feature management builder.
+    /// Gets the base <see cref="IFeatureManagementBuilder"/>.
     /// </summary>
     IFeatureManagementBuilder BaseFeatureManagementBuilder { get; }
 
