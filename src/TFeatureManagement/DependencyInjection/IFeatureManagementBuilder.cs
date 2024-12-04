@@ -13,6 +13,11 @@ public interface IFeatureManagementBuilder<TFeature>
     /// <inheritdoc cref="IFeatureManagementBuilder.Services" />
     IServiceCollection Services { get; }
 
+    /// <summary>
+    /// Gets the base <see cref="IFeatureManagementBuilder"/>.
+    /// </summary>
+    IFeatureManagementBuilder BaseFeatureManagementBuilder { get; }
+
     /// <inheritdoc cref="IFeatureManagementBuilder.AddFeatureFilter{T}" />
     IFeatureManagementBuilder<TFeature> AddFeatureFilter<T>()
         where T : IFeatureFilterMetadata;

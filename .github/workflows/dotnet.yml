@@ -72,6 +72,7 @@ jobs:
       run: |
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
         dotnet pack "src/TFeatureManagement.Abstractions/TFeatureManagement.Abstractions.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.ApplicationInsights/TFeatureManagement.ApplicationInsights.csproj" --configuration Release --no-restore --no-build
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
         dotnet pack "src/TFeatureManagement.AspNetCore.Abstractions/TFeatureManagement.AspNetCore.Abstractions.csproj" --configuration Release --no-restore --no-build
 
