@@ -1,18 +1,16 @@
-﻿using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Example.Models;
+﻿using TFeatureManagement.AspNetCore.Example.Models;
 
-namespace TFeatureManagement.AspNetCore.Example.FeatureFilters
+namespace TFeatureManagement.AspNetCore.Example.FeatureFilters;
+
+public class ContextualFeatureFilter : ContextualFeatureFilterBase<Feature, ContextualFeatureFilterContext>
 {
-    public class ContextualFeatureFilter : ContextualFeatureFilterBase<Feature, ContextualFeatureFilterContext>
+    public ContextualFeatureFilter(IFeatureEnumParser<Feature> enumParser)
+        : base(enumParser)
     {
-        public ContextualFeatureFilter(IFeatureEnumParser<Feature> enumParser)
-            : base(enumParser)
-        {
-        }
+    }
 
-        public override Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<Feature> context, ContextualFeatureFilterContext appContext)
-        {
-            return Task.FromResult(true);
-        }
+    public override Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<Feature> context, ContextualFeatureFilterContext appContext, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(true);
     }
 }

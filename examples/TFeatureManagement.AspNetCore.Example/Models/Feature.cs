@@ -1,10 +1,9 @@
-﻿namespace TFeatureManagement.AspNetCore.Example.Models
+﻿namespace TFeatureManagement.AspNetCore.Example.Models;
+
+public enum Feature
 {
-    public enum Feature
-    {
-        Example1,
-        Example2,
-        Example3,
-        Example4
-    }
+    Example1,
+    Example2,
+    Example3,
+    Example4
 }

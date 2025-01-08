@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, release/* ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, release/*  ]
   workflow_dispatch:
     inputs:
       publish_nuget_packages:
@@ -24,13 +24,13 @@ jobs:
         fetch-depth: 0
 
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0
+      uses: gittools/actions/gitversion/setup@v3.0.0
       with:
-        versionSpec: '5.x'
+        versionSpec: '6.x'
 
     - name: Determine Version
-      id: gitversion
-      uses: gittools/actions/gitversion/execute@v0
+      id: determineVersion
+      uses: gittools/actions/gitversion/execute@v3.0.0
       with:
         useConfigFile: true
 
@@ -38,12 +38,14 @@ jobs:
       uses: actions/setup-dotnet@v4
       with: 
         dotnet-version: |
-          2.1.x
-          3.1.x
-          5.0.x
-          6.0.x
-          7.0.x
           8.0.x
+          9.0.x
+          
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+      name: Update Version
+      uses: gittools/actions/gitversion/command@v3.0.0
+      with:
+        arguments: /output json /output buildserver /config GitVersion.yml /updateprojectfiles
 
     - name: Restore dependencies
       run: |
@@ -57,13 +59,24 @@ jobs:
       run: |
         dotnet test --configuration Release --no-restore --no-build --verbosity normal
         
-    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
+      name: Tag Commit
+      run: |
+        $versionTag = "v${{ steps.determineVersion.outputs.semVer }}"
+        echo "Tagging commit with $versionTag"
+        git tag $versionTag
+        git push origin --tags
+        
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
       name: Pack
       run: |
         dotnet pack "src/TFeatureManagement/TFeatureManagement.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.Abstractions/TFeatureManagement.Abstractions.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.ApplicationInsights/TFeatureManagement.ApplicationInsights.csproj" --configuration Release --no-restore --no-build
         dotnet pack "src/TFeatureManagement.AspNetCore/TFeatureManagement.AspNetCore.csproj" --configuration Release --no-restore --no-build
+        dotnet pack "src/TFeatureManagement.AspNetCore.Abstractions/TFeatureManagement.AspNetCore.Abstractions.csproj" --configuration Release --no-restore --no-build
 
-    - if: ${{ github.ref == 'refs/heads/main' && inputs.publish_nuget_packages }}
+    - if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')) && inputs.publish_nuget_packages }}
       name: Publish NuGet packages
       run: |
         dotnet nuget push "**/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate --no-symbols

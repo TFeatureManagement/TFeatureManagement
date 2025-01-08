@@ -1,18 +1,16 @@
-﻿using System.Threading.Tasks;
-using TFeatureManagement.AspNetCore.Example.Models;
+﻿using TFeatureManagement.AspNetCore.Example.Models;
 
-namespace TFeatureManagement.AspNetCore.Example.FeatureFilters
+namespace TFeatureManagement.AspNetCore.Example.FeatureFilters;
+
+public class FeatureFilter : FeatureFilterBase<Feature>
 {
-    public class FeatureFilter : FeatureFilterBase<Feature>
+    public FeatureFilter(IFeatureEnumParser<Feature> enumParser)
+        : base(enumParser)
     {
-        public FeatureFilter(IFeatureEnumParser<Feature> enumParser)
-            : base(enumParser)
-        {
-        }
+    }
 
-        public override Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<Feature> context)
-        {
-            return Task.FromResult(true);
-        }
+    public override Task<bool> EvaluateAsync(FeatureFilterEvaluationContext<Feature> context, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(true);
     }
 }

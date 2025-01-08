@@ -1,8 +1,7 @@
-﻿namespace TFeatureManagement.AspNetCore.Tests
+﻿namespace TFeatureManagement.AspNetCore.Tests;
+
+public enum Feature
 {
-    public enum Feature
-    {
-        Test1,
-        Test2
-    }
+    Test1,
+    Test2
 }
