@@ -1,92 +1,71 @@
-﻿#if !NETCOREAPP2_1
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace TFeatureManagement.AspNetCore.Routing.Matching
+namespace TFeatureManagement.AspNetCore.Routing.Matching;
+
+public class FeatureMatcherPolicy<TFeature> : MatcherPolicy, IEndpointSelectorPolicy
+    where TFeature : struct, Enum
 {
-    public class FeatureMatcherPolicy<TFeature> : MatcherPolicy, IEndpointSelectorPolicy
-        where TFeature : struct, Enum
+    public override int Order => 0;
+
+    public bool AppliesToEndpoints(IReadOnlyList<Endpoint> endpoints)
     {
-        public override int Order => 0;
+        var appliesToEndpoints = false;
 
-        public bool AppliesToEndpoints(IReadOnlyList<Endpoint> endpoints)
+        foreach (var endpoint in endpoints)
         {
-            var appliesToEndpoints = false;
-
-            foreach (var endpoint in endpoints)
+            if (endpoint.Metadata.GetOrderedMetadata<IFeatureMetadata<TFeature>>().Any())
             {
-                if (endpoint.Metadata.GetOrderedMetadata<IFeatureMetadata<TFeature>>().Any())
-                {
-                    appliesToEndpoints = true;
-                    break;
-                }
+                appliesToEndpoints = true;
+                break;
             }
-
-            return appliesToEndpoints;
         }
 
-#if NETSTANDARD2_0
+        return appliesToEndpoints;
+    }
 
-        public async Task ApplyAsync(HttpContext httpContext, EndpointSelectorContext context, CandidateSet candidates)
+    public async Task ApplyAsync(HttpContext httpContext, CandidateSet candidates)
+    {
+        await ApplyAsyncInternal(httpContext, candidates);
+        return;
+    }
+
+    internal static async Task ApplyAsyncInternal(HttpContext httpContext, CandidateSet candidates)
+    {
+        var featureManager = httpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
+
+        for (var i = 0; i < candidates.Count; i++)
         {
-            await ApplyAsyncInternal(httpContext, candidates).ConfigureAwait(false);
-            return;
-        }
-
-#else
-
-        public async Task ApplyAsync(HttpContext httpContext, CandidateSet candidates)
-        {
-            await ApplyAsyncInternal(httpContext, candidates).ConfigureAwait(false);
-            return;
-        }
-
-#endif
-
-        internal static async Task ApplyAsyncInternal(HttpContext httpContext, CandidateSet candidates)
-        {
-            var featureManager = httpContext.RequestServices.GetRequiredService<IFeatureManagerSnapshot<TFeature>>();
-
-            for (var i = 0; i < candidates.Count; i++)
+            if (candidates.IsValidCandidate(i))
             {
-                if (candidates.IsValidCandidate(i))
+                var candidate = candidates[i];
+
+                var enabled = true;
+
+                foreach (var metadata in candidate.Endpoint.Metadata
+                    .GetOrderedMetadata<IFeatureMetadata<TFeature>>()
+                    .Where(m => m.Features?.Any() == true))
                 {
-                    var candidate = candidates[i];
-
-                    var enabled = true;
-
-                    foreach (var metadata in candidate.Endpoint.Metadata
-                        .GetOrderedMetadata<IFeatureMetadata<TFeature>>()
-                        .Where(m => m.Features?.Any() == true))
-                    {
-                        enabled = enabled && await featureManager.IsEnabledAsync(metadata.RequirementType, metadata.Features).ConfigureAwait(false);
-
-                        if (!enabled)
-                        {
-                            // If the endpoint has multiple feature metadata we don't want to evaluate any more
-                            // if we have already determined that the endpoint is not enabled.
-                            break;
-                        }
-                    }
+                    enabled = enabled && await featureManager.IsEnabledAsync(metadata.RequirementType, metadata.Features);
 
                     if (!enabled)
                     {
-                        // The endpoint is not be enabled so set the endpoint validity to false.
-                        candidates.SetValidity(i, false);
+                        // If the endpoint has multiple feature metadata we don't want to evaluate any more
+                        // if we have already determined that the endpoint is not enabled.
+                        break;
                     }
                 }
-            }
 
-            return;
+                if (!enabled)
+                {
+                    // The endpoint is not be enabled so set the endpoint validity to false.
+                    candidates.SetValidity(i, false);
+                }
+            }
         }
+
+        return;
     }
 }
-
-#endif

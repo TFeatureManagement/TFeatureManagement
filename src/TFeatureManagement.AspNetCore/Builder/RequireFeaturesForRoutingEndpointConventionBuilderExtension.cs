@@ -1,7 +1,4 @@
-﻿#if NET6_0_OR_GREATER
-
-using Microsoft.AspNetCore.Builder;
-using System;
+﻿using Microsoft.AspNetCore.Builder;
 using TFeatureManagement.AspNetCore.Routing;
 
 namespace TFeatureManagement.AspNetCore.Builder;
@@ -75,5 +72,3 @@ public static class RequireFeaturesForRoutingEndpointConventionBuilderExtension
         return builder;
     }
 }
-
-#endif

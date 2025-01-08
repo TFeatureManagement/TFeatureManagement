@@ -1,17 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿namespace TFeatureManagement.AspNetCore.Example.Models;
 
-namespace TFeatureManagement.AspNetCore.Example.Models
+public class SessionManager : ISessionManager<Feature>
 {
-    public class SessionManager : ISessionManager<Feature>
+    public Task<bool?> GetAsync(Feature feature, CancellationToken cancellationToken = default)
     {
-        public Task<bool?> GetAsync(Feature feature)
-        {
-            return Task.FromResult<bool?>(null);
-        }
+        return Task.FromResult<bool?>(null);
+    }
 
-        public Task SetAsync(Feature feature, bool enabled)
-        {
-            return Task.CompletedTask;
-        }
+    public Task SetAsync(Feature feature, bool enabled, CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
     }
 }

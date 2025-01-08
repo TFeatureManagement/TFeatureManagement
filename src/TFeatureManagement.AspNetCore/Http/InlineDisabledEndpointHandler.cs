@@ -1,9 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace TFeatureManagement.AspNetCore.Http;
 
@@ -28,5 +23,3 @@ internal class InlineDisabledEndpointHandler<TFeature> : IDisabledEndpointHandle
         return Task.CompletedTask;
     }
 }
-
-#endif

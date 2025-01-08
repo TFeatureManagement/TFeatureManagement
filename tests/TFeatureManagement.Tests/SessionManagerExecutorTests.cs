@@ -1,204 +1,212 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using NSubstitute;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace TFeatureManagement.Tests
+namespace TFeatureManagement.Tests;
+
+[TestClass]
+public class SessionManagerExecutorTests
 {
-    [TestClass]
-    public class SessionManagerExecutorTests
+    private SessionManagerExecutor<Feature, ISessionManager<Feature>> _underTest;
+
+    private ISessionManager<Feature> _sessionManager;
+    private IFeatureEnumParser<Feature> _featureEnumParser;
+
+    [TestInitialize]
+    public void Setup()
     {
-        private SessionManagerExecutor<Feature, ISessionManager<Feature>> _underTest;
+        _sessionManager = Substitute.For<ISessionManager<Feature>>();
+        _featureEnumParser = Substitute.For<IFeatureEnumParser<Feature>>();
 
-        private Mock<ISessionManager<Feature>> _sessionManager;
-        private Mock<IFeatureEnumParser<Feature>> _featureEnumParser;
+        _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(
+            _sessionManager,
+            _featureEnumParser);
+    }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _sessionManager = new Mock<ISessionManager<Feature>>();
-            _featureEnumParser = new Mock<IFeatureEnumParser<Feature>>();
+    [TestMethod]
+    public void Constructor_SessionManagerIsNull_ThrowsArgumentNullException()
+    {
+        // Arrange and Act
+        Action action = () => _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(null, _featureEnumParser);
 
-            _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(_sessionManager.Object, _featureEnumParser.Object);
-        }
+        // Assert
+        action.Should().Throw<ArgumentNullException>().Where(ex => ex.ParamName.Equals("sessionManager", StringComparison.Ordinal));
+    }
 
-        [TestMethod]
-        public void Constructor_SessionManagerIsNull_ThrowsArgumentNullException()
-        {
-            // Arrange and Act
-            Action action = () => _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(null, _featureEnumParser.Object);
+    [TestMethod]
+    public void Constructor_FeatureEnumParserIsNull_ThrowsArgumentNullException()
+    {
+        // Arrange and Act
+        Action action = () => _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(_sessionManager, null);
 
-            // Assert
-            action.Should().Throw<ArgumentNullException>().Where(ex => ex.ParamName.Equals("sessionManager", StringComparison.Ordinal));
-        }
+        // Assert
+        action.Should().Throw<ArgumentNullException>().Where(ex => ex.ParamName.Equals("featureEnumParser", StringComparison.Ordinal));
+    }
 
-        [TestMethod]
-        public void Constructor_FeatureEnumParserIsNull_ThrowsArgumentNullException()
-        {
-            // Arrange and Act
-            Action action = () => _underTest = new SessionManagerExecutor<Feature, ISessionManager<Feature>>(_sessionManager.Object, null);
+    [TestMethod]
+    public async Task GetAsync_FeatureNameSpecified_CallsFeatureEnumParserCorrectly()
+    {
+        // Arrange
+        const string featureName = "NotInFeatureEnum";
 
-            // Assert
-            action.Should().Throw<ArgumentNullException>().Where(ex => ex.ParamName.Equals("featureEnumParser", StringComparison.Ordinal));
-        }
+        // Act
+        await _underTest.GetAsync(featureName);
 
-        [TestMethod]
-        public async Task GetAsync_FeatureNameSpecified_CallsFeatureEnumParserCorrectly()
-        {
-            // Arrange
-            const string featureName = "NotInFeatureEnum";
+        // Assert
+        _featureEnumParser.Received().TryParse(featureName, true, out _);
+    }
 
-            // Act
-            await _underTest.GetAsync(featureName);
+    [TestMethod]
+    public async Task GetAsync_FeatureNameNotInFeatureEnum_ReturnsNull()
+    {
+        // Arrange
+        const string featureName = "NotInFeatureEnum";
 
-            // Assert
-            var feature = default(Feature);
-            _featureEnumParser.Verify(x => x.TryParse(featureName, true, out feature), Times.Once);
-        }
+        // Act
+        var isEnabled = await _underTest.GetAsync(featureName);
 
-        [TestMethod]
-        public async Task GetAsync_FeatureNameNotInFeatureEnum_ReturnsNull()
-        {
-            // Arrange
-            const string featureName = "NotInFeatureEnum";
+        // Assert
+        isEnabled.Should().BeNull();
+    }
 
-            // Act
-            var isEnabled = await _underTest.GetAsync(featureName);
+    [TestMethod]
+    public async Task GetAsync_FeatureNameNotInFeatureEnum_DoesNotCallSessionManagerGetAsync()
+    {
+        // Arrange
+        const string featureName = "NotInFeatureEnum";
 
-            // Assert
-            isEnabled.Should().BeNull();
-        }
+        // Act
+        await _underTest.GetAsync(featureName);
 
-        [TestMethod]
-        public async Task GetAsync_FeatureNameNotInFeatureEnum_DoesNotCallSessionManagerGetAsync()
-        {
-            // Arrange
-            const string featureName = "NotInFeatureEnum";
+        // Assert
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        _sessionManager.DidNotReceive().GetAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>());
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+    }
 
-            // Act
-            var isEnabled = await _underTest.GetAsync(featureName);
+    [TestMethod]
+    public async Task GetAsync_FeatureNameInFeatureEnum_CallsSessionManagerGetAsyncCorrectly()
+    {
+        // Arrange
+        var feature = Feature.Test2;
+        var featureName = feature.ToString();
 
-            // Assert
-            _sessionManager.Verify(x => x.GetAsync(It.IsAny<Feature>()), Times.Never);
-        }
+        _featureEnumParser.TryParse(Arg.Any<string>(), Arg.Any<bool>(), out Arg.Any<Feature>()).Returns(x => { x[2] = feature; return true; });
 
-        [TestMethod]
-        public async Task GetAsync_FeatureNameInFeatureEnum_CallsSessionManagerGetAsyncCorrectly()
-        {
-            // Arrange
-            var feature = Feature.Test2;
-            var featureName = feature.ToString();
+        // Act
+        await _underTest.GetAsync(featureName);
 
-            _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
+        // Assert
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        _sessionManager.Received().GetAsync(feature, Arg.Any<CancellationToken>());
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+    }
 
-            // Act
-            await _underTest.GetAsync(featureName);
+    [TestMethod]
+    public async Task GetAsync_FeatureNameInFeatureEnum_ReturnsFalseIfSessionManagerGetAsyncResultIsFalse()
+    {
+        // Arrange
+        var feature = Feature.Test2;
+        var featureName = feature.ToString();
 
-            // Assert
-            _sessionManager.Verify(x => x.GetAsync(feature), Times.Once);
-        }
+        _featureEnumParser.TryParse(Arg.Any<string>(), Arg.Any<bool>(), out Arg.Any<Feature>()).Returns(true);
 
-        [TestMethod]
-        public async Task GetAsync_FeatureNameInFeatureEnum_ReturnsFalseIfSessionManagerGetAsyncResultIsFalse()
-        {
-            // Arrange
-            var feature = Feature.Test2;
-            var featureName = feature.ToString();
+        _sessionManager.GetAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>()).Returns(false);
 
-            _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
+        // Act
+        var isEnabled = await _underTest.GetAsync(featureName);
 
-            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>())).ReturnsAsync(false);
+        // Assert
+        isEnabled.Should().BeFalse();
+    }
 
-            // Act
-            var isEnabled = await _underTest.GetAsync(featureName);
+    [TestMethod]
+    public async Task GetAsync_FeatureNameInFeatureEnum_ReturnsTrueIfSessionManagerGetAsyncResultIsTrue()
+    {
+        // Arrange
+        var feature = Feature.Test2;
+        var featureName = feature.ToString();
 
-            // Assert
-            isEnabled.Should().BeFalse();
-        }
+        _featureEnumParser.TryParse(Arg.Any<string>(), Arg.Any<bool>(), out Arg.Any<Feature>()).Returns(true);
 
-        [TestMethod]
-        public async Task GetAsync_FeatureNameInFeatureEnum_ReturnsTrueIfSessionManagerGetAsyncResultIsTrue()
-        {
-            // Arrange
-            var feature = Feature.Test2;
-            var featureName = feature.ToString();
+        _sessionManager.GetAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>()).Returns(true);
 
-            _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
+        // Act
+        var isEnabled = await _underTest.GetAsync(featureName);
 
-            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>())).ReturnsAsync(true);
+        // Assert
+        isEnabled.Should().BeTrue();
+    }
 
-            // Act
-            var isEnabled = await _underTest.GetAsync(featureName);
+    [TestMethod]
+    public async Task GetAsync_FeatureNameInFeatureEnum_ReturnsNullIfSessionManagerGetAsyncResultIsNull()
+    {
+        // Arrange
+        var feature = Feature.Test2;
+        var featureName = feature.ToString();
 
-            // Assert
-            isEnabled.Should().BeTrue();
-        }
+        _featureEnumParser.TryParse(Arg.Any<string>(), Arg.Any<bool>(), out Arg.Any<Feature>()).Returns(true);
 
-        [TestMethod]
-        public async Task GetAsync_FeatureNameInFeatureEnum_ReturnsNullIfSessionManagerGetAsyncResultIsNull()
-        {
-            // Arrange
-            var feature = Feature.Test2;
-            var featureName = feature.ToString();
+        _sessionManager.GetAsync(Arg.Any<Feature>(), Arg.Any<CancellationToken>()).Returns((bool?)null);
 
-            _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
+        // Act
+        var isEnabled = await _underTest.GetAsync(featureName);
 
-            _sessionManager.Setup(x => x.GetAsync(It.IsAny<Feature>())).ReturnsAsync((bool?)null);
+        // Assert
+        isEnabled.Should().BeNull();
+    }
 
-            // Act
-            var isEnabled = await _underTest.GetAsync(featureName);
+    [TestMethod]
+    public async Task SetAsync_FeatureNameSpecified_CallsFeatureEnumParserCorrectly()
+    {
+        // Arrange
+        const string featureName = "NotInFeatureEnum";
 
-            // Assert
-            isEnabled.Should().BeNull();
-        }
+        // Act
+        await _underTest.SetAsync(featureName, false);
 
-        [TestMethod]
-        public async Task SetAsync_FeatureNameSpecified_CallsFeatureEnumParserCorrectly()
-        {
-            // Arrange
-            const string featureName = "NotInFeatureEnum";
+        // Assert
+        _featureEnumParser.Received().TryParse(featureName, true, out _);
+    }
 
-            // Act
-            await _underTest.SetAsync(featureName, false);
+    [TestMethod]
+    public async Task SetAsync_FeatureNameNotInFeatureEnum_DoesNotCallSessionManagerSetAsync()
+    {
+        // Arrange
+        var feature = Feature.Test2;
+        var featureName = feature.ToString();
 
-            // Assert
-            var feature = default(Feature);
-            _featureEnumParser.Verify(x => x.TryParse(featureName, true, out feature), Times.Once);
-        }
+        _featureEnumParser.TryParse(Arg.Any<string>(), Arg.Any<bool>(), out Arg.Any<Feature>()).Returns(false);
 
-        [TestMethod]
-        public async Task SetAsync_FeatureNameNotInFeatureEnum_DoesNotCallSessionManagerSetAsync()
-        {
-            // Arrange
-            var feature = Feature.Test2;
-            var featureName = feature.ToString();
+        // Act
+        await _underTest.SetAsync(featureName, false);
 
-            _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(false);
+        // Assert
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        _sessionManager.DidNotReceive().SetAsync(Arg.Any<Feature>(), Arg.Any<bool>(), Arg.Any<CancellationToken>());
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+    }
 
-            // Act
-            await _underTest.SetAsync(featureName, false);
+    [TestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task SetAsync_FeatureNameInFeatureEnum_CallSessionManagerSetAsyncCorrectly(bool isEnabled)
+    {
+        // Arrange
+        var feature = Feature.Test2;
+        var featureName = feature.ToString();
 
-            // Assert
-            _sessionManager.Verify(x => x.SetAsync(It.IsAny<Feature>(), It.IsAny<bool>()), Times.Never);
-        }
+        _featureEnumParser.TryParse(Arg.Any<string>(), Arg.Any<bool>(), out Arg.Any<Feature>()).Returns(x => { x[2] = feature; return true; });
 
-        [TestMethod]
-        [DataRow(false)]
-        [DataRow(true)]
-        public async Task SetAsync_FeatureNameInFeatureEnum_CallSessionManagerSetAsyncCorrectly(bool isEnabled)
-        {
-            // Arrange
-            var feature = Feature.Test2;
-            var featureName = feature.ToString();
+        // Act
+        await _underTest.SetAsync(featureName, isEnabled);
 
-            _featureEnumParser.Setup(x => x.TryParse(It.IsAny<string>(), It.IsAny<bool>(), out feature)).Returns(true);
-
-            // Act
-            await _underTest.SetAsync(featureName, isEnabled);
-
-            // Assert
-            _sessionManager.Verify(x => x.SetAsync(feature, isEnabled), Times.Once);
-        }
+        // Assert
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        _sessionManager.Received().SetAsync(feature, isEnabled, Arg.Any<CancellationToken>());
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 }

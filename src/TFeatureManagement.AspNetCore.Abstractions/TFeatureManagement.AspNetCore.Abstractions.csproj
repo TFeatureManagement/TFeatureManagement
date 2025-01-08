@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(BuildDirectory)AssemblyInfo.props" />
+  <Import Project="$(BuildDirectory)PackageInfo.props" />
+  <Import Project="$(BuildDirectory)SignAssembly.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootNamespace>TFeatureManagement.AspNetCore</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>TFeatureManagement.AspNetCore.Abstractions</PackageId>
+    <Description>TFeatureManagement.AspNetCore.Abstractions provides abstractions for TFeatureManagement.AspNetCore.</Description>
+    <Product>TFeatureManagement.AspNetCore.Abstractions</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TFeatureManagement.Abstractions\TFeatureManagement.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,33 +1,36 @@
 ﻿using Microsoft.FeatureManagement;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace TFeatureManagement
+namespace TFeatureManagement;
+
+public sealed class FeatureManagerSnapshot<TFeature> : IFeatureManagerSnapshot<TFeature>
+    where TFeature : struct, Enum
 {
-    public class FeatureManagerSnapshot<TFeature> : IFeatureManagerSnapshot<TFeature>
-        where TFeature : struct, Enum
+    private readonly IVariantFeatureManagerSnapshot _baseFeatureManagerSnapshot;
+    private readonly IFeatureNameProvider<TFeature> _featureNameProvider;
+
+    public FeatureManagerSnapshot(
+        IVariantFeatureManagerSnapshot baseFeatureManagerSnapshot,
+        IFeatureNameProvider<TFeature> featureNameProvider)
     {
-        private readonly IFeatureManagerSnapshot _baseFeatureManagerSnapshot;
+        _baseFeatureManagerSnapshot = baseFeatureManagerSnapshot ?? throw new ArgumentNullException(nameof(baseFeatureManagerSnapshot));
+        _featureNameProvider = featureNameProvider ?? throw new ArgumentNullException(nameof(featureNameProvider));
+    }
 
-        public FeatureManagerSnapshot(IFeatureManagerSnapshot baseFeatureManagerSnapshot)
-        {
-            _baseFeatureManagerSnapshot = baseFeatureManagerSnapshot;
-        }
+    /// <inheritdoc />
+    public IAsyncEnumerable<string> GetFeatureNamesAsync(CancellationToken cancellationToken = default)
+    {
+        return _baseFeatureManagerSnapshot.GetFeatureNamesAsync(cancellationToken);
+    }
 
-        public IAsyncEnumerable<string> GetFeatureNamesAsync()
-        {
-            return _baseFeatureManagerSnapshot.GetFeatureNamesAsync();
-        }
+    /// <inheritdoc />
+    public ValueTask<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default)
+    {
+        return _baseFeatureManagerSnapshot.IsEnabledAsync(_featureNameProvider.GetFeatureName(feature), cancellationToken);
+    }
 
-        public Task<bool> IsEnabledAsync(TFeature feature)
-        {
-            return _baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString());
-        }
-
-        public Task<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context)
-        {
-            return _baseFeatureManagerSnapshot.IsEnabledAsync(feature.ToString(), context);
-        }
+    /// <inheritdoc />
+    public ValueTask<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default)
+    {
+        return _baseFeatureManagerSnapshot.IsEnabledAsync(_featureNameProvider.GetFeatureName(feature), context, cancellationToken);
     }
 }

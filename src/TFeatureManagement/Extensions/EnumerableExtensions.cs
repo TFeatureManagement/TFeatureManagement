@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿namespace TFeatureManagement.Extensions;
 
-namespace TFeatureManagement.Extensions
+public static class EnumerableExtensions
 {
-    public static class EnumerableExtensions
+    public static async ValueTask<bool> AnyAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
     {
-        public static async Task<bool> AnyAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, Task<bool>> predicate)
+        bool enabled = false;
+
+        foreach (TSource item in source)
         {
-            bool enabled = false;
-
-            foreach (TSource item in source)
+            if (await predicate(item, cancellationToken).ConfigureAwait(false))
             {
-                if (await predicate(item).ConfigureAwait(false))
-                {
-                    enabled = true;
+                enabled = true;
 
-                    break;
-                }
+                break;
             }
-
-            return enabled;
         }
 
-        public static async Task<bool> AllAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, Task<bool>> predicate)
+        return enabled;
+    }
+
+    public static async ValueTask<bool> AllAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        bool enabled = true;
+
+        foreach (TSource item in source)
         {
-            bool enabled = true;
-
-            foreach (TSource item in source)
+            if (!await predicate(item, cancellationToken).ConfigureAwait(false))
             {
-                if (!await predicate(item).ConfigureAwait(false))
-                {
-                    enabled = false;
+                enabled = false;
 
-                    break;
-                }
+                break;
             }
-
-            return enabled;
         }
+
+        return enabled;
     }
 }

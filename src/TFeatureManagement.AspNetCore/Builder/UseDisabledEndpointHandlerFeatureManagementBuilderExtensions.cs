@@ -1,9 +1,5 @@
-﻿#if NET7_0_OR_GREATER
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using TFeatureManagement.AspNetCore.Http;
 using TFeatureManagement.DependencyInjection;
 
@@ -24,7 +20,9 @@ public static class UseDisabledEndpointHandlerFeatureManagementBuilderExtensions
     public static IFeatureManagementBuilder<TFeature> UseDisabledEndpointHandler<TFeature>(this IFeatureManagementBuilder<TFeature> builder, IDisabledEndpointHandler<TFeature> disabledEndpointHandler)
         where TFeature : struct, Enum
     {
-        builder.Services.AddSingleton(disabledEndpointHandler ?? throw new ArgumentNullException(nameof(disabledEndpointHandler)));
+        ArgumentNullException.ThrowIfNull(disabledEndpointHandler);
+
+        builder.Services.AddSingleton(disabledEndpointHandler);
 
         return builder;
     }
@@ -39,15 +37,10 @@ public static class UseDisabledEndpointHandlerFeatureManagementBuilderExtensions
     public static IFeatureManagementBuilder<TFeature> UseDisabledEndpointHandler<TFeature>(this IFeatureManagementBuilder<TFeature> builder, Action<IEnumerable<TFeature>, RequirementType, EndpointFilterInvocationContext> handler)
         where TFeature : struct, Enum
     {
-        if (handler == null)
-        {
-            throw new ArgumentNullException(nameof(handler));
-        }
+        ArgumentNullException.ThrowIfNull(handler);
 
         builder.UseDisabledEndpointHandler(new InlineDisabledEndpointHandler<TFeature>(handler));
 
         return builder;
     }
 }
-
-#endif

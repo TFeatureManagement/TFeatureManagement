@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
+﻿namespace TFeatureManagement.AspNetCore.Mvc.ActionConstraints;
 
 /// <summary>
 /// An action constraint attribute that can be used to require all or any of a set of features to be enabled for an
