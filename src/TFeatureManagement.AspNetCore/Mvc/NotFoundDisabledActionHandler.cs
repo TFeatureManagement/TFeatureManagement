@@ -11,7 +11,14 @@ public class NotFoundDisabledActionHandler<TFeature> : IDisabledActionHandler<TF
     where TFeature : struct, Enum
 {
     /// <inheritdoc />
-    public Task HandleDisabledAction(IEnumerable<TFeature> features, ActionExecutingContext context)
+    [Obsolete("Use HandleDisabledActionAsync instead. This will be removed in an upcoming major release.", false)]
+    public async Task HandleDisabledAction(IEnumerable<TFeature> features, ActionExecutingContext context)
+    {
+        await HandleDisabledActionAsync(features, RequirementType.Any, context);
+    }
+
+    /// <inheritdoc />
+    public Task HandleDisabledActionAsync(IEnumerable<TFeature> features, RequirementType requirementType, ActionExecutingContext context)
     {
         context.Result = new StatusCodeResult(StatusCodes.Status404NotFound);
 

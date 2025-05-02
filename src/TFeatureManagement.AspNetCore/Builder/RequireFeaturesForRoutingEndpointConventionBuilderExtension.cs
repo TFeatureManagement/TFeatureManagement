@@ -33,7 +33,7 @@ public static class RequireFeaturesForRoutingEndpointConventionBuilderExtension
         where TBuilder : IEndpointConventionBuilder
         where TFeature : struct, Enum
     {
-        return builder.RequireFeaturesForRouting(requirementType, new[] { feature });
+        return builder.RequireFeaturesForRouting(requirementType, [feature]);
     }
 
     /// <summary>

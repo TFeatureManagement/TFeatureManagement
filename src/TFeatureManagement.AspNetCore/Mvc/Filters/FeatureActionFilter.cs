@@ -4,17 +4,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace TFeatureManagement.AspNetCore.Mvc.Filters;
 
 /// <summary>
-/// An action filter that can be used to require all or any of a set of features to be enabled for an action to be
-/// enabled. If the required features are not enabled the registered <see cref="IDisabledActionHandler{TFeature}" />
-/// will be invoked.
+/// An action filter that can be used to require a set of features to be enabled for an action to be enabled. If the
+/// required features are not enabled the registered <see cref="IDisabledActionHandler{TFeature}" /> will be invoked.
 /// </summary>
 /// <typeparam name="TFeature">The feature enum type.</typeparam>
 public class FeatureActionFilter<TFeature> : IAsyncActionFilter, IOrderedFilter
     where TFeature : struct, Enum
 {
     /// <summary>
-    /// Creates an action filter that requires all the provided feature(s) to be enabled for the actions to be
-    /// enabled.
+    /// Creates an action filter that requires a set of features to be enabled for the actions to be enabled.
+    /// </summary>
     /// </summary>
     /// <param name="features">The features that should be enabled.</param>
     public FeatureActionFilter(IEnumerable<TFeature> features)
@@ -23,13 +22,10 @@ public class FeatureActionFilter<TFeature> : IAsyncActionFilter, IOrderedFilter
     }
 
     /// <summary>
-    /// Creates an action filter that requires the provided feature(s) to be enabled for the actions to be enabled.
-    /// The filter can be configured to require all or any of the provided feature(s) to be enabled.
+    /// Creates an action filter that requires a set of features to be enabled for the actions to be enabled.
     /// </summary>
     /// <param name="features">The features that should be enabled.</param>
-    /// <param name="requirementType">
-    /// Specifies whether all or any of the provided features should be enabled.
-    /// </param>
+    /// <param name="requirementType">The requirement type.</param>
     public FeatureActionFilter(IEnumerable<TFeature> features, RequirementType requirementType)
     {
         if (features?.Any() != true)
@@ -47,7 +43,7 @@ public class FeatureActionFilter<TFeature> : IAsyncActionFilter, IOrderedFilter
     public IEnumerable<TFeature> Features { get; }
 
     /// <summary>
-    /// Gets whether all or any features in <see cref="Features" /> should be enabled.
+    /// Gets which features in <see cref="Features" /> should be enabled.
     /// </summary>
     public RequirementType RequirementType { get; }
 
@@ -67,7 +63,7 @@ public class FeatureActionFilter<TFeature> : IAsyncActionFilter, IOrderedFilter
         {
             var disabledActionHandler = context.HttpContext.RequestServices.GetService<IDisabledActionHandler<TFeature>>() ?? new NotFoundDisabledActionHandler<TFeature>();
 
-            await disabledActionHandler.HandleDisabledAction(Features, context);
+            await disabledActionHandler.HandleDisabledActionAsync(Features, RequirementType, context);
         }
     }
 }

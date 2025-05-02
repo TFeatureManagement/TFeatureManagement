@@ -37,7 +37,7 @@ public static class RequiresFeaturesEndpointConventionBuilderExtensions
         where TBuilder : IEndpointConventionBuilder
         where TFeature : struct, Enum
     {
-        return builder.RequireFeatures(requirementType, new[] { feature });
+        return builder.RequireFeatures(requirementType, [feature]);
     }
 
     /// <summary>
