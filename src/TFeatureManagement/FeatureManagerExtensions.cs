@@ -18,9 +18,7 @@ public static class FeatureManagerExtensions
     /// <summary>
     /// Checks whether a given set of features are enabled.
     /// </summary>
-    /// <param name="requirementType">
-    /// Specifies whether to check if all or any of the given set of features are enabled.
-    /// </param>
+    /// <param name="requirementType">The requirement type.</param>
     /// <param name="features">The features to check.</param>
     /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
     /// <returns><see langword="true"/> if the features are enabled; otherwise, <see langword="false"/>.</returns>

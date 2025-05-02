@@ -29,7 +29,7 @@ public class FeatureTagHelper<TFeature> : TagHelper
     public IEnumerable<TFeature>? Features { get; set; }
 
     /// <summary>
-    /// Gets or sets whether all or any features in <see cref="Features" /> should be enabled.
+    /// Gets which features in <see cref="Features" /> should be enabled.
     /// </summary>
     [HtmlAttributeName("requirement-type")]
     public RequirementType RequirementType { get; set; } = RequirementType.All;

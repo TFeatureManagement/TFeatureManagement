@@ -8,8 +8,7 @@ public class FeatureAttribute<TFeature> : IFeatureMetadata<TFeature>
     where TFeature : struct, Enum
 {
     /// <summary>
-    /// Creates an attribute that requires all the provided feature(s) to be enabled for the endpoint to be valid to be
-    /// selected.
+    /// Creates an attribute that requires a set of features to be enabled for the action to be valid to be selected.
     /// </summary>
     /// <param name="features">The features that should be enabled.</param>
     public FeatureAttribute(params TFeature[] features)
@@ -18,12 +17,9 @@ public class FeatureAttribute<TFeature> : IFeatureMetadata<TFeature>
     }
 
     /// <summary>
-    /// Creates an attribute that requires the provided feature(s) to be enabled for the action to be valid to be
-    /// selected. The constraint can be configured to require all or any of the provided feature(s) to be enabled.
+    /// Creates an attribute that requires a set of features to be enabled for the action to be valid to be selected.
     /// </summary>
-    /// <param name="requirementType">
-    /// Specifies whether all or any of the provided features should be enabled.
-    /// </param>
+    /// <param name="requirementType">The requirement type.</param>
     /// <param name="features">The features that should be enabled.</param>
     public FeatureAttribute(RequirementType requirementType, params TFeature[] features)
     {

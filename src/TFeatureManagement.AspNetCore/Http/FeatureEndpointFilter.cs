@@ -13,8 +13,7 @@ public class FeatureEndpointFilter<TFeature> : IEndpointFilter
     where TFeature : struct, Enum
 {
     /// <summary>
-    /// Creates an endpoint filter that requires all the provided feature(s) to be enabled for the actions to be
-    /// enabled.
+    /// Creates an endpoint filter that requires a set of features to be enabled for the endpoint to be enabled.
     /// </summary>
     /// <param name="features">The features that should be enabled.</param>
     public FeatureEndpointFilter(IEnumerable<TFeature> features)
@@ -23,13 +22,10 @@ public class FeatureEndpointFilter<TFeature> : IEndpointFilter
     }
 
     /// <summary>
-    /// Creates an endpoint filter that requires the provided feature(s) to be enabled for the endpoint to be enabled.
-    /// The filter can be configured to require all or any of the provided feature(s) to be enabled.
+    /// Creates an endpoint filter that requires a set of features to be enabled for the endpoint to be enabled.
     /// </summary>
     /// <param name="features">The features that should be enabled.</param>
-    /// <param name="requirementType">
-    /// Specifies whether all or any of the provided features should be enabled.
-    /// </param>
+    /// <param name="requirementType">The requirement type.</param>
     public FeatureEndpointFilter(IEnumerable<TFeature> features, RequirementType requirementType)
     {
         if (features?.Any() != true)
@@ -64,7 +60,8 @@ public class FeatureEndpointFilter<TFeature> : IEndpointFilter
         {
             var disabledEndpointHandler = context.HttpContext.RequestServices.GetService<IDisabledEndpointHandler<TFeature>>() ?? new NotFoundDisabledEndpointHandler<TFeature>();
 
-            await disabledEndpointHandler.HandleDisabledEndpoint(Features, RequirementType, context);
+            await disabledEndpointHandler.HandleDisabledEndpointAsync(Features, RequirementType, context);
+
             return new ValueTask<object?>(Task.FromResult<object?>(null));
         }
     }
