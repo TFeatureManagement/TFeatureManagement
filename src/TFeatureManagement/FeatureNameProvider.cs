@@ -3,11 +3,9 @@
 public class FeatureNameProvider<TFeature> : IFeatureNameProvider<TFeature>
     where TFeature : struct, Enum
 {
-    private readonly Dictionary<TFeature, string> _featureNames;
-
     public FeatureNameProvider()
     {
-        _featureNames = [];
+        FeatureNames = [];
 
 #if NET8_0_OR_GREATER
         var features = Enum.GetValues<TFeature>();
@@ -18,13 +16,20 @@ public class FeatureNameProvider<TFeature> : IFeatureNameProvider<TFeature>
 #endif
         foreach (var feature in features)
         {
-            _featureNames.Add(feature, feature.ToString());
+            FeatureNames.Add(feature, feature.ToString());
         }
     }
+
+    internal Dictionary<TFeature, string> FeatureNames { get; private set; }
 
     /// <inheritdoc />
     public string GetFeatureName(TFeature feature)
     {
-        return _featureNames[feature];
+        if (!FeatureNames.TryGetValue(feature, out var featureName))
+        {
+            featureName = feature.ToString();
+        }
+
+        return featureName;
     }
 }
