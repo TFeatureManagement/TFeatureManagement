@@ -1,6 +1,8 @@
 [![Status](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/TFeatureManagement/TFeatureManagement/actions/workflows/dotnet.yml?query=branch%3Amaster)
 [![Nuget](https://img.shields.io/nuget/v/TFeatureManagement?label=TFeatureManagement)](https://www.nuget.org/packages/TFeatureManagement)
+[![Nuget](https://img.shields.io/nuget/v/TFeatureManagement?label=TFeatureManagement.Abstractions)](https://www.nuget.org/packages/TFeatureManagement.Abstractions)
 [![Nuget](https://img.shields.io/nuget/v/TFeatureManagement.AspNetCore?label=TFeatureManagement.AspNetCore)](https://www.nuget.org/packages/TFeatureManagement.AspNetCore)
+[![Nuget](https://img.shields.io/nuget/v/TFeatureManagement.AspNetCore?label=TFeatureManagement.AspNetCore.Abstractions)](https://www.nuget.org/packages/TFeatureManagement.AspNetCore.Abstractions)
 
 # TFeatureManagement
 
