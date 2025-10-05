@@ -7,13 +7,19 @@ public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
 {
     private readonly IVariantFeatureManager _baseFeatureManager;
     private readonly IFeatureNameProvider<TFeature> _featureNameProvider;
+    private readonly IFeatureDefaultProvider<TFeature> _featureDefaultProvider;
+    private readonly IFeatureDefinitionProvider _featureDefinitionProvider;
 
     public FeatureManager(
         IVariantFeatureManager baseFeatureManager,
-        IFeatureNameProvider<TFeature> featureNameProvider)
+        IFeatureNameProvider<TFeature> featureNameProvider,
+        IFeatureDefaultProvider<TFeature> featureDefaultProvider,
+        IFeatureDefinitionProvider featureDefinitionProvider)
     {
         _baseFeatureManager = baseFeatureManager ?? throw new ArgumentNullException(nameof(baseFeatureManager));
         _featureNameProvider = featureNameProvider ?? throw new ArgumentNullException(nameof(featureNameProvider));
+        _featureDefaultProvider = featureDefaultProvider ?? throw new ArgumentNullException(nameof(featureDefaultProvider));
+        _featureDefinitionProvider = featureDefinitionProvider ?? throw new ArgumentNullException(nameof(featureDefinitionProvider));
     }
 
     /// <inheritdoc />
@@ -23,14 +29,30 @@ public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
     }
 
     /// <inheritdoc />
-    public ValueTask<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default)
+    public async ValueTask<bool> IsEnabledAsync(TFeature feature, CancellationToken cancellationToken = default)
     {
-        return _baseFeatureManager.IsEnabledAsync(_featureNameProvider.GetFeatureName(feature), cancellationToken);
+        var featureName = _featureNameProvider.GetFeatureName(feature);
+
+        if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
+            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(continueOnCapturedContext: false)) == null)
+        {
+            return isEnabledDefault;
+        }
+
+        return await _baseFeatureManager.IsEnabledAsync(featureName, cancellationToken);
     }
 
     /// <inheritdoc />
-    public ValueTask<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default)
+    public async ValueTask<bool> IsEnabledAsync<TContext>(TFeature feature, TContext context, CancellationToken cancellationToken = default)
     {
-        return _baseFeatureManager.IsEnabledAsync(_featureNameProvider.GetFeatureName(feature), context, cancellationToken);
+        var featureName = _featureNameProvider.GetFeatureName(feature);
+
+        if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
+            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(continueOnCapturedContext: false)) == null)
+        {
+            return isEnabledDefault;
+        }
+
+        return await _baseFeatureManager.IsEnabledAsync(featureName, context, cancellationToken);
     }
 }
