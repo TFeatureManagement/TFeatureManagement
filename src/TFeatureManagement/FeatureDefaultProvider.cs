@@ -1,45 +1,64 @@
-﻿using System.Reflection;
+﻿using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace TFeatureManagement
 {
     public class FeatureDefaultProvider<TFeature> : IFeatureDefaultProvider<TFeature>
         where TFeature : struct, Enum
     {
-        private readonly IFeatureNameProvider<TFeature> _featureNameProvider;
+        private readonly IHostEnvironment _hostEnvironment;
 
         public FeatureDefaultProvider(
-            IFeatureNameProvider<TFeature> featureNameProvider)
+            IHostEnvironment hostEnvironment)
         {
-            _featureNameProvider = featureNameProvider ?? throw new ArgumentNullException(nameof(featureNameProvider));
+            _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
 
-            FeatureIsEnabledDefaults = [];
+            IsEnabledDefaults = [];
 
 #if NET8_0_OR_GREATER
             var features = Enum.GetValues<TFeature>();
 #else
-        var features = Enum
-            .GetValues(typeof(TFeature))
-            .Cast<TFeature>();
+            var features = Enum
+                .GetValues(typeof(TFeature))
+                .Cast<TFeature>();
 #endif
             foreach (var feature in features)
             {
-                var featureFieldInfo = typeof(TFeature).GetField(_featureNameProvider.GetFeatureName(feature));
+                var featureName = feature.ToString();
+
+                var featureFieldInfo = typeof(TFeature).GetField(featureName, BindingFlags.Public | BindingFlags.Static);
                 if (featureFieldInfo != null)
                 {
-                    var isEnabledDefaultAttribute = featureFieldInfo.GetCustomAttribute<FeatureIsEnabledDefaultAttribute>(false);
-                    if (isEnabledDefaultAttribute != null)
+                    var isEnabledEnvironmentDefaultAttributes = featureFieldInfo
+                        .GetCustomAttributes<FeatureIsEnabledEnvironmentDefaultAttribute>(false)
+                        .Where(x => x.EnvironmentName.Equals(_hostEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase));
+                    if (isEnabledEnvironmentDefaultAttributes.Count() > 1)
                     {
-                        FeatureIsEnabledDefaults.Add(feature, isEnabledDefaultAttribute.IsEnabled);
+                        throw new FeatureManagementException(FeatureManagementErrorType.MultipleIsEnabledEnvironmentDefaultAttributes, $"The feature '{featureName}' has multiple is enabled environment default attributes for the current environment.");
+                    }
+
+                    var isEnabledEnvironmentDefaultAttribute = isEnabledEnvironmentDefaultAttributes.SingleOrDefault();
+                    if (isEnabledEnvironmentDefaultAttribute != null)
+                    {
+                        IsEnabledDefaults.Add(feature, isEnabledEnvironmentDefaultAttribute.IsEnabled);
+                    }
+                    else
+                    {
+                        var isEnabledDefaultAttribute = featureFieldInfo.GetCustomAttribute<FeatureIsEnabledDefaultAttribute>(false);
+                        if (isEnabledDefaultAttribute != null)
+                        {
+                            IsEnabledDefaults.Add(feature, isEnabledDefaultAttribute.IsEnabled);
+                        }
                     }
                 }
             }
         }
 
-        internal Dictionary<TFeature, bool> FeatureIsEnabledDefaults { get; private set; }
+        internal Dictionary<TFeature, bool> IsEnabledDefaults { get; }
 
         public bool TryGetIsEnabledDefault(TFeature feature, out bool isEnabledDefault)
         {
-            return FeatureIsEnabledDefaults.TryGetValue(feature, out isEnabledDefault);
+            return IsEnabledDefaults.TryGetValue(feature, out isEnabledDefault);
         }
     }
 }
