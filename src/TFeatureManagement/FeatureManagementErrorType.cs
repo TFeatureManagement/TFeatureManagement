@@ -3,8 +3,8 @@
 public enum FeatureManagementErrorType
 {
     /// <summary>
-    /// The feature being evaluated has multiple <see cref="FeatureIsEnabledEnvironmentDefaultAttribute"/>
-    /// for the current environment.
+    /// A feature has multiple <see cref="FeatureIsEnabledDefaultAttribute"/> instances specified for an
+    /// environment(s).
     /// </summary>
-    MultipleIsEnabledEnvironmentDefaultAttributes
+    MultipleIsEnabledDefaultAttributes
 }

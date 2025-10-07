@@ -29,25 +29,33 @@ namespace TFeatureManagement
                 var featureFieldInfo = typeof(TFeature).GetField(featureName, BindingFlags.Public | BindingFlags.Static);
                 if (featureFieldInfo != null)
                 {
-                    var isEnabledEnvironmentDefaultAttributes = featureFieldInfo
-                        .GetCustomAttributes<FeatureIsEnabledEnvironmentDefaultAttribute>(false)
-                        .Where(x => x.EnvironmentName.Equals(_hostEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase));
-                    if (isEnabledEnvironmentDefaultAttributes.Count() > 1)
+                    var isEnabledDefaultAttributes = featureFieldInfo
+                        .GetCustomAttributes<FeatureIsEnabledDefaultAttribute>(false);
+
+                    var isEnabledDefaultAttributeEnvironmentGroups = isEnabledDefaultAttributes
+                        .GroupBy(x => x.EnvironmentName)
+                        .Where(x => x.Count() > 1)
+                        .ToList();
+                    if (isEnabledDefaultAttributeEnvironmentGroups.Count > 0)
                     {
-                        throw new FeatureManagementException(FeatureManagementErrorType.MultipleIsEnabledEnvironmentDefaultAttributes, $"The feature '{featureName}' has multiple is enabled environment default attributes for the current environment.");
+                        throw new FeatureManagementException(FeatureManagementErrorType.MultipleIsEnabledDefaultAttributes, $"The feature '{featureName}' has multiple is enabled default attributes for an environment(s).");
                     }
 
-                    var isEnabledEnvironmentDefaultAttribute = isEnabledEnvironmentDefaultAttributes.SingleOrDefault();
-                    if (isEnabledEnvironmentDefaultAttribute != null)
+                    var isEnabledDefaultAttributeForEnvironment = isEnabledDefaultAttributes
+                        .SingleOrDefault(x =>
+                            x.EnvironmentName != null &&
+                            x.EnvironmentName.Equals(_hostEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase));
+                    if (isEnabledDefaultAttributeForEnvironment != null)
                     {
-                        IsEnabledDefaults.Add(feature, isEnabledEnvironmentDefaultAttribute.IsEnabled);
+                        IsEnabledDefaults.Add(feature, isEnabledDefaultAttributeForEnvironment.IsEnabled);
                     }
                     else
                     {
-                        var isEnabledDefaultAttribute = featureFieldInfo.GetCustomAttribute<FeatureIsEnabledDefaultAttribute>(false);
-                        if (isEnabledDefaultAttribute != null)
+                        var isEnabledDefaultAttributeForAllEnvironments = isEnabledDefaultAttributes
+                            .SingleOrDefault(x => x.EnvironmentName == null);
+                        if (isEnabledDefaultAttributeForAllEnvironments != null)
                         {
-                            IsEnabledDefaults.Add(feature, isEnabledDefaultAttribute.IsEnabled);
+                            IsEnabledDefaults.Add(feature, isEnabledDefaultAttributeForAllEnvironments.IsEnabled);
                         }
                     }
                 }
