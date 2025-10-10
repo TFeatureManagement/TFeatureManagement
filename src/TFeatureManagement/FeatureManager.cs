@@ -34,7 +34,7 @@ public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
         var featureName = _featureNameProvider.GetFeatureName(feature);
 
         if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
-            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(continueOnCapturedContext: false)) == null)
+            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(false)) == null)
         {
             return isEnabledDefault;
         }
@@ -48,7 +48,7 @@ public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
         var featureName = _featureNameProvider.GetFeatureName(feature);
 
         if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
-            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(continueOnCapturedContext: false)) == null)
+            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(false)) == null)
         {
             return isEnabledDefault;
         }
