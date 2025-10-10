@@ -92,6 +92,7 @@ public static class ServiceCollectionExtensions
 
         builder.Services.TryAddSingleton<IFeatureNameProvider<TFeature>, FeatureNameProvider<TFeature>>();
         builder.Services.TryAddSingleton<IFeatureEnumParser<TFeature>, FeatureEnumParser<TFeature>>();
+        builder.Services.TryAddSingleton<IFeatureDefaultProvider<TFeature>, FeatureDefaultProvider<TFeature>>();
 
         return builder;
     }
