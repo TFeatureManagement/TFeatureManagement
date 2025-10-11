@@ -8,7 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddFeatureManagement<Feature>(new FeatureManagementOptions {  IsFeatureDefaultsFeatureDefinitionProviderDecoratorEnabled = true })
+builder.Services.AddFeatureManagement<Feature>(
+    new FeatureManagementOptions
+    {
+        IsFeatureDefaultsFeatureDefinitionProviderDecoratorEnabled = true
+    })
     .AddSessionManager<SessionManager>()
     .AddFeatureFilter<FeatureFilter>()
     .AddFeatureFilter<ContextualFeatureFilter>();
