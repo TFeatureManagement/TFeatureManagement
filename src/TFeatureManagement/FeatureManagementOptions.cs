@@ -17,7 +17,9 @@ public class FeatureManagementOptions
     /// pattern is used to extend the functionality of the registered <see cref="IFeatureDefinitionProvider"/>.
     ///
     /// This functionality currently does not work if the <see cref="IFeatureDefinitionProvider"/> is registered as a
-    /// keyed service.
+    /// keyed service. If it is registered a keyed service the
+    /// <see cref="FeatureDefaultsFeatureDefinitionProviderDecorator{TFeature}"/> will not be registered even if this
+    /// option is set to <see langword="true"/>.
     /// </remarks>
     public bool IsFeatureDefaultsFeatureDefinitionProviderDecoratorEnabled { get; set; }
 }
