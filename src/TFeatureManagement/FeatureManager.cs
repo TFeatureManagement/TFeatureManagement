@@ -7,13 +7,13 @@ public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
 {
     private readonly IVariantFeatureManager _baseFeatureManager;
     private readonly IFeatureNameProvider<TFeature> _featureNameProvider;
-    private readonly IFeatureDefaultProvider<TFeature> _featureDefaultProvider;
+    private readonly IFeatureDefaultsProvider<TFeature> _featureDefaultProvider;
     private readonly IFeatureDefinitionProvider _featureDefinitionProvider;
 
     public FeatureManager(
         IVariantFeatureManager baseFeatureManager,
         IFeatureNameProvider<TFeature> featureNameProvider,
-        IFeatureDefaultProvider<TFeature> featureDefaultProvider,
+        IFeatureDefaultsProvider<TFeature> featureDefaultProvider,
         IFeatureDefinitionProvider featureDefinitionProvider)
     {
         _baseFeatureManager = baseFeatureManager ?? throw new ArgumentNullException(nameof(baseFeatureManager));
@@ -33,11 +33,11 @@ public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
     {
         var featureName = _featureNameProvider.GetFeatureName(feature);
 
-        if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
-            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(false)) == null)
-        {
-            return isEnabledDefault;
-        }
+        //if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
+        //    (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(continueOnCapturedContext: false)) == null)
+        //{
+        //    return isEnabledDefault;
+        //}
 
         return await _baseFeatureManager.IsEnabledAsync(featureName, cancellationToken);
     }
@@ -47,11 +47,11 @@ public sealed class FeatureManager<TFeature> : IFeatureManager<TFeature>
     {
         var featureName = _featureNameProvider.GetFeatureName(feature);
 
-        if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
-            (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(false)) == null)
-        {
-            return isEnabledDefault;
-        }
+        //if (_featureDefaultProvider.TryGetIsEnabledDefault(feature, out bool isEnabledDefault) &&
+        //    (await _featureDefinitionProvider.GetFeatureDefinitionAsync(featureName).ConfigureAwait(continueOnCapturedContext: false)) == null)
+        //{
+        //    return isEnabledDefault;
+        //}
 
         return await _baseFeatureManager.IsEnabledAsync(featureName, context, cancellationToken);
     }

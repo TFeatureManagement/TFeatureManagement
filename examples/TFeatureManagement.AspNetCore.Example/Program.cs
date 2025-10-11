@@ -1,3 +1,4 @@
+using TFeatureManagement;
 using TFeatureManagement.AspNetCore.DependencyInjection;
 using TFeatureManagement.AspNetCore.Example.FeatureFilters;
 using TFeatureManagement.AspNetCore.Example.Models;
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddFeatureManagement<Feature>()
+builder.Services.AddFeatureManagement<Feature>(new FeatureManagementOptions {  IsFeatureDefaultsFeatureDefinitionProviderDecoratorEnabled = true })
     .AddSessionManager<SessionManager>()
     .AddFeatureFilter<FeatureFilter>()
     .AddFeatureFilter<ContextualFeatureFilter>();

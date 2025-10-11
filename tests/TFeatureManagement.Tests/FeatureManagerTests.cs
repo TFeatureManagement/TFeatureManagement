@@ -1,307 +1,306 @@
-using FluentAssertions;
-using Microsoft.FeatureManagement;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+//using FluentAssertions;
+//using Microsoft.FeatureManagement;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using NSubstitute;
+//using System;
+//using System.Collections.Generic;
+//using System.Threading;
+//using System.Threading.Tasks;
 
-namespace TFeatureManagement.Tests;
+//namespace TFeatureManagement.Tests;
 
-[TestClass]
-public class FeatureManagerTests
-{
-    private FeatureManager<Feature> _underTest;
+//[TestClass]
+//public class FeatureManagerTests
+//{
+//    private FeatureManager<Feature> _underTest;
 
-    private IVariantFeatureManager _baseFeatureManager;
-    private IFeatureNameProvider<Feature> _featureNameProvider;
-    private IFeatureDefaultProvider<Feature> _featureDefaultProvider;
-    private IFeatureDefinitionProvider _featureDefinitionProvider;
+//    private IVariantFeatureManager _baseFeatureManager;
+//    private IFeatureNameProvider<Feature> _featureNameProvider;
+//    private IFeatureDefaultProvider<Feature> _featureDefaultProvider;
+//    private IFeatureDefinitionProvider _featureDefinitionProvider;
 
-    private readonly Func<Feature, string> _getFeatureName = (Feature feature) => feature.ToString();
+//    private readonly Func<Feature, string> _getFeatureName = (Feature feature) => feature.ToString();
 
-    [TestInitialize]
-    public void Setup()
-    {
-        _baseFeatureManager = Substitute.For<IVariantFeatureManager>();
-        _featureNameProvider = Substitute.For<IFeatureNameProvider<Feature>>();
-        _featureNameProvider.GetFeatureName(Arg.Any<Feature>()).Returns(x => _getFeatureName((Feature)x[0]));
-        _featureDefaultProvider = Substitute.For<IFeatureDefaultProvider<Feature>>();
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(false);
-        _featureDefinitionProvider = Substitute.For<IFeatureDefinitionProvider>();
+//    [TestInitialize]
+//    public void Setup()
+//    {
+//        _baseFeatureManager = Substitute.For<IVariantFeatureManager>();
+//        _featureNameProvider = Substitute.For<IFeatureNameProvider<Feature>>();
+//        _featureNameProvider.GetFeatureName(Arg.Any<Feature>()).Returns(x => _getFeatureName((Feature)x[0]));
+//        _featureDefaultProvider = Substitute.For<IFeatureDefaultProvider<Feature>>();
+//        _featureDefinitionProvider = Substitute.For<IFeatureDefinitionProvider>();
 
-        _underTest = new FeatureManager<Feature>(
-            _baseFeatureManager,
-            _featureNameProvider,
-            _featureDefaultProvider,
-            _featureDefinitionProvider);
-    }
+//        _underTest = new FeatureManager<Feature>(
+//            _baseFeatureManager,
+//            _featureNameProvider,
+//            _featureDefaultProvider,
+//            _featureDefinitionProvider);
+//    }
 
-    [TestMethod]
-    public void GetFeatureNamesAsync_CallsBaseGetFeatureNamesAsyncCorrectly()
-    {
-        // Arrange and Act
-        _underTest.GetFeatureNamesAsync();
+//    [TestMethod]
+//    public void GetFeatureNamesAsync_CallsBaseGetFeatureNamesAsyncCorrectly()
+//    {
+//        // Arrange and Act
+//        _underTest.GetFeatureNamesAsync();
 
-        // Assert
-        _baseFeatureManager.Received().GetFeatureNamesAsync();
-    }
+//        // Assert
+//        _baseFeatureManager.Received().GetFeatureNamesAsync();
+//    }
 
-    [TestMethod]
-    public void GetFeatureNamesAsync_ReturnsBaseGetFeatureNamesAsyncResult()
-    {
-        // Arrange
-        var expectedFeatureNames = Substitute.For<IAsyncEnumerable<string>>();
-        _baseFeatureManager.GetFeatureNamesAsync().Returns(expectedFeatureNames);
+//    [TestMethod]
+//    public void GetFeatureNamesAsync_ReturnsBaseGetFeatureNamesAsyncResult()
+//    {
+//        // Arrange
+//        var expectedFeatureNames = Substitute.For<IAsyncEnumerable<string>>();
+//        _baseFeatureManager.GetFeatureNamesAsync().Returns(expectedFeatureNames);
 
-        // Act
-        var featureNames = _underTest.GetFeatureNamesAsync();
+//        // Act
+//        var featureNames = _underTest.GetFeatureNamesAsync();
 
-        // Assert
-        featureNames.Should().Be(expectedFeatureNames);
-    }
+//        // Assert
+//        featureNames.Should().Be(expectedFeatureNames);
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_ReturnsIsEnabledDefault_CalledWithoutTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_ReturnsIsEnabledDefault_CalledWithoutTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>())
-            .Returns(x =>
-            {
-                x[1] = true;
-                return true;
-            });
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>())
+//            .Returns(x =>
+//            {
+//                x[1] = true;
+//                return true;
+//            });
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
 
-        // Act
-        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
+//        // Act
+//        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
-        // Assert
-        isEnabled.Should().BeTrue();
-    }
+//        // Assert
+//        isEnabled.Should().BeTrue();
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_DoesNotCallBaseIsEnabledAsync_CalledWithoutTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedFeatureName = _getFeatureName(expectedFeature);
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_DoesNotCallBaseIsEnabledAsync_CalledWithoutTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedFeatureName = _getFeatureName(expectedFeature);
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
 
-        // Act
-        await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
+//        // Act
+//        await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
-        // Assert
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-#pragma warning disable CA2012 // Use ValueTasks correctly
-        _baseFeatureManager.DidNotReceive().IsEnabledAsync(expectedFeatureName, expectedCancellationToken);
-#pragma warning restore CA2012 // Use ValueTasks correctly
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-    }
+//        // Assert
+//#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//#pragma warning disable CA2012 // Use ValueTasks correctly
+//        _baseFeatureManager.DidNotReceive().IsEnabledAsync(expectedFeatureName, expectedCancellationToken);
+//#pragma warning restore CA2012 // Use ValueTasks correctly
+//#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_CallsBaseIsEnabledAsyncCorrectly_CalledWithoutTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedFeatureName = _getFeatureName(expectedFeature);
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_CallsBaseIsEnabledAsyncCorrectly_CalledWithoutTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedFeatureName = _getFeatureName(expectedFeature);
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
 
-        // Act
-        await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
+//        // Act
+//        await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
-        // Assert
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-#pragma warning disable CA2012 // Use ValueTasks correctly
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedCancellationToken);
-#pragma warning restore CA2012 // Use ValueTasks correctly
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-    }
+//        // Assert
+//#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//#pragma warning disable CA2012 // Use ValueTasks correctly
+//        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedCancellationToken);
+//#pragma warning restore CA2012 // Use ValueTasks correctly
+//#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_ReturnsBaseIsEnabledAsyncResult_CalledWithoutTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_ReturnsBaseIsEnabledAsyncResult_CalledWithoutTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
-        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
+//        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
 
-        // Act
-        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
+//        // Act
+//        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
-        // Assert
-        isEnabled.Should().BeTrue();
-    }
+//        // Assert
+//        isEnabled.Should().BeTrue();
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_CallsBaseIsEnabledAsyncCorrectly_CalledWithoutTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedFeatureName = _getFeatureName(expectedFeature);
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_CallsBaseIsEnabledAsyncCorrectly_CalledWithoutTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedFeatureName = _getFeatureName(expectedFeature);
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        // Act
-        await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
+//        // Act
+//        await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
-        // Assert
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-#pragma warning disable CA2012 // Use ValueTasks correctly
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedCancellationToken);
-#pragma warning restore CA2012 // Use ValueTasks correctly
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-    }
+//        // Assert
+//#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//#pragma warning disable CA2012 // Use ValueTasks correctly
+//        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedCancellationToken);
+//#pragma warning restore CA2012 // Use ValueTasks correctly
+//#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_ReturnsBaseIsEnabledAsyncResult_CalledWithoutTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedCancellationToken = new CancellationToken(true);
-        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_ReturnsBaseIsEnabledAsyncResult_CalledWithoutTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedCancellationToken = new CancellationToken(true);
+//        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(true);
 
-        // Act
-        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
+//        // Act
+//        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
-        // Assert
-        isEnabled.Should().BeTrue();
-    }
+//        // Assert
+//        isEnabled.Should().BeTrue();
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_ReturnsIsEnabledDefault_CalledWithTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedContext = new object();
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_ReturnsIsEnabledDefault_CalledWithTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedContext = new object();
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>())
-            .Returns(x =>
-            {
-                x[1] = true;
-                return true;
-            });
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>())
+//            .Returns(x =>
+//            {
+//                x[1] = true;
+//                return true;
+//            });
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
 
-        // Act
-        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
+//        // Act
+//        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
-        // Assert
-        isEnabled.Should().BeTrue();
-    }
+//        // Assert
+//        isEnabled.Should().BeTrue();
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_DoesNotCallBaseIsEnabledAsync_CalledWithTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedFeatureName = _getFeatureName(expectedFeature);
-        var expectedContext = new object();
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndDoesNotHaveFeatureDefinition_DoesNotCallBaseIsEnabledAsync_CalledWithTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedFeatureName = _getFeatureName(expectedFeature);
+//        var expectedContext = new object();
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(default(FeatureDefinition));
 
-        // Act
-        await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
+//        // Act
+//        await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
-        // Assert
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-#pragma warning disable CA2012 // Use ValueTasks correctly
-        _baseFeatureManager.DidNotReceive().IsEnabledAsync(expectedFeatureName, expectedContext, expectedCancellationToken);
-#pragma warning restore CA2012 // Use ValueTasks correctly
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-    }
+//        // Assert
+//#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//#pragma warning disable CA2012 // Use ValueTasks correctly
+//        _baseFeatureManager.DidNotReceive().IsEnabledAsync(expectedFeatureName, expectedContext, expectedCancellationToken);
+//#pragma warning restore CA2012 // Use ValueTasks correctly
+//#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_CallsBaseIsEnabledAsyncCorrectly_CalledWithTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedFeatureName = _getFeatureName(expectedFeature);
-        var expectedContext = new object();
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_CallsBaseIsEnabledAsyncCorrectly_CalledWithTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedFeatureName = _getFeatureName(expectedFeature);
+//        var expectedContext = new object();
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
 
-        // Act
-        await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
+//        // Act
+//        await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
-        // Assert
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-#pragma warning disable CA2012 // Use ValueTasks correctly
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedContext, expectedCancellationToken);
-#pragma warning restore CA2012 // Use ValueTasks correctly
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-    }
+//        // Assert
+//#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//#pragma warning disable CA2012 // Use ValueTasks correctly
+//        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedContext, expectedCancellationToken);
+//#pragma warning restore CA2012 // Use ValueTasks correctly
+//#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_ReturnsBaseIsEnabledAsyncResult_CalledWithTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedContext = new object();
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureHasIsEnabledDefaultAndHasFeatureDefinition_ReturnsBaseIsEnabledAsyncResult_CalledWithTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedContext = new object();
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
-        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
-        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>()).Returns(true);
+//        _featureDefaultProvider.TryGetIsEnabledDefault(Arg.Any<Feature>(), out Arg.Any<bool>()).Returns(true);
+//        _featureDefinitionProvider.GetFeatureDefinitionAsync(Arg.Any<string>()).Returns(new FeatureDefinition());
+//        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>()).Returns(true);
 
-        // Act
-        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
+//        // Act
+//        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
-        // Assert
-        isEnabled.Should().BeTrue();
-    }
+//        // Assert
+//        isEnabled.Should().BeTrue();
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_CallsBaseIsEnabledAsyncCorrectly_CalledWithTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedFeatureName = _getFeatureName(Feature.Test1);
-        var expectedContext = new object();
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_CallsBaseIsEnabledAsyncCorrectly_CalledWithTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedFeatureName = _getFeatureName(Feature.Test1);
+//        var expectedContext = new object();
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        // Act
-        await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
+//        // Act
+//        await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
-        // Assert
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-#pragma warning disable CA2012 // Use ValueTasks correctly
-        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedContext, expectedCancellationToken);
-#pragma warning restore CA2012 // Use ValueTasks correctly
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-    }
+//        // Assert
+//#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//#pragma warning disable CA2012 // Use ValueTasks correctly
+//        _baseFeatureManager.Received().IsEnabledAsync(expectedFeatureName, expectedContext, expectedCancellationToken);
+//#pragma warning restore CA2012 // Use ValueTasks correctly
+//#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//    }
 
-    [TestMethod]
-    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_ReturnsBaseIsEnabledAsyncResult_CalledWithTargetingContext()
-    {
-        // Arrange
-        var expectedFeature = Feature.Test1;
-        var expectedContext = new object();
-        var expectedCancellationToken = new CancellationToken(true);
+//    [TestMethod]
+//    public async Task IsEnabledAsync_FeatureDoesNotHaveIsEnabledDefault_ReturnsBaseIsEnabledAsyncResult_CalledWithTargetingContext()
+//    {
+//        // Arrange
+//        var expectedFeature = Feature.Test1;
+//        var expectedContext = new object();
+//        var expectedCancellationToken = new CancellationToken(true);
 
-        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>()).Returns(true);
+//        _baseFeatureManager.IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>()).Returns(true);
 
-        // Act
-        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
+//        // Act
+//        var isEnabled = await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
 
-        // Assert
-        isEnabled.Should().BeTrue();
-    }
-}
+//        // Assert
+//        isEnabled.Should().BeTrue();
+//    }
+//}

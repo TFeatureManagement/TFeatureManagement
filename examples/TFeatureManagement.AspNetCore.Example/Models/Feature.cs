@@ -2,6 +2,7 @@
 
 public enum Feature
 {
+    [FeatureIsEnabledDefault(true)]
     Example1,
     Example2,
     Example3,

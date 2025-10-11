@@ -3,17 +3,21 @@ using System.Reflection;
 
 namespace TFeatureManagement
 {
-    public class FeatureDefaultProvider<TFeature> : IFeatureDefaultProvider<TFeature>
+    public class FeatureDefaultsProvider<TFeature> : IFeatureDefaultsProvider<TFeature>
         where TFeature : struct, Enum
     {
-        private readonly IHostEnvironment _hostEnvironment;
+        private readonly IFeatureNameProvider<TFeature> _featureNameProvider;
+        private readonly IHostEnvironment _environment;
 
-        public FeatureDefaultProvider(
-            IHostEnvironment hostEnvironment)
+        public FeatureDefaultsProvider(
+            IFeatureNameProvider<TFeature> featureNameProvider,
+            IHostEnvironment environment)
         {
-            _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
+            _featureNameProvider = featureNameProvider ?? throw new ArgumentNullException(nameof(featureNameProvider));
+            _environment = environment ?? throw new ArgumentNullException(nameof(environment));
 
-            IsEnabledDefaults = [];
+            IsEnabledDefaults = new Dictionary<TFeature, bool>();
+            IsEnabledDefaultsByFeatureName = new Dictionary<string, bool>();
 
 #if NET8_0_OR_GREATER
             var features = Enum.GetValues<TFeature>();
@@ -44,10 +48,11 @@ namespace TFeatureManagement
                     var isEnabledDefaultAttributeForEnvironment = isEnabledDefaultAttributes
                         .SingleOrDefault(x =>
                             x.EnvironmentName != null &&
-                            x.EnvironmentName.Equals(_hostEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase));
+                            x.EnvironmentName.Equals(_environment.EnvironmentName, StringComparison.OrdinalIgnoreCase));
                     if (isEnabledDefaultAttributeForEnvironment != null)
                     {
                         IsEnabledDefaults.Add(feature, isEnabledDefaultAttributeForEnvironment.IsEnabled);
+                        IsEnabledDefaultsByFeatureName.Add(_featureNameProvider.GetFeatureName(feature), isEnabledDefaultAttributeForEnvironment.IsEnabled);
                     }
                     else
                     {
@@ -56,17 +61,15 @@ namespace TFeatureManagement
                         if (isEnabledDefaultAttributeForAllEnvironments != null)
                         {
                             IsEnabledDefaults.Add(feature, isEnabledDefaultAttributeForAllEnvironments.IsEnabled);
+                            IsEnabledDefaultsByFeatureName.Add(_featureNameProvider.GetFeatureName(feature), isEnabledDefaultAttributeForAllEnvironments.IsEnabled);
                         }
                     }
                 }
             }
         }
 
-        internal Dictionary<TFeature, bool> IsEnabledDefaults { get; }
+        public IDictionary<TFeature, bool> IsEnabledDefaults { get; }
 
-        public bool TryGetIsEnabledDefault(TFeature feature, out bool isEnabledDefault)
-        {
-            return IsEnabledDefaults.TryGetValue(feature, out isEnabledDefault);
-        }
+        public IDictionary<string, bool> IsEnabledDefaultsByFeatureName { get; }
     }
 }
