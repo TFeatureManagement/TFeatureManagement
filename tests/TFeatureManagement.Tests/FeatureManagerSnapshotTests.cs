@@ -48,11 +48,11 @@ public class FeatureManagerSnapshotTests
         // Arrange
         var expectedFeature = Feature.Test1;
         var expectedFeatureName = _getFeatureName(Feature.Test1);
-        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithContext ? new object() : null;
+        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithTargetingContext ? new object() : null;
         var expectedCancellationToken = new CancellationToken(true);
 
         // Act
-        if (targetingContextOption == FeatureTargetingContextOption.WithContext)
+        if (targetingContextOption == FeatureTargetingContextOption.WithTargetingContext)
         {
             await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken);
         }
@@ -64,7 +64,7 @@ public class FeatureManagerSnapshotTests
         // Assert
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 #pragma warning disable CA2012 // Use ValueTasks correctly
-        if (targetingContextOption == FeatureTargetingContextOption.WithContext)
+        if (targetingContextOption == FeatureTargetingContextOption.WithTargetingContext)
         {
             _baseFeatureManagerSnapshot
                 .Received()
@@ -89,7 +89,7 @@ public class FeatureManagerSnapshotTests
         var expectedContext = new object();
         var expectedCancellationToken = new CancellationToken(true);
 
-        if (targetingContextOption == FeatureTargetingContextOption.WithContext)
+        if (targetingContextOption == FeatureTargetingContextOption.WithTargetingContext)
         {
             _baseFeatureManagerSnapshot
                 .IsEnabledAsync(Arg.Any<string>(), Arg.Any<object>(), Arg.Any<CancellationToken>())
@@ -103,7 +103,7 @@ public class FeatureManagerSnapshotTests
         }
 
         // Act
-        var isEnabled = targetingContextOption == FeatureTargetingContextOption.WithContext ?
+        var isEnabled = targetingContextOption == FeatureTargetingContextOption.WithTargetingContext ?
             await _underTest.IsEnabledAsync(expectedFeature, expectedContext, expectedCancellationToken) :
             await _underTest.IsEnabledAsync(expectedFeature, expectedCancellationToken);
 
@@ -117,8 +117,8 @@ public class FeatureManagerSnapshotTests
         {
             return
             [
-                [FeatureTargetingContextOption.WithContext],
-                [FeatureTargetingContextOption.WithoutContext]
+                [FeatureTargetingContextOption.WithTargetingContext],
+                [FeatureTargetingContextOption.WithoutTargetingContext]
             ];
         }
     }

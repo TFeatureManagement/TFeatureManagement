@@ -39,7 +39,7 @@ public class FeatureVariantManagerTests
         // Arrange
         var expectedFeature = Feature.Test1;
         var expectedFeatureName = _getFeatureName(Feature.Test1);
-        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithContext ? Substitute.For<ITargetingContext>() : null;
+        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithTargetingContext ? Substitute.For<ITargetingContext>() : null;
         if (expectedContext != null)
         {
             expectedContext.UserId.Returns(Guid.NewGuid().ToString());
@@ -48,7 +48,7 @@ public class FeatureVariantManagerTests
         var expectedCancellationToken = new CancellationToken(true);
 
         // Act
-        if (targetingContextOption == FeatureTargetingContextOption.WithContext)
+        if (targetingContextOption == FeatureTargetingContextOption.WithTargetingContext)
         {
             await _underTest.GetVariantAsync(expectedFeature, expectedContext, expectedCancellationToken);
         }
@@ -60,7 +60,7 @@ public class FeatureVariantManagerTests
         // Assert
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 #pragma warning disable CA2012 // Use ValueTasks correctly
-        if (targetingContextOption == FeatureTargetingContextOption.WithContext)
+        if (targetingContextOption == FeatureTargetingContextOption.WithTargetingContext)
         {
             _baseFeatureVariantManager.Received()
                 .GetVariantAsync(
@@ -85,10 +85,10 @@ public class FeatureVariantManagerTests
     {
         // Arrange
         var expectedFeature = Feature.Test1;
-        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithContext ? Substitute.For<ITargetingContext>() : null;
+        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithTargetingContext ? Substitute.For<ITargetingContext>() : null;
         var expectedCancellationToken = new CancellationToken(true);
 
-        if (targetingContextOption == FeatureTargetingContextOption.WithContext)
+        if (targetingContextOption == FeatureTargetingContextOption.WithTargetingContext)
         {
             _baseFeatureVariantManager
                 .GetVariantAsync(Arg.Any<string>(), Arg.Any<Microsoft.FeatureManagement.FeatureFilters.ITargetingContext>(), Arg.Any<CancellationToken>())
@@ -102,7 +102,7 @@ public class FeatureVariantManagerTests
         }
 
         // Act
-        var featureVariant = targetingContextOption == FeatureTargetingContextOption.WithContext ?
+        var featureVariant = targetingContextOption == FeatureTargetingContextOption.WithTargetingContext ?
             await _underTest.GetVariantAsync(expectedFeature, expectedContext, expectedCancellationToken) :
             await _underTest.GetVariantAsync(expectedFeature, expectedCancellationToken);
 
@@ -116,7 +116,7 @@ public class FeatureVariantManagerTests
     {
         // Arrange
         var expectedFeature = Feature.Test1;
-        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithContext ? Substitute.For<ITargetingContext>() : null;
+        var expectedContext = targetingContextOption == FeatureTargetingContextOption.WithTargetingContext ? Substitute.For<ITargetingContext>() : null;
         var expectedCancellationToken = new CancellationToken(true);
         var expectedFeatureVariantName = Guid.NewGuid().ToString();
         var expectedConfigurationSection = new ConfigurationSection(new ConfigurationRoot([]), "test");
@@ -126,7 +126,7 @@ public class FeatureVariantManagerTests
             Configuration = expectedConfigurationSection
         };
 
-        if (targetingContextOption == FeatureTargetingContextOption.WithContext)
+        if (targetingContextOption == FeatureTargetingContextOption.WithTargetingContext)
         {
             _baseFeatureVariantManager
                 .GetVariantAsync(Arg.Any<string>(), Arg.Any<Microsoft.FeatureManagement.FeatureFilters.ITargetingContext>(), Arg.Any<CancellationToken>())
@@ -140,7 +140,7 @@ public class FeatureVariantManagerTests
         }
 
         // Act
-        var featureVariant = targetingContextOption == FeatureTargetingContextOption.WithContext ?
+        var featureVariant = targetingContextOption == FeatureTargetingContextOption.WithTargetingContext ?
             await _underTest.GetVariantAsync(expectedFeature, expectedContext, expectedCancellationToken) :
             await _underTest.GetVariantAsync(expectedFeature, expectedCancellationToken);
 
@@ -156,8 +156,8 @@ public class FeatureVariantManagerTests
         {
             return
             [
-                [FeatureTargetingContextOption.WithContext],
-                [FeatureTargetingContextOption.WithoutContext]
+                [FeatureTargetingContextOption.WithTargetingContext],
+                [FeatureTargetingContextOption.WithoutTargetingContext]
             ];
         }
     }

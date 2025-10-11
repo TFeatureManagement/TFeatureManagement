@@ -2,6 +2,6 @@
 
 public enum FeatureTargetingContextOption
 {
-    WithContext,
-    WithoutContext
+    WithTargetingContext,
+    WithoutTargetingContext
 }
