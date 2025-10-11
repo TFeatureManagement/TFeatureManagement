@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, FeatureManagementOptions? options)
+    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = TFeatureManagement.DependencyInjection.ServiceCollectionExtensions.AddFeatureManagement<TFeature>(services, options);
@@ -43,7 +43,7 @@ public static class ServiceCollectionExtensions
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration, FeatureManagementOptions? options)
+    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = TFeatureManagement.DependencyInjection.ServiceCollectionExtensions.AddFeatureManagement<TFeature>(services, configuration, options);
@@ -61,7 +61,7 @@ public static class ServiceCollectionExtensions
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services, FeatureManagementOptions? options)
+    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = TFeatureManagement.DependencyInjection.ServiceCollectionExtensions.AddScopedFeatureManagement<TFeature>(services, options);
@@ -82,7 +82,7 @@ public static class ServiceCollectionExtensions
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration, FeatureManagementOptions? options)
+    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = TFeatureManagement.DependencyInjection.ServiceCollectionExtensions.AddScopedFeatureManagement<TFeature>(services, configuration, options);
