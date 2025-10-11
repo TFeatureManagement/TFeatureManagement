@@ -11,16 +11,17 @@ public static class ServiceCollectionExtensions
     /// Adds singleton <see cref="IFeatureManager{TFeature}"/> and required feature management services.
     /// </summary>
     /// <param name="services">The service collection that feature management services are added to.</param>
+    /// <param name="options">The feature management options.</param>
     /// <returns>
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services)
+    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = new FeatureManagementBuilder<TFeature>(services.AddFeatureManagement());
         builder.Services.TryAddSingleton<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
-        builder.AddCoreServices();
+        builder.AddCoreServices(options);
 
         return builder;
     }
@@ -32,16 +33,17 @@ public static class ServiceCollectionExtensions
     /// <param name="configuration">
     /// A specific <see cref="IConfiguration" /> instance that will be used to obtain feature settings.
     /// </param>
+    /// <param name="options">The feature management options.</param>
     /// <returns>
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration)
+    public static IFeatureManagementBuilder<TFeature> AddFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = new FeatureManagementBuilder<TFeature>(services.AddFeatureManagement(configuration));
         builder.Services.TryAddSingleton<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
-        builder.AddCoreServices();
+        builder.AddCoreServices(options);
 
         return builder;
     }
@@ -50,16 +52,17 @@ public static class ServiceCollectionExtensions
     /// Adds scoped <see cref="IFeatureManager{TFeature}"/> and required feature management services.
     /// </summary>
     /// <param name="services">The service collection that feature management services are added to.</param>
+    /// <param name="options">The feature management options.</param>
     /// <returns>
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services)
+    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = new FeatureManagementBuilder<TFeature>(services.AddScopedFeatureManagement());
         builder.Services.TryAddScoped<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
-        builder.AddCoreServices();
+        builder.AddCoreServices(options);
 
         return builder;
     }
@@ -72,26 +75,34 @@ public static class ServiceCollectionExtensions
     /// A specific <see cref="IConfiguration" /> instance that will be used to obtain feature settings.
     /// </param>
     /// <returns>
+    /// <param name="options">The feature management options.</param>
     /// A <see cref="IFeatureManagementBuilder{TFeature}" /> that can be used to customize feature management
     /// functionality.
     /// </returns>
-    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration)
+    public static IFeatureManagementBuilder<TFeature> AddScopedFeatureManagement<TFeature>(this IServiceCollection services, IConfiguration configuration, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         var builder = new FeatureManagementBuilder<TFeature>(services.AddScopedFeatureManagement(configuration));
         builder.Services.TryAddScoped<IFeatureManager<TFeature>, FeatureManager<TFeature>>();
-        builder.AddCoreServices();
+        builder.AddCoreServices(options);
 
         return builder;
     }
 
-    private static IFeatureManagementBuilder<TFeature> AddCoreServices<TFeature>(this IFeatureManagementBuilder<TFeature> builder)
+    private static IFeatureManagementBuilder<TFeature> AddCoreServices<TFeature>(this IFeatureManagementBuilder<TFeature> builder, FeatureManagementOptions? options = null)
         where TFeature : struct, Enum
     {
         builder.Services.TryAddScoped<IFeatureManagerSnapshot<TFeature>, FeatureManagerSnapshot<TFeature>>();
 
         builder.Services.TryAddSingleton<IFeatureNameProvider<TFeature>, FeatureNameProvider<TFeature>>();
         builder.Services.TryAddSingleton<IFeatureEnumParser<TFeature>, FeatureEnumParser<TFeature>>();
+        builder.Services.TryAddSingleton<IFeatureDefaultsProvider<TFeature>, FeatureDefaultsProvider<TFeature>>();
+
+        if (options != null &&
+            options.IsFeatureDefaultsFeatureDefinitionProviderDecoratorEnabled)
+        {
+            builder.Services.Decorate<IFeatureDefinitionProvider, FeatureDefaultsFeatureDefinitionProviderDecorator<TFeature>>();
+        }
 
         return builder;
     }
